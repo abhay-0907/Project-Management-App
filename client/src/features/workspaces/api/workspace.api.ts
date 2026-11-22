@@ -1,0 +1,91 @@
+import type {
+  CreateWorkspaceResponse,
+  WorkspaceMessageResponse,
+  WorkspaceResponse,
+  WorkspacesResponse,
+} from "../types/workspace.types";
+import type { CreateWorkspaceInput, UpdateWorkspaceInput } from "../schemas/workspace.schema";
+
+const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080").replace(/\/+$/, "");
+
+export class WorkspaceApiError extends Error {
+  constructor(
+    message: string,
+    public readonly status: number,
+    public readonly details?: Record<string, string[] | undefined>,
+  ) {
+    super(message);
+    this.name = "WorkspaceApiError";
+  }
+}
+
+async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
+  const headers = new Headers(init.headers);
+  if (init.body && !headers.has("Content-Type")) {
+    headers.set("Content-Type", "application/json");
+  }
+
+  let response: Response;
+  try {
+    response = await fetch(`${API_BASE_URL}${path}`, {
+      ...init,
+      credentials: "include",
+      headers,
+    });
+  } catch {
+    throw new WorkspaceApiError(
+      "Could not reach the server. Check that the API is running and try again.",
+      0,
+    );
+  }
+
+  const contentType = response.headers.get("content-type");
+  const payload = contentType?.includes("application/json")
+    ? await response.json().catch(() => null)
+    : null;
+
+  if (!response.ok) {
+    const body = payload as {
+      error?: string;
+      details?: Record<string, string[] | undefined>;
+    } | null;
+    throw new WorkspaceApiError(
+      body?.error ?? "The workspace request failed. Please try again.",
+      response.status,
+      body?.details,
+    );
+  }
+
+  return payload as T;
+}
+
+export const workspaceApi = {
+  list() {
+    return request<WorkspacesResponse>("/workspaces").then(({ workspaces }) => workspaces);
+  },
+
+  get(workspaceId: string) {
+    return request<WorkspaceResponse>(`/workspaces/${encodeURIComponent(workspaceId)}`)
+      .then(({ workspace }) => workspace);
+  },
+
+  create(input: CreateWorkspaceInput) {
+    return request<CreateWorkspaceResponse>("/workspaces", {
+      method: "POST",
+      body: JSON.stringify(input),
+    });
+  },
+
+  update(workspaceId: string, input: UpdateWorkspaceInput) {
+    return request<WorkspaceResponse>(`/workspaces/${encodeURIComponent(workspaceId)}`, {
+      method: "PATCH",
+      body: JSON.stringify(input),
+    });
+  },
+
+  delete(workspaceId: string) {
+    return request<WorkspaceMessageResponse>(`/workspaces/${encodeURIComponent(workspaceId)}`, {
+      method: "DELETE",
+    });
+  },
+};

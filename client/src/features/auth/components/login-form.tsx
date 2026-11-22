@@ -1,0 +1,66 @@
+"use client";
+
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState, type FormEvent } from "react";
+import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { loginSchema } from "../schemas/auth.schema";
+import { useLogin } from "../hooks/use-login";
+import { getFirstFieldErrors } from "../utils/auth.utils";
+import { AuthField } from "./auth-field";
+import { AuthSubmitButton } from "./auth-submit-button";
+
+export function LoginForm() {
+  const router = useRouter();
+  const login = useLogin();
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const parsed = loginSchema.safeParse({
+      email: String(form.get("email") ?? ""),
+      password: String(form.get("password") ?? ""),
+    });
+    if (!parsed.success) {
+      setFieldErrors(getFirstFieldErrors(parsed.error.flatten()));
+      return;
+    }
+    setFieldErrors({});
+    login.mutate(parsed.data, {
+      onSuccess: () => {
+        router.replace("/");
+        router.refresh();
+      },
+    });
+  }
+
+  return (
+    <>
+      <CardHeader className="gap-2 px-0 text-center">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">Welcome back</p>
+        <CardTitle className="text-2xl tracking-tight text-slate-950">Sign in to Nexora</CardTitle>
+        <CardDescription>Pick up where your team left off.</CardDescription>
+      </CardHeader>
+      <CardContent className="mt-6 px-0">
+      <form className="space-y-5" onSubmit={handleSubmit} noValidate>
+        <AuthField name="email" type="email" label="Email address" autoComplete="email" placeholder="you@company.com" required error={fieldErrors.email} />
+        <div className="space-y-2">
+          <div className="flex items-center justify-between gap-3">
+            <Label htmlFor="password">Password</Label>
+            <Link href="/forgot-password" className="text-sm font-medium text-indigo-600 hover:text-indigo-700">Forgot password?</Link>
+          </div>
+          <AuthField id="password" name="password" type="password" label="" autoComplete="current-password" placeholder="Your password" required error={fieldErrors.password} className="-mt-2" />
+        </div>
+        <AuthSubmitButton pending={login.isPending}>Sign in</AuthSubmitButton>
+      </form>
+      </CardContent>
+      <CardFooter className="mt-6 justify-center px-0">
+      <p className="text-center text-sm text-slate-600">
+        New to Nexora? <Link href="/register" className="font-semibold text-indigo-600 hover:text-indigo-700">Create an account</Link>
+      </p>
+      </CardFooter>
+    </>
+  );
+}
