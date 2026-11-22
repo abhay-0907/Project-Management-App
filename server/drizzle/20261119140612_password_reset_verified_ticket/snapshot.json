@@ -1,0 +1,184 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "8d3a57d0-3baa-42ff-b158-b4ec21bcd471",
+  "prevIds": [
+    "b02e7c3b-d117-4547-bcb2-21186b0e6d37"
+  ],
+  "footprints": [
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "password_reset_tokens",
+        "verified_at"
+      ],
+      "writes": [
+        "s|col|public.password_reset_tokens.verified_at",
+        "n|col|public.password_reset_tokens.verified_at",
+        "e|col|public.password_reset_tokens.verified_at"
+      ],
+      "reads": [
+        "n|tbl|public.password_reset_tokens",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "password_reset_tokens",
+        "reset_token_hash"
+      ],
+      "writes": [
+        "s|col|public.password_reset_tokens.reset_token_hash",
+        "n|col|public.password_reset_tokens.reset_token_hash",
+        "e|col|public.password_reset_tokens.reset_token_hash"
+      ],
+      "reads": [
+        "n|tbl|public.password_reset_tokens",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "password_reset_tokens",
+        "password_reset_tokens_reset_token_hash_uidx"
+      ],
+      "writes": [
+        "s|idx|public.password_reset_tokens_reset_token_hash_uidx",
+        "n|idx|public.password_reset_tokens_reset_token_hash_uidx",
+        "e|idx|public.password_reset_tokens_reset_token_hash_uidx",
+        "n|rel|public.password_reset_tokens_reset_token_hash_uidx"
+      ],
+      "reads": [
+        "n|tbl|public.password_reset_tokens",
+        "n|sch|public",
+        "n|col|public.password_reset_tokens.reset_token_hash"
+      ]
+    },
+    {
+      "statementType": "add_check",
+      "statementTarget": [
+        "table",
+        "public",
+        "password_reset_tokens"
+      ],
+      "writes": [
+        "s|ck|public.password_reset_tokens.password_reset_tokens_reset_token_hash_check",
+        "n|ck|public.password_reset_tokens.password_reset_tokens_reset_token_hash_check",
+        "e|ck|public.password_reset_tokens.password_reset_tokens_reset_token_hash_check",
+        "n|con|public.password_reset_tokens.password_reset_tokens_reset_token_hash_check"
+      ],
+      "reads": [
+        "n|tbl|public.password_reset_tokens",
+        "n|sch|public",
+        "n|col|public.password_reset_tokens.reset_token_hash"
+      ]
+    },
+    {
+      "statementType": "add_check",
+      "statementTarget": [
+        "table",
+        "public",
+        "password_reset_tokens"
+      ],
+      "writes": [
+        "s|ck|public.password_reset_tokens.password_reset_tokens_verified_ticket_check",
+        "n|ck|public.password_reset_tokens.password_reset_tokens_verified_ticket_check",
+        "e|ck|public.password_reset_tokens.password_reset_tokens_verified_ticket_check",
+        "n|con|public.password_reset_tokens.password_reset_tokens_verified_ticket_check"
+      ],
+      "reads": [
+        "n|tbl|public.password_reset_tokens",
+        "n|sch|public",
+        "n|col|public.password_reset_tokens.reset_token_hash",
+        "n|col|public.password_reset_tokens.verified_at"
+      ]
+    }
+  ],
+  "deltas": [
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "password_reset_tokens",
+        "name": "verified_at",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "password_reset_tokens",
+        "name": "reset_token_hash",
+        "type": "varchar(64)",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "password_reset_tokens",
+        "name": "password_reset_tokens_reset_token_hash_uidx",
+        "nameExplicit": true,
+        "columns": [
+          {
+            "value": "reset_token_hash",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          }
+        ],
+        "isUnique": true,
+        "where": null,
+        "with": "",
+        "method": "btree",
+        "concurrently": false,
+        "entityType": "indexes"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "password_reset_tokens",
+        "name": "password_reset_tokens_reset_token_hash_check",
+        "value": "\"reset_token_hash\" IS NULL OR \"reset_token_hash\" ~ '^[0-9a-f]{64}$'",
+        "entityType": "checks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "password_reset_tokens",
+        "name": "password_reset_tokens_verified_ticket_check",
+        "value": "\"reset_token_hash\" IS NULL OR \"verified_at\" IS NOT NULL",
+        "entityType": "checks"
+      }
+    }
+  ]
+}

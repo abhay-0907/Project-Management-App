@@ -1,0 +1,5694 @@
+{
+  "type": "base",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "bc065f9f-89a2-4022-a686-aa3e9123650c",
+  "prevIds": [
+    "00000000-0000-0000-0000-000000000000"
+  ],
+  "footprints": [
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "workspace_role"
+      ],
+      "writes": [
+        "s|enum|public.workspace_role",
+        "n|enum|public.workspace_role",
+        "e|enum|public.workspace_role",
+        "n|type|public.workspace_role"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "invitation_role"
+      ],
+      "writes": [
+        "s|enum|public.invitation_role",
+        "n|enum|public.invitation_role",
+        "e|enum|public.invitation_role",
+        "n|type|public.invitation_role"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "invitation_status"
+      ],
+      "writes": [
+        "s|enum|public.invitation_status",
+        "n|enum|public.invitation_status",
+        "e|enum|public.invitation_status",
+        "n|type|public.invitation_status"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "project_lifecycle"
+      ],
+      "writes": [
+        "s|enum|public.project_lifecycle",
+        "n|enum|public.project_lifecycle",
+        "e|enum|public.project_lifecycle",
+        "n|type|public.project_lifecycle"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "project_member_role"
+      ],
+      "writes": [
+        "s|enum|public.project_member_role",
+        "n|enum|public.project_member_role",
+        "e|enum|public.project_member_role",
+        "n|type|public.project_member_role"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "task_priority"
+      ],
+      "writes": [
+        "s|enum|public.task_priority",
+        "n|enum|public.task_priority",
+        "e|enum|public.task_priority",
+        "n|type|public.task_priority"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "users"
+      ],
+      "writes": [
+        "s|tbl|public.users",
+        "n|tbl|public.users",
+        "e|tbl|public.users",
+        "n|rel|public.users",
+        "n|type|public.users",
+        "n|rel|public.users_pkey",
+        "n|rel|public.users_email_key"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "sessions"
+      ],
+      "writes": [
+        "s|tbl|public.sessions",
+        "n|tbl|public.sessions",
+        "e|tbl|public.sessions",
+        "n|rel|public.sessions",
+        "n|type|public.sessions",
+        "n|rel|public.sessions_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "email_verification_tokens"
+      ],
+      "writes": [
+        "s|tbl|public.email_verification_tokens",
+        "n|tbl|public.email_verification_tokens",
+        "e|tbl|public.email_verification_tokens",
+        "n|rel|public.email_verification_tokens",
+        "n|type|public.email_verification_tokens",
+        "n|rel|public.email_verification_tokens_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "password_reset_tokens"
+      ],
+      "writes": [
+        "s|tbl|public.password_reset_tokens",
+        "n|tbl|public.password_reset_tokens",
+        "e|tbl|public.password_reset_tokens",
+        "n|rel|public.password_reset_tokens",
+        "n|type|public.password_reset_tokens",
+        "n|rel|public.password_reset_tokens_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "workspaces"
+      ],
+      "writes": [
+        "s|tbl|public.workspaces",
+        "n|tbl|public.workspaces",
+        "e|tbl|public.workspaces",
+        "n|rel|public.workspaces",
+        "n|type|public.workspaces",
+        "n|rel|public.workspaces_pkey",
+        "n|rel|public.workspaces_slug_key"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "workspace_members"
+      ],
+      "writes": [
+        "s|tbl|public.workspace_members",
+        "n|tbl|public.workspace_members",
+        "e|tbl|public.workspace_members",
+        "n|rel|public.workspace_members",
+        "n|type|public.workspace_members",
+        "n|rel|public.workspace_members_pkey"
+      ],
+      "reads": [
+        "n|sch|public",
+        "n|enum|public.workspace_role"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "invitations"
+      ],
+      "writes": [
+        "s|tbl|public.invitations",
+        "n|tbl|public.invitations",
+        "e|tbl|public.invitations",
+        "n|rel|public.invitations",
+        "n|type|public.invitations",
+        "n|rel|public.invitations_pkey",
+        "n|rel|public.invitations_token_hash_key"
+      ],
+      "reads": [
+        "n|sch|public",
+        "n|enum|public.invitation_role",
+        "n|enum|public.invitation_status"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "projects"
+      ],
+      "writes": [
+        "s|tbl|public.projects",
+        "n|tbl|public.projects",
+        "e|tbl|public.projects",
+        "n|rel|public.projects",
+        "n|type|public.projects",
+        "n|rel|public.projects_pkey"
+      ],
+      "reads": [
+        "n|sch|public",
+        "n|enum|public.project_lifecycle"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "project_members"
+      ],
+      "writes": [
+        "s|tbl|public.project_members",
+        "n|tbl|public.project_members",
+        "e|tbl|public.project_members",
+        "n|rel|public.project_members",
+        "n|type|public.project_members",
+        "n|rel|public.project_members_pkey"
+      ],
+      "reads": [
+        "n|sch|public",
+        "n|enum|public.project_member_role"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "project_statuses"
+      ],
+      "writes": [
+        "s|tbl|public.project_statuses",
+        "n|tbl|public.project_statuses",
+        "e|tbl|public.project_statuses",
+        "n|rel|public.project_statuses",
+        "n|type|public.project_statuses",
+        "n|rel|public.project_statuses_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "tasks"
+      ],
+      "writes": [
+        "s|tbl|public.tasks",
+        "n|tbl|public.tasks",
+        "e|tbl|public.tasks",
+        "n|rel|public.tasks",
+        "n|type|public.tasks",
+        "n|rel|public.tasks_pkey"
+      ],
+      "reads": [
+        "n|sch|public",
+        "n|enum|public.task_priority"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "comments"
+      ],
+      "writes": [
+        "s|tbl|public.comments",
+        "n|tbl|public.comments",
+        "e|tbl|public.comments",
+        "n|rel|public.comments",
+        "n|type|public.comments",
+        "n|rel|public.comments_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "attachments"
+      ],
+      "writes": [
+        "s|tbl|public.attachments",
+        "n|tbl|public.attachments",
+        "e|tbl|public.attachments",
+        "n|rel|public.attachments",
+        "n|type|public.attachments",
+        "n|rel|public.attachments_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "labels"
+      ],
+      "writes": [
+        "s|tbl|public.labels",
+        "n|tbl|public.labels",
+        "e|tbl|public.labels",
+        "n|rel|public.labels",
+        "n|type|public.labels",
+        "n|rel|public.labels_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "task_labels"
+      ],
+      "writes": [
+        "s|tbl|public.task_labels",
+        "n|tbl|public.task_labels",
+        "e|tbl|public.task_labels",
+        "n|rel|public.task_labels",
+        "n|type|public.task_labels",
+        "n|rel|public.task_labels_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "activity_logs"
+      ],
+      "writes": [
+        "s|tbl|public.activity_logs",
+        "n|tbl|public.activity_logs",
+        "e|tbl|public.activity_logs",
+        "n|rel|public.activity_logs",
+        "n|type|public.activity_logs",
+        "n|rel|public.activity_logs_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "notifications"
+      ],
+      "writes": [
+        "s|tbl|public.notifications",
+        "n|tbl|public.notifications",
+        "e|tbl|public.notifications",
+        "n|rel|public.notifications",
+        "n|type|public.notifications",
+        "n|rel|public.notifications_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "sessions",
+        "sessions_token_hash_uidx"
+      ],
+      "writes": [
+        "s|idx|public.sessions_token_hash_uidx",
+        "n|idx|public.sessions_token_hash_uidx",
+        "e|idx|public.sessions_token_hash_uidx",
+        "n|rel|public.sessions_token_hash_uidx"
+      ],
+      "reads": [
+        "n|tbl|public.sessions",
+        "n|sch|public",
+        "n|col|public.sessions.token_hash"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "sessions",
+        "sessions_user_expires_idx"
+      ],
+      "writes": [
+        "s|idx|public.sessions_user_expires_idx",
+        "n|idx|public.sessions_user_expires_idx",
+        "e|idx|public.sessions_user_expires_idx",
+        "n|rel|public.sessions_user_expires_idx"
+      ],
+      "reads": [
+        "n|tbl|public.sessions",
+        "n|sch|public",
+        "n|col|public.sessions.user_id",
+        "n|col|public.sessions.expires_at"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "sessions",
+        "sessions_user_last_active_idx"
+      ],
+      "writes": [
+        "s|idx|public.sessions_user_last_active_idx",
+        "n|idx|public.sessions_user_last_active_idx",
+        "e|idx|public.sessions_user_last_active_idx",
+        "n|rel|public.sessions_user_last_active_idx"
+      ],
+      "reads": [
+        "n|tbl|public.sessions",
+        "n|sch|public",
+        "n|col|public.sessions.user_id",
+        "n|col|public.sessions.last_active_at"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "email_verification_tokens",
+        "email_verification_tokens_code_hash_uidx"
+      ],
+      "writes": [
+        "s|idx|public.email_verification_tokens_code_hash_uidx",
+        "n|idx|public.email_verification_tokens_code_hash_uidx",
+        "e|idx|public.email_verification_tokens_code_hash_uidx",
+        "n|rel|public.email_verification_tokens_code_hash_uidx"
+      ],
+      "reads": [
+        "n|tbl|public.email_verification_tokens",
+        "n|sch|public",
+        "n|col|public.email_verification_tokens.code_hash"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "email_verification_tokens",
+        "email_verification_tokens_user_expires_idx"
+      ],
+      "writes": [
+        "s|idx|public.email_verification_tokens_user_expires_idx",
+        "n|idx|public.email_verification_tokens_user_expires_idx",
+        "e|idx|public.email_verification_tokens_user_expires_idx",
+        "n|rel|public.email_verification_tokens_user_expires_idx"
+      ],
+      "reads": [
+        "n|tbl|public.email_verification_tokens",
+        "n|sch|public",
+        "n|col|public.email_verification_tokens.user_id",
+        "n|col|public.email_verification_tokens.expires_at"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "password_reset_tokens",
+        "password_reset_tokens_token_hash_uidx"
+      ],
+      "writes": [
+        "s|idx|public.password_reset_tokens_token_hash_uidx",
+        "n|idx|public.password_reset_tokens_token_hash_uidx",
+        "e|idx|public.password_reset_tokens_token_hash_uidx",
+        "n|rel|public.password_reset_tokens_token_hash_uidx"
+      ],
+      "reads": [
+        "n|tbl|public.password_reset_tokens",
+        "n|sch|public",
+        "n|col|public.password_reset_tokens.token_hash"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "password_reset_tokens",
+        "password_reset_tokens_user_expires_idx"
+      ],
+      "writes": [
+        "s|idx|public.password_reset_tokens_user_expires_idx",
+        "n|idx|public.password_reset_tokens_user_expires_idx",
+        "e|idx|public.password_reset_tokens_user_expires_idx",
+        "n|rel|public.password_reset_tokens_user_expires_idx"
+      ],
+      "reads": [
+        "n|tbl|public.password_reset_tokens",
+        "n|sch|public",
+        "n|col|public.password_reset_tokens.user_id",
+        "n|col|public.password_reset_tokens.expires_at"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "workspaces",
+        "workspaces_created_by_idx"
+      ],
+      "writes": [
+        "s|idx|public.workspaces_created_by_idx",
+        "n|idx|public.workspaces_created_by_idx",
+        "e|idx|public.workspaces_created_by_idx",
+        "n|rel|public.workspaces_created_by_idx"
+      ],
+      "reads": [
+        "n|tbl|public.workspaces",
+        "n|sch|public",
+        "n|col|public.workspaces.created_by"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "workspace_members",
+        "workspace_members_workspace_user_uidx"
+      ],
+      "writes": [
+        "s|idx|public.workspace_members_workspace_user_uidx",
+        "n|idx|public.workspace_members_workspace_user_uidx",
+        "e|idx|public.workspace_members_workspace_user_uidx",
+        "n|rel|public.workspace_members_workspace_user_uidx"
+      ],
+      "reads": [
+        "n|tbl|public.workspace_members",
+        "n|sch|public",
+        "n|col|public.workspace_members.workspace_id",
+        "n|col|public.workspace_members.user_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "workspace_members",
+        "workspace_members_single_owner_uidx"
+      ],
+      "writes": [
+        "s|idx|public.workspace_members_single_owner_uidx",
+        "n|idx|public.workspace_members_single_owner_uidx",
+        "e|idx|public.workspace_members_single_owner_uidx",
+        "n|rel|public.workspace_members_single_owner_uidx"
+      ],
+      "reads": [
+        "n|tbl|public.workspace_members",
+        "n|sch|public",
+        "n|col|public.workspace_members.workspace_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "workspace_members",
+        "workspace_members_user_id_idx"
+      ],
+      "writes": [
+        "s|idx|public.workspace_members_user_id_idx",
+        "n|idx|public.workspace_members_user_id_idx",
+        "e|idx|public.workspace_members_user_id_idx",
+        "n|rel|public.workspace_members_user_id_idx"
+      ],
+      "reads": [
+        "n|tbl|public.workspace_members",
+        "n|sch|public",
+        "n|col|public.workspace_members.user_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "invitations",
+        "invitations_pending_email_uidx"
+      ],
+      "writes": [
+        "s|idx|public.invitations_pending_email_uidx",
+        "n|idx|public.invitations_pending_email_uidx",
+        "e|idx|public.invitations_pending_email_uidx",
+        "n|rel|public.invitations_pending_email_uidx"
+      ],
+      "reads": [
+        "n|tbl|public.invitations",
+        "n|sch|public",
+        "n|col|public.invitations.workspace_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "invitations",
+        "invitations_workspace_status_idx"
+      ],
+      "writes": [
+        "s|idx|public.invitations_workspace_status_idx",
+        "n|idx|public.invitations_workspace_status_idx",
+        "e|idx|public.invitations_workspace_status_idx",
+        "n|rel|public.invitations_workspace_status_idx"
+      ],
+      "reads": [
+        "n|tbl|public.invitations",
+        "n|sch|public",
+        "n|col|public.invitations.workspace_id",
+        "n|col|public.invitations.status"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "invitations",
+        "invitations_expires_at_idx"
+      ],
+      "writes": [
+        "s|idx|public.invitations_expires_at_idx",
+        "n|idx|public.invitations_expires_at_idx",
+        "e|idx|public.invitations_expires_at_idx",
+        "n|rel|public.invitations_expires_at_idx"
+      ],
+      "reads": [
+        "n|tbl|public.invitations",
+        "n|sch|public",
+        "n|col|public.invitations.expires_at"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "projects",
+        "projects_workspace_id_uidx"
+      ],
+      "writes": [
+        "s|idx|public.projects_workspace_id_uidx",
+        "n|idx|public.projects_workspace_id_uidx",
+        "e|idx|public.projects_workspace_id_uidx",
+        "n|rel|public.projects_workspace_id_uidx"
+      ],
+      "reads": [
+        "n|tbl|public.projects",
+        "n|sch|public",
+        "n|col|public.projects.workspace_id",
+        "n|col|public.projects.id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "projects",
+        "projects_workspace_status_idx"
+      ],
+      "writes": [
+        "s|idx|public.projects_workspace_status_idx",
+        "n|idx|public.projects_workspace_status_idx",
+        "e|idx|public.projects_workspace_status_idx",
+        "n|rel|public.projects_workspace_status_idx"
+      ],
+      "reads": [
+        "n|tbl|public.projects",
+        "n|sch|public",
+        "n|col|public.projects.workspace_id",
+        "n|col|public.projects.status"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "projects",
+        "projects_created_by_idx"
+      ],
+      "writes": [
+        "s|idx|public.projects_created_by_idx",
+        "n|idx|public.projects_created_by_idx",
+        "e|idx|public.projects_created_by_idx",
+        "n|rel|public.projects_created_by_idx"
+      ],
+      "reads": [
+        "n|tbl|public.projects",
+        "n|sch|public",
+        "n|col|public.projects.created_by"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "project_members",
+        "project_members_project_user_uidx"
+      ],
+      "writes": [
+        "s|idx|public.project_members_project_user_uidx",
+        "n|idx|public.project_members_project_user_uidx",
+        "e|idx|public.project_members_project_user_uidx",
+        "n|rel|public.project_members_project_user_uidx"
+      ],
+      "reads": [
+        "n|tbl|public.project_members",
+        "n|sch|public",
+        "n|col|public.project_members.project_id",
+        "n|col|public.project_members.user_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "project_members",
+        "project_members_user_id_idx"
+      ],
+      "writes": [
+        "s|idx|public.project_members_user_id_idx",
+        "n|idx|public.project_members_user_id_idx",
+        "e|idx|public.project_members_user_id_idx",
+        "n|rel|public.project_members_user_id_idx"
+      ],
+      "reads": [
+        "n|tbl|public.project_members",
+        "n|sch|public",
+        "n|col|public.project_members.user_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "project_statuses",
+        "project_statuses_project_slug_uidx"
+      ],
+      "writes": [
+        "s|idx|public.project_statuses_project_slug_uidx",
+        "n|idx|public.project_statuses_project_slug_uidx",
+        "e|idx|public.project_statuses_project_slug_uidx",
+        "n|rel|public.project_statuses_project_slug_uidx"
+      ],
+      "reads": [
+        "n|tbl|public.project_statuses",
+        "n|sch|public",
+        "n|col|public.project_statuses.project_id",
+        "n|col|public.project_statuses.slug"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "project_statuses",
+        "project_statuses_tenant_candidate_uidx"
+      ],
+      "writes": [
+        "s|idx|public.project_statuses_tenant_candidate_uidx",
+        "n|idx|public.project_statuses_tenant_candidate_uidx",
+        "e|idx|public.project_statuses_tenant_candidate_uidx",
+        "n|rel|public.project_statuses_tenant_candidate_uidx"
+      ],
+      "reads": [
+        "n|tbl|public.project_statuses",
+        "n|sch|public",
+        "n|col|public.project_statuses.id",
+        "n|col|public.project_statuses.project_id",
+        "n|col|public.project_statuses.workspace_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "project_statuses",
+        "project_statuses_one_default_uidx"
+      ],
+      "writes": [
+        "s|idx|public.project_statuses_one_default_uidx",
+        "n|idx|public.project_statuses_one_default_uidx",
+        "e|idx|public.project_statuses_one_default_uidx",
+        "n|rel|public.project_statuses_one_default_uidx"
+      ],
+      "reads": [
+        "n|tbl|public.project_statuses",
+        "n|sch|public",
+        "n|col|public.project_statuses.project_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "project_statuses",
+        "project_statuses_project_position_idx"
+      ],
+      "writes": [
+        "s|idx|public.project_statuses_project_position_idx",
+        "n|idx|public.project_statuses_project_position_idx",
+        "e|idx|public.project_statuses_project_position_idx",
+        "n|rel|public.project_statuses_project_position_idx"
+      ],
+      "reads": [
+        "n|tbl|public.project_statuses",
+        "n|sch|public",
+        "n|col|public.project_statuses.project_id",
+        "n|col|public.project_statuses.position"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "tasks",
+        "tasks_id_workspace_uidx"
+      ],
+      "writes": [
+        "s|idx|public.tasks_id_workspace_uidx",
+        "n|idx|public.tasks_id_workspace_uidx",
+        "e|idx|public.tasks_id_workspace_uidx",
+        "n|rel|public.tasks_id_workspace_uidx"
+      ],
+      "reads": [
+        "n|tbl|public.tasks",
+        "n|sch|public",
+        "n|col|public.tasks.id",
+        "n|col|public.tasks.workspace_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "tasks",
+        "tasks_id_project_workspace_uidx"
+      ],
+      "writes": [
+        "s|idx|public.tasks_id_project_workspace_uidx",
+        "n|idx|public.tasks_id_project_workspace_uidx",
+        "e|idx|public.tasks_id_project_workspace_uidx",
+        "n|rel|public.tasks_id_project_workspace_uidx"
+      ],
+      "reads": [
+        "n|tbl|public.tasks",
+        "n|sch|public",
+        "n|col|public.tasks.id",
+        "n|col|public.tasks.project_id",
+        "n|col|public.tasks.workspace_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "tasks",
+        "tasks_project_status_position_idx"
+      ],
+      "writes": [
+        "s|idx|public.tasks_project_status_position_idx",
+        "n|idx|public.tasks_project_status_position_idx",
+        "e|idx|public.tasks_project_status_position_idx",
+        "n|rel|public.tasks_project_status_position_idx"
+      ],
+      "reads": [
+        "n|tbl|public.tasks",
+        "n|sch|public",
+        "n|col|public.tasks.project_id",
+        "n|col|public.tasks.status_id",
+        "n|col|public.tasks.position"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "tasks",
+        "tasks_workspace_assignee_idx"
+      ],
+      "writes": [
+        "s|idx|public.tasks_workspace_assignee_idx",
+        "n|idx|public.tasks_workspace_assignee_idx",
+        "e|idx|public.tasks_workspace_assignee_idx",
+        "n|rel|public.tasks_workspace_assignee_idx"
+      ],
+      "reads": [
+        "n|tbl|public.tasks",
+        "n|sch|public",
+        "n|col|public.tasks.workspace_id",
+        "n|col|public.tasks.assignee_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "tasks",
+        "tasks_workspace_due_date_idx"
+      ],
+      "writes": [
+        "s|idx|public.tasks_workspace_due_date_idx",
+        "n|idx|public.tasks_workspace_due_date_idx",
+        "e|idx|public.tasks_workspace_due_date_idx",
+        "n|rel|public.tasks_workspace_due_date_idx"
+      ],
+      "reads": [
+        "n|tbl|public.tasks",
+        "n|sch|public",
+        "n|col|public.tasks.workspace_id",
+        "n|col|public.tasks.due_date"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "comments",
+        "comments_task_created_idx"
+      ],
+      "writes": [
+        "s|idx|public.comments_task_created_idx",
+        "n|idx|public.comments_task_created_idx",
+        "e|idx|public.comments_task_created_idx",
+        "n|rel|public.comments_task_created_idx"
+      ],
+      "reads": [
+        "n|tbl|public.comments",
+        "n|sch|public",
+        "n|col|public.comments.task_id",
+        "n|col|public.comments.created_at"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "comments",
+        "comments_workspace_id_idx"
+      ],
+      "writes": [
+        "s|idx|public.comments_workspace_id_idx",
+        "n|idx|public.comments_workspace_id_idx",
+        "e|idx|public.comments_workspace_id_idx",
+        "n|rel|public.comments_workspace_id_idx"
+      ],
+      "reads": [
+        "n|tbl|public.comments",
+        "n|sch|public",
+        "n|col|public.comments.workspace_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "attachments",
+        "attachments_task_created_idx"
+      ],
+      "writes": [
+        "s|idx|public.attachments_task_created_idx",
+        "n|idx|public.attachments_task_created_idx",
+        "e|idx|public.attachments_task_created_idx",
+        "n|rel|public.attachments_task_created_idx"
+      ],
+      "reads": [
+        "n|tbl|public.attachments",
+        "n|sch|public",
+        "n|col|public.attachments.task_id",
+        "n|col|public.attachments.created_at"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "labels",
+        "labels_workspace_name_uidx"
+      ],
+      "writes": [
+        "s|idx|public.labels_workspace_name_uidx",
+        "n|idx|public.labels_workspace_name_uidx",
+        "e|idx|public.labels_workspace_name_uidx",
+        "n|rel|public.labels_workspace_name_uidx"
+      ],
+      "reads": [
+        "n|tbl|public.labels",
+        "n|sch|public",
+        "n|col|public.labels.workspace_id",
+        "n|col|public.labels.name"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "labels",
+        "labels_id_workspace_uidx"
+      ],
+      "writes": [
+        "s|idx|public.labels_id_workspace_uidx",
+        "n|idx|public.labels_id_workspace_uidx",
+        "e|idx|public.labels_id_workspace_uidx",
+        "n|rel|public.labels_id_workspace_uidx"
+      ],
+      "reads": [
+        "n|tbl|public.labels",
+        "n|sch|public",
+        "n|col|public.labels.id",
+        "n|col|public.labels.workspace_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "labels",
+        "labels_workspace_id_idx"
+      ],
+      "writes": [
+        "s|idx|public.labels_workspace_id_idx",
+        "n|idx|public.labels_workspace_id_idx",
+        "e|idx|public.labels_workspace_id_idx",
+        "n|rel|public.labels_workspace_id_idx"
+      ],
+      "reads": [
+        "n|tbl|public.labels",
+        "n|sch|public",
+        "n|col|public.labels.workspace_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "activity_logs",
+        "activity_logs_workspace_created_idx"
+      ],
+      "writes": [
+        "s|idx|public.activity_logs_workspace_created_idx",
+        "n|idx|public.activity_logs_workspace_created_idx",
+        "e|idx|public.activity_logs_workspace_created_idx",
+        "n|rel|public.activity_logs_workspace_created_idx"
+      ],
+      "reads": [
+        "n|tbl|public.activity_logs",
+        "n|sch|public",
+        "n|col|public.activity_logs.workspace_id",
+        "n|col|public.activity_logs.created_at"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "activity_logs",
+        "activity_logs_entity_idx"
+      ],
+      "writes": [
+        "s|idx|public.activity_logs_entity_idx",
+        "n|idx|public.activity_logs_entity_idx",
+        "e|idx|public.activity_logs_entity_idx",
+        "n|rel|public.activity_logs_entity_idx"
+      ],
+      "reads": [
+        "n|tbl|public.activity_logs",
+        "n|sch|public",
+        "n|col|public.activity_logs.entity_type",
+        "n|col|public.activity_logs.entity_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "notifications",
+        "notifications_user_read_created_idx"
+      ],
+      "writes": [
+        "s|idx|public.notifications_user_read_created_idx",
+        "n|idx|public.notifications_user_read_created_idx",
+        "e|idx|public.notifications_user_read_created_idx",
+        "n|rel|public.notifications_user_read_created_idx"
+      ],
+      "reads": [
+        "n|tbl|public.notifications",
+        "n|sch|public",
+        "n|col|public.notifications.user_id",
+        "n|col|public.notifications.read_at",
+        "n|col|public.notifications.created_at"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "notifications",
+        "notifications_workspace_created_idx"
+      ],
+      "writes": [
+        "s|idx|public.notifications_workspace_created_idx",
+        "n|idx|public.notifications_workspace_created_idx",
+        "e|idx|public.notifications_workspace_created_idx",
+        "n|rel|public.notifications_workspace_created_idx"
+      ],
+      "reads": [
+        "n|tbl|public.notifications",
+        "n|sch|public",
+        "n|col|public.notifications.workspace_id",
+        "n|col|public.notifications.created_at"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "sessions"
+      ],
+      "writes": [
+        "s|fk|public.sessions.sessions_user_id_users_id_fkey",
+        "n|fk|public.sessions.sessions_user_id_users_id_fkey",
+        "e|fk|public.sessions.sessions_user_id_users_id_fkey",
+        "n|con|public.sessions.sessions_user_id_users_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.sessions",
+        "n|sch|public",
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.sessions.user_id",
+        "n|col|public.users.id",
+        "e|uniqueness|public.users.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "email_verification_tokens"
+      ],
+      "writes": [
+        "s|fk|public.email_verification_tokens.email_verification_tokens_user_id_users_id_fkey",
+        "n|fk|public.email_verification_tokens.email_verification_tokens_user_id_users_id_fkey",
+        "e|fk|public.email_verification_tokens.email_verification_tokens_user_id_users_id_fkey",
+        "n|con|public.email_verification_tokens.email_verification_tokens_user_id_users_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.email_verification_tokens",
+        "n|sch|public",
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.email_verification_tokens.user_id",
+        "n|col|public.users.id",
+        "e|uniqueness|public.users.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "password_reset_tokens"
+      ],
+      "writes": [
+        "s|fk|public.password_reset_tokens.password_reset_tokens_user_id_users_id_fkey",
+        "n|fk|public.password_reset_tokens.password_reset_tokens_user_id_users_id_fkey",
+        "e|fk|public.password_reset_tokens.password_reset_tokens_user_id_users_id_fkey",
+        "n|con|public.password_reset_tokens.password_reset_tokens_user_id_users_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.password_reset_tokens",
+        "n|sch|public",
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.password_reset_tokens.user_id",
+        "n|col|public.users.id",
+        "e|uniqueness|public.users.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "workspaces"
+      ],
+      "writes": [
+        "s|fk|public.workspaces.workspaces_created_by_users_id_fkey",
+        "n|fk|public.workspaces.workspaces_created_by_users_id_fkey",
+        "e|fk|public.workspaces.workspaces_created_by_users_id_fkey",
+        "n|con|public.workspaces.workspaces_created_by_users_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.workspaces",
+        "n|sch|public",
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.workspaces.created_by",
+        "n|col|public.users.id",
+        "e|uniqueness|public.users.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "workspace_members"
+      ],
+      "writes": [
+        "s|fk|public.workspace_members.workspace_members_workspace_id_workspaces_id_fkey",
+        "n|fk|public.workspace_members.workspace_members_workspace_id_workspaces_id_fkey",
+        "e|fk|public.workspace_members.workspace_members_workspace_id_workspaces_id_fkey",
+        "n|con|public.workspace_members.workspace_members_workspace_id_workspaces_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.workspace_members",
+        "n|sch|public",
+        "n|tbl|public.workspaces",
+        "n|sch|public",
+        "n|col|public.workspace_members.workspace_id",
+        "n|col|public.workspaces.id",
+        "e|uniqueness|public.workspaces.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "workspace_members"
+      ],
+      "writes": [
+        "s|fk|public.workspace_members.workspace_members_user_id_users_id_fkey",
+        "n|fk|public.workspace_members.workspace_members_user_id_users_id_fkey",
+        "e|fk|public.workspace_members.workspace_members_user_id_users_id_fkey",
+        "n|con|public.workspace_members.workspace_members_user_id_users_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.workspace_members",
+        "n|sch|public",
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.workspace_members.user_id",
+        "n|col|public.users.id",
+        "e|uniqueness|public.users.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "invitations"
+      ],
+      "writes": [
+        "s|fk|public.invitations.invitations_workspace_id_workspaces_id_fkey",
+        "n|fk|public.invitations.invitations_workspace_id_workspaces_id_fkey",
+        "e|fk|public.invitations.invitations_workspace_id_workspaces_id_fkey",
+        "n|con|public.invitations.invitations_workspace_id_workspaces_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.invitations",
+        "n|sch|public",
+        "n|tbl|public.workspaces",
+        "n|sch|public",
+        "n|col|public.invitations.workspace_id",
+        "n|col|public.workspaces.id",
+        "e|uniqueness|public.workspaces.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "invitations"
+      ],
+      "writes": [
+        "s|fk|public.invitations.invitations_invited_by_users_id_fkey",
+        "n|fk|public.invitations.invitations_invited_by_users_id_fkey",
+        "e|fk|public.invitations.invitations_invited_by_users_id_fkey",
+        "n|con|public.invitations.invitations_invited_by_users_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.invitations",
+        "n|sch|public",
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.invitations.invited_by",
+        "n|col|public.users.id",
+        "e|uniqueness|public.users.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "invitations"
+      ],
+      "writes": [
+        "s|fk|public.invitations.invitations_workspace_inviter_membership_fk",
+        "n|fk|public.invitations.invitations_workspace_inviter_membership_fk",
+        "e|fk|public.invitations.invitations_workspace_inviter_membership_fk",
+        "n|con|public.invitations.invitations_workspace_inviter_membership_fk"
+      ],
+      "reads": [
+        "n|tbl|public.invitations",
+        "n|sch|public",
+        "n|tbl|public.workspace_members",
+        "n|sch|public",
+        "n|col|public.invitations.workspace_id",
+        "n|col|public.invitations.invited_by",
+        "n|col|public.workspace_members.workspace_id",
+        "n|col|public.workspace_members.user_id",
+        "e|uniqueness|public.workspace_members.user_id.workspace_id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "projects"
+      ],
+      "writes": [
+        "s|fk|public.projects.projects_workspace_id_workspaces_id_fkey",
+        "n|fk|public.projects.projects_workspace_id_workspaces_id_fkey",
+        "e|fk|public.projects.projects_workspace_id_workspaces_id_fkey",
+        "n|con|public.projects.projects_workspace_id_workspaces_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.projects",
+        "n|sch|public",
+        "n|tbl|public.workspaces",
+        "n|sch|public",
+        "n|col|public.projects.workspace_id",
+        "n|col|public.workspaces.id",
+        "e|uniqueness|public.workspaces.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "projects"
+      ],
+      "writes": [
+        "s|fk|public.projects.projects_created_by_users_id_fkey",
+        "n|fk|public.projects.projects_created_by_users_id_fkey",
+        "e|fk|public.projects.projects_created_by_users_id_fkey",
+        "n|con|public.projects.projects_created_by_users_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.projects",
+        "n|sch|public",
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.projects.created_by",
+        "n|col|public.users.id",
+        "e|uniqueness|public.users.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "project_members"
+      ],
+      "writes": [
+        "s|fk|public.project_members.project_members_project_workspace_fk",
+        "n|fk|public.project_members.project_members_project_workspace_fk",
+        "e|fk|public.project_members.project_members_project_workspace_fk",
+        "n|con|public.project_members.project_members_project_workspace_fk"
+      ],
+      "reads": [
+        "n|tbl|public.project_members",
+        "n|sch|public",
+        "n|tbl|public.projects",
+        "n|sch|public",
+        "n|col|public.project_members.workspace_id",
+        "n|col|public.project_members.project_id",
+        "n|col|public.projects.workspace_id",
+        "n|col|public.projects.id",
+        "e|uniqueness|public.projects.id.workspace_id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "project_members"
+      ],
+      "writes": [
+        "s|fk|public.project_members.project_members_workspace_user_fk",
+        "n|fk|public.project_members.project_members_workspace_user_fk",
+        "e|fk|public.project_members.project_members_workspace_user_fk",
+        "n|con|public.project_members.project_members_workspace_user_fk"
+      ],
+      "reads": [
+        "n|tbl|public.project_members",
+        "n|sch|public",
+        "n|tbl|public.workspace_members",
+        "n|sch|public",
+        "n|col|public.project_members.workspace_id",
+        "n|col|public.project_members.user_id",
+        "n|col|public.workspace_members.workspace_id",
+        "n|col|public.workspace_members.user_id",
+        "e|uniqueness|public.workspace_members.user_id.workspace_id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "project_statuses"
+      ],
+      "writes": [
+        "s|fk|public.project_statuses.project_statuses_project_workspace_fk",
+        "n|fk|public.project_statuses.project_statuses_project_workspace_fk",
+        "e|fk|public.project_statuses.project_statuses_project_workspace_fk",
+        "n|con|public.project_statuses.project_statuses_project_workspace_fk"
+      ],
+      "reads": [
+        "n|tbl|public.project_statuses",
+        "n|sch|public",
+        "n|tbl|public.projects",
+        "n|sch|public",
+        "n|col|public.project_statuses.workspace_id",
+        "n|col|public.project_statuses.project_id",
+        "n|col|public.projects.workspace_id",
+        "n|col|public.projects.id",
+        "e|uniqueness|public.projects.id.workspace_id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "tasks"
+      ],
+      "writes": [
+        "s|fk|public.tasks.tasks_project_workspace_fk",
+        "n|fk|public.tasks.tasks_project_workspace_fk",
+        "e|fk|public.tasks.tasks_project_workspace_fk",
+        "n|con|public.tasks.tasks_project_workspace_fk"
+      ],
+      "reads": [
+        "n|tbl|public.tasks",
+        "n|sch|public",
+        "n|tbl|public.projects",
+        "n|sch|public",
+        "n|col|public.tasks.workspace_id",
+        "n|col|public.tasks.project_id",
+        "n|col|public.projects.workspace_id",
+        "n|col|public.projects.id",
+        "e|uniqueness|public.projects.id.workspace_id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "tasks"
+      ],
+      "writes": [
+        "s|fk|public.tasks.tasks_status_project_workspace_fk",
+        "n|fk|public.tasks.tasks_status_project_workspace_fk",
+        "e|fk|public.tasks.tasks_status_project_workspace_fk",
+        "n|con|public.tasks.tasks_status_project_workspace_fk"
+      ],
+      "reads": [
+        "n|tbl|public.tasks",
+        "n|sch|public",
+        "n|tbl|public.project_statuses",
+        "n|sch|public",
+        "n|col|public.tasks.status_id",
+        "n|col|public.tasks.project_id",
+        "n|col|public.tasks.workspace_id",
+        "n|col|public.project_statuses.id",
+        "n|col|public.project_statuses.project_id",
+        "n|col|public.project_statuses.workspace_id",
+        "e|uniqueness|public.project_statuses.id.project_id.workspace_id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "tasks"
+      ],
+      "writes": [
+        "s|fk|public.tasks.tasks_assignee_workspace_member_fk",
+        "n|fk|public.tasks.tasks_assignee_workspace_member_fk",
+        "e|fk|public.tasks.tasks_assignee_workspace_member_fk",
+        "n|con|public.tasks.tasks_assignee_workspace_member_fk"
+      ],
+      "reads": [
+        "n|tbl|public.tasks",
+        "n|sch|public",
+        "n|tbl|public.workspace_members",
+        "n|sch|public",
+        "n|col|public.tasks.workspace_id",
+        "n|col|public.tasks.assignee_id",
+        "n|col|public.workspace_members.workspace_id",
+        "n|col|public.workspace_members.user_id",
+        "e|uniqueness|public.workspace_members.user_id.workspace_id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "tasks"
+      ],
+      "writes": [
+        "s|fk|public.tasks.tasks_creator_workspace_member_fk",
+        "n|fk|public.tasks.tasks_creator_workspace_member_fk",
+        "e|fk|public.tasks.tasks_creator_workspace_member_fk",
+        "n|con|public.tasks.tasks_creator_workspace_member_fk"
+      ],
+      "reads": [
+        "n|tbl|public.tasks",
+        "n|sch|public",
+        "n|tbl|public.workspace_members",
+        "n|sch|public",
+        "n|col|public.tasks.workspace_id",
+        "n|col|public.tasks.created_by",
+        "n|col|public.workspace_members.workspace_id",
+        "n|col|public.workspace_members.user_id",
+        "e|uniqueness|public.workspace_members.user_id.workspace_id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "tasks"
+      ],
+      "writes": [
+        "s|fk|public.tasks.tasks_parent_same_project_workspace_fk",
+        "n|fk|public.tasks.tasks_parent_same_project_workspace_fk",
+        "e|fk|public.tasks.tasks_parent_same_project_workspace_fk",
+        "n|con|public.tasks.tasks_parent_same_project_workspace_fk"
+      ],
+      "reads": [
+        "n|tbl|public.tasks",
+        "n|sch|public",
+        "n|tbl|public.tasks",
+        "n|sch|public",
+        "n|col|public.tasks.parent_task_id",
+        "n|col|public.tasks.project_id",
+        "n|col|public.tasks.workspace_id",
+        "n|col|public.tasks.id",
+        "n|col|public.tasks.project_id",
+        "n|col|public.tasks.workspace_id",
+        "e|uniqueness|public.tasks.id.project_id.workspace_id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "comments"
+      ],
+      "writes": [
+        "s|fk|public.comments.comments_task_workspace_fk",
+        "n|fk|public.comments.comments_task_workspace_fk",
+        "e|fk|public.comments.comments_task_workspace_fk",
+        "n|con|public.comments.comments_task_workspace_fk"
+      ],
+      "reads": [
+        "n|tbl|public.comments",
+        "n|sch|public",
+        "n|tbl|public.tasks",
+        "n|sch|public",
+        "n|col|public.comments.task_id",
+        "n|col|public.comments.workspace_id",
+        "n|col|public.tasks.id",
+        "n|col|public.tasks.workspace_id",
+        "e|uniqueness|public.tasks.id.workspace_id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "comments"
+      ],
+      "writes": [
+        "s|fk|public.comments.comments_author_workspace_member_fk",
+        "n|fk|public.comments.comments_author_workspace_member_fk",
+        "e|fk|public.comments.comments_author_workspace_member_fk",
+        "n|con|public.comments.comments_author_workspace_member_fk"
+      ],
+      "reads": [
+        "n|tbl|public.comments",
+        "n|sch|public",
+        "n|tbl|public.workspace_members",
+        "n|sch|public",
+        "n|col|public.comments.workspace_id",
+        "n|col|public.comments.author_id",
+        "n|col|public.workspace_members.workspace_id",
+        "n|col|public.workspace_members.user_id",
+        "e|uniqueness|public.workspace_members.user_id.workspace_id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "attachments"
+      ],
+      "writes": [
+        "s|fk|public.attachments.attachments_task_workspace_fk",
+        "n|fk|public.attachments.attachments_task_workspace_fk",
+        "e|fk|public.attachments.attachments_task_workspace_fk",
+        "n|con|public.attachments.attachments_task_workspace_fk"
+      ],
+      "reads": [
+        "n|tbl|public.attachments",
+        "n|sch|public",
+        "n|tbl|public.tasks",
+        "n|sch|public",
+        "n|col|public.attachments.task_id",
+        "n|col|public.attachments.workspace_id",
+        "n|col|public.tasks.id",
+        "n|col|public.tasks.workspace_id",
+        "e|uniqueness|public.tasks.id.workspace_id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "attachments"
+      ],
+      "writes": [
+        "s|fk|public.attachments.attachments_uploader_workspace_member_fk",
+        "n|fk|public.attachments.attachments_uploader_workspace_member_fk",
+        "e|fk|public.attachments.attachments_uploader_workspace_member_fk",
+        "n|con|public.attachments.attachments_uploader_workspace_member_fk"
+      ],
+      "reads": [
+        "n|tbl|public.attachments",
+        "n|sch|public",
+        "n|tbl|public.workspace_members",
+        "n|sch|public",
+        "n|col|public.attachments.workspace_id",
+        "n|col|public.attachments.uploaded_by",
+        "n|col|public.workspace_members.workspace_id",
+        "n|col|public.workspace_members.user_id",
+        "e|uniqueness|public.workspace_members.user_id.workspace_id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "labels"
+      ],
+      "writes": [
+        "s|fk|public.labels.labels_workspace_id_workspaces_id_fkey",
+        "n|fk|public.labels.labels_workspace_id_workspaces_id_fkey",
+        "e|fk|public.labels.labels_workspace_id_workspaces_id_fkey",
+        "n|con|public.labels.labels_workspace_id_workspaces_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.labels",
+        "n|sch|public",
+        "n|tbl|public.workspaces",
+        "n|sch|public",
+        "n|col|public.labels.workspace_id",
+        "n|col|public.workspaces.id",
+        "e|uniqueness|public.workspaces.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "task_labels"
+      ],
+      "writes": [
+        "s|fk|public.task_labels.task_labels_task_workspace_fk",
+        "n|fk|public.task_labels.task_labels_task_workspace_fk",
+        "e|fk|public.task_labels.task_labels_task_workspace_fk",
+        "n|con|public.task_labels.task_labels_task_workspace_fk"
+      ],
+      "reads": [
+        "n|tbl|public.task_labels",
+        "n|sch|public",
+        "n|tbl|public.tasks",
+        "n|sch|public",
+        "n|col|public.task_labels.task_id",
+        "n|col|public.task_labels.workspace_id",
+        "n|col|public.tasks.id",
+        "n|col|public.tasks.workspace_id",
+        "e|uniqueness|public.tasks.id.workspace_id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "task_labels"
+      ],
+      "writes": [
+        "s|fk|public.task_labels.task_labels_label_workspace_fk",
+        "n|fk|public.task_labels.task_labels_label_workspace_fk",
+        "e|fk|public.task_labels.task_labels_label_workspace_fk",
+        "n|con|public.task_labels.task_labels_label_workspace_fk"
+      ],
+      "reads": [
+        "n|tbl|public.task_labels",
+        "n|sch|public",
+        "n|tbl|public.labels",
+        "n|sch|public",
+        "n|col|public.task_labels.label_id",
+        "n|col|public.task_labels.workspace_id",
+        "n|col|public.labels.id",
+        "n|col|public.labels.workspace_id",
+        "e|uniqueness|public.labels.id.workspace_id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "activity_logs"
+      ],
+      "writes": [
+        "s|fk|public.activity_logs.activity_logs_workspace_id_workspaces_id_fkey",
+        "n|fk|public.activity_logs.activity_logs_workspace_id_workspaces_id_fkey",
+        "e|fk|public.activity_logs.activity_logs_workspace_id_workspaces_id_fkey",
+        "n|con|public.activity_logs.activity_logs_workspace_id_workspaces_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.activity_logs",
+        "n|sch|public",
+        "n|tbl|public.workspaces",
+        "n|sch|public",
+        "n|col|public.activity_logs.workspace_id",
+        "n|col|public.workspaces.id",
+        "e|uniqueness|public.workspaces.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "activity_logs"
+      ],
+      "writes": [
+        "s|fk|public.activity_logs.activity_logs_actor_workspace_member_fk",
+        "n|fk|public.activity_logs.activity_logs_actor_workspace_member_fk",
+        "e|fk|public.activity_logs.activity_logs_actor_workspace_member_fk",
+        "n|con|public.activity_logs.activity_logs_actor_workspace_member_fk"
+      ],
+      "reads": [
+        "n|tbl|public.activity_logs",
+        "n|sch|public",
+        "n|tbl|public.workspace_members",
+        "n|sch|public",
+        "n|col|public.activity_logs.workspace_id",
+        "n|col|public.activity_logs.actor_id",
+        "n|col|public.workspace_members.workspace_id",
+        "n|col|public.workspace_members.user_id",
+        "e|uniqueness|public.workspace_members.user_id.workspace_id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "notifications"
+      ],
+      "writes": [
+        "s|fk|public.notifications.notifications_workspace_id_workspaces_id_fkey",
+        "n|fk|public.notifications.notifications_workspace_id_workspaces_id_fkey",
+        "e|fk|public.notifications.notifications_workspace_id_workspaces_id_fkey",
+        "n|con|public.notifications.notifications_workspace_id_workspaces_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.notifications",
+        "n|sch|public",
+        "n|tbl|public.workspaces",
+        "n|sch|public",
+        "n|col|public.notifications.workspace_id",
+        "n|col|public.workspaces.id",
+        "e|uniqueness|public.workspaces.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "notifications"
+      ],
+      "writes": [
+        "s|fk|public.notifications.notifications_recipient_workspace_member_fk",
+        "n|fk|public.notifications.notifications_recipient_workspace_member_fk",
+        "e|fk|public.notifications.notifications_recipient_workspace_member_fk",
+        "n|con|public.notifications.notifications_recipient_workspace_member_fk"
+      ],
+      "reads": [
+        "n|tbl|public.notifications",
+        "n|sch|public",
+        "n|tbl|public.workspace_members",
+        "n|sch|public",
+        "n|col|public.notifications.workspace_id",
+        "n|col|public.notifications.user_id",
+        "n|col|public.workspace_members.workspace_id",
+        "n|col|public.workspace_members.user_id",
+        "e|uniqueness|public.workspace_members.user_id.workspace_id"
+      ]
+    }
+  ],
+  "ddl": [
+    {
+      "schema": "public",
+      "name": "users",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "sessions",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "email_verification_tokens",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "password_reset_tokens",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "workspaces",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "workspace_members",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "invitations",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "projects",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "project_members",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "project_statuses",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "tasks",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "comments",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "attachments",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "labels",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "task_labels",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "activity_logs",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "notifications",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "workspace_role",
+      "values": [
+        "OWNER",
+        "ADMIN",
+        "MEMBER"
+      ],
+      "entityType": "enums"
+    },
+    {
+      "schema": "public",
+      "name": "invitation_role",
+      "values": [
+        "ADMIN",
+        "MEMBER"
+      ],
+      "entityType": "enums"
+    },
+    {
+      "schema": "public",
+      "name": "invitation_status",
+      "values": [
+        "PENDING",
+        "ACCEPTED",
+        "REJECTED",
+        "EXPIRED",
+        "REVOKED"
+      ],
+      "entityType": "enums"
+    },
+    {
+      "schema": "public",
+      "name": "project_lifecycle",
+      "values": [
+        "ACTIVE",
+        "ON_HOLD",
+        "COMPLETED",
+        "ARCHIVED"
+      ],
+      "entityType": "enums"
+    },
+    {
+      "schema": "public",
+      "name": "project_member_role",
+      "values": [
+        "PROJECT_MANAGER",
+        "MEMBER",
+        "VIEWER"
+      ],
+      "entityType": "enums"
+    },
+    {
+      "schema": "public",
+      "name": "task_priority",
+      "values": [
+        "LOW",
+        "MEDIUM",
+        "HIGH",
+        "URGENT"
+      ],
+      "entityType": "enums"
+    },
+    {
+      "schema": "public",
+      "table": "users",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "users",
+      "name": "name",
+      "type": "varchar(100)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "users",
+      "name": "email",
+      "type": "varchar(255)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "users",
+      "name": "is_active",
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "true",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "users",
+      "name": "password_hash",
+      "type": "varchar(255)",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "users",
+      "name": "email_verified_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "users",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "users",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "sessions",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "sessions",
+      "name": "user_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "sessions",
+      "name": "token_hash",
+      "type": "varchar(64)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "sessions",
+      "name": "user_agent",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "sessions",
+      "name": "ip_address",
+      "type": "inet",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "sessions",
+      "name": "last_active_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "sessions",
+      "name": "expires_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "sessions",
+      "name": "revoked_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "sessions",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "email_verification_tokens",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "email_verification_tokens",
+      "name": "user_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "email_verification_tokens",
+      "name": "email",
+      "type": "varchar(255)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "email_verification_tokens",
+      "name": "code_hash",
+      "type": "varchar(64)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "email_verification_tokens",
+      "name": "attempts",
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "0",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "email_verification_tokens",
+      "name": "expires_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "email_verification_tokens",
+      "name": "used_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "email_verification_tokens",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "password_reset_tokens",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "password_reset_tokens",
+      "name": "user_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "password_reset_tokens",
+      "name": "token_hash",
+      "type": "varchar(64)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "password_reset_tokens",
+      "name": "expires_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "password_reset_tokens",
+      "name": "used_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "password_reset_tokens",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "workspaces",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "workspaces",
+      "name": "name",
+      "type": "varchar(150)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "workspaces",
+      "name": "slug",
+      "type": "varchar(100)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "workspaces",
+      "name": "created_by",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "workspaces",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "workspaces",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "workspace_members",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "workspace_members",
+      "name": "workspace_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "workspace_members",
+      "name": "user_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "workspace_members",
+      "name": "role",
+      "type": "workspace_role",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'MEMBER'",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "workspace_members",
+      "name": "joined_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "invitations",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "invitations",
+      "name": "workspace_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "invitations",
+      "name": "invited_by",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "invitations",
+      "name": "email",
+      "type": "varchar(255)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "invitations",
+      "name": "role",
+      "type": "invitation_role",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'MEMBER'",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "invitations",
+      "name": "token_hash",
+      "type": "varchar(255)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "invitations",
+      "name": "status",
+      "type": "invitation_status",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'PENDING'",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "invitations",
+      "name": "expires_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "invitations",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "workspace_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "name",
+      "type": "varchar(150)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "description",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "created_by",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "start_date",
+      "type": "date",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "due_date",
+      "type": "date",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "status",
+      "type": "project_lifecycle",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'ACTIVE'",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "project_members",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "project_members",
+      "name": "workspace_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "project_members",
+      "name": "project_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "project_members",
+      "name": "user_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "project_members",
+      "name": "role",
+      "type": "project_member_role",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'MEMBER'",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "project_members",
+      "name": "joined_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "project_statuses",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "project_statuses",
+      "name": "workspace_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "project_statuses",
+      "name": "project_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "project_statuses",
+      "name": "name",
+      "type": "varchar(100)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "project_statuses",
+      "name": "slug",
+      "type": "varchar(100)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "project_statuses",
+      "name": "position",
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "project_statuses",
+      "name": "color",
+      "type": "varchar(30)",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "project_statuses",
+      "name": "is_default",
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "false",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "project_statuses",
+      "name": "is_completed",
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "false",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "project_statuses",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "workspace_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "project_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "status_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "parent_task_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "title",
+      "type": "varchar(255)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "description",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "assignee_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "created_by",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "priority",
+      "type": "task_priority",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'MEDIUM'",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "position",
+      "type": "double precision",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "0",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "start_date",
+      "type": "date",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "due_date",
+      "type": "date",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "completed_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "comments",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "comments",
+      "name": "workspace_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "comments",
+      "name": "task_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "comments",
+      "name": "author_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "comments",
+      "name": "content",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "comments",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "comments",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "attachments",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "attachments",
+      "name": "workspace_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "attachments",
+      "name": "task_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "attachments",
+      "name": "uploaded_by",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "attachments",
+      "name": "file_name",
+      "type": "varchar(255)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "attachments",
+      "name": "storage_key",
+      "type": "varchar(500)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "attachments",
+      "name": "mime_type",
+      "type": "varchar(100)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "attachments",
+      "name": "file_size",
+      "type": "bigint",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "attachments",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "labels",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "labels",
+      "name": "workspace_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "labels",
+      "name": "name",
+      "type": "varchar(80)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "labels",
+      "name": "color",
+      "type": "varchar(30)",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "task_labels",
+      "name": "workspace_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "task_labels",
+      "name": "task_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "task_labels",
+      "name": "label_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "activity_logs",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "activity_logs",
+      "name": "workspace_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "activity_logs",
+      "name": "actor_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "activity_logs",
+      "name": "entity_type",
+      "type": "varchar(50)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "activity_logs",
+      "name": "entity_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "activity_logs",
+      "name": "action",
+      "type": "varchar(100)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "activity_logs",
+      "name": "metadata",
+      "type": "jsonb",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'{}'",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "activity_logs",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "notifications",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "notifications",
+      "name": "workspace_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "notifications",
+      "name": "user_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "notifications",
+      "name": "type",
+      "type": "varchar(100)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "notifications",
+      "name": "title",
+      "type": "varchar(255)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "notifications",
+      "name": "message",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "notifications",
+      "name": "entity_type",
+      "type": "varchar(50)",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "notifications",
+      "name": "entity_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "notifications",
+      "name": "read_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "notifications",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "sessions",
+      "name": "sessions_token_hash_uidx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "token_hash",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "sessions",
+      "name": "sessions_user_expires_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "user_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "expires_at",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "sessions",
+      "name": "sessions_user_last_active_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "user_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "last_active_at",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "email_verification_tokens",
+      "name": "email_verification_tokens_code_hash_uidx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "code_hash",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "email_verification_tokens",
+      "name": "email_verification_tokens_user_expires_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "user_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "expires_at",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "password_reset_tokens",
+      "name": "password_reset_tokens_token_hash_uidx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "token_hash",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "password_reset_tokens",
+      "name": "password_reset_tokens_user_expires_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "user_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "expires_at",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "workspaces",
+      "name": "workspaces_created_by_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "created_by",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "workspace_members",
+      "name": "workspace_members_workspace_user_uidx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "workspace_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "user_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "workspace_members",
+      "name": "workspace_members_single_owner_uidx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "workspace_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": true,
+      "where": "\"role\" = 'OWNER'",
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "workspace_members",
+      "name": "workspace_members_user_id_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "user_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "invitations",
+      "name": "invitations_pending_email_uidx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "workspace_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "lower(\"email\")",
+          "isExpression": true,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": true,
+      "where": "\"status\" = 'PENDING'",
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "invitations",
+      "name": "invitations_workspace_status_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "workspace_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "status",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "invitations",
+      "name": "invitations_expires_at_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "expires_at",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "projects_workspace_id_uidx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "workspace_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "projects_workspace_status_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "workspace_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "status",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "projects_created_by_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "created_by",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "project_members",
+      "name": "project_members_project_user_uidx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "project_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "user_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "project_members",
+      "name": "project_members_user_id_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "user_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "project_statuses",
+      "name": "project_statuses_project_slug_uidx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "project_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "slug",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "project_statuses",
+      "name": "project_statuses_tenant_candidate_uidx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "project_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "workspace_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "project_statuses",
+      "name": "project_statuses_one_default_uidx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "project_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": true,
+      "where": "\"is_default\" = true",
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "project_statuses",
+      "name": "project_statuses_project_position_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "project_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "position",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "tasks_id_workspace_uidx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "workspace_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "tasks_id_project_workspace_uidx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "project_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "workspace_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "tasks_project_status_position_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "project_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "status_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "position",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "tasks_workspace_assignee_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "workspace_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "assignee_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "tasks_workspace_due_date_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "workspace_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "due_date",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "comments",
+      "name": "comments_task_created_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "task_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "created_at",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "comments",
+      "name": "comments_workspace_id_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "workspace_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "attachments",
+      "name": "attachments_task_created_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "task_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "created_at",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "labels",
+      "name": "labels_workspace_name_uidx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "workspace_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "name",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "labels",
+      "name": "labels_id_workspace_uidx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "workspace_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "labels",
+      "name": "labels_workspace_id_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "workspace_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "activity_logs",
+      "name": "activity_logs_workspace_created_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "workspace_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "created_at",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "activity_logs",
+      "name": "activity_logs_entity_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "entity_type",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "entity_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "notifications",
+      "name": "notifications_user_read_created_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "user_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "read_at",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "created_at",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "notifications",
+      "name": "notifications_workspace_created_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "workspace_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "created_at",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "sessions",
+      "name": "sessions_user_id_users_id_fkey",
+      "nameExplicit": false,
+      "columns": [
+        "user_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "users",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "email_verification_tokens",
+      "name": "email_verification_tokens_user_id_users_id_fkey",
+      "nameExplicit": false,
+      "columns": [
+        "user_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "users",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "password_reset_tokens",
+      "name": "password_reset_tokens_user_id_users_id_fkey",
+      "nameExplicit": false,
+      "columns": [
+        "user_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "users",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "workspaces",
+      "name": "workspaces_created_by_users_id_fkey",
+      "nameExplicit": false,
+      "columns": [
+        "created_by"
+      ],
+      "schemaTo": "public",
+      "tableTo": "users",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "workspace_members",
+      "name": "workspace_members_workspace_id_workspaces_id_fkey",
+      "nameExplicit": false,
+      "columns": [
+        "workspace_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "workspaces",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "workspace_members",
+      "name": "workspace_members_user_id_users_id_fkey",
+      "nameExplicit": false,
+      "columns": [
+        "user_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "users",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "invitations",
+      "name": "invitations_workspace_id_workspaces_id_fkey",
+      "nameExplicit": false,
+      "columns": [
+        "workspace_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "workspaces",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "invitations",
+      "name": "invitations_invited_by_users_id_fkey",
+      "nameExplicit": false,
+      "columns": [
+        "invited_by"
+      ],
+      "schemaTo": "public",
+      "tableTo": "users",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "invitations",
+      "name": "invitations_workspace_inviter_membership_fk",
+      "nameExplicit": true,
+      "columns": [
+        "workspace_id",
+        "invited_by"
+      ],
+      "schemaTo": "public",
+      "tableTo": "workspace_members",
+      "columnsTo": [
+        "workspace_id",
+        "user_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "projects_workspace_id_workspaces_id_fkey",
+      "nameExplicit": false,
+      "columns": [
+        "workspace_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "workspaces",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "projects_created_by_users_id_fkey",
+      "nameExplicit": false,
+      "columns": [
+        "created_by"
+      ],
+      "schemaTo": "public",
+      "tableTo": "users",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "project_members",
+      "name": "project_members_project_workspace_fk",
+      "nameExplicit": true,
+      "columns": [
+        "workspace_id",
+        "project_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "projects",
+      "columnsTo": [
+        "workspace_id",
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "project_members",
+      "name": "project_members_workspace_user_fk",
+      "nameExplicit": true,
+      "columns": [
+        "workspace_id",
+        "user_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "workspace_members",
+      "columnsTo": [
+        "workspace_id",
+        "user_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "project_statuses",
+      "name": "project_statuses_project_workspace_fk",
+      "nameExplicit": true,
+      "columns": [
+        "workspace_id",
+        "project_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "projects",
+      "columnsTo": [
+        "workspace_id",
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "tasks_project_workspace_fk",
+      "nameExplicit": true,
+      "columns": [
+        "workspace_id",
+        "project_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "projects",
+      "columnsTo": [
+        "workspace_id",
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "tasks_status_project_workspace_fk",
+      "nameExplicit": true,
+      "columns": [
+        "status_id",
+        "project_id",
+        "workspace_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "project_statuses",
+      "columnsTo": [
+        "id",
+        "project_id",
+        "workspace_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "tasks_assignee_workspace_member_fk",
+      "nameExplicit": true,
+      "columns": [
+        "workspace_id",
+        "assignee_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "workspace_members",
+      "columnsTo": [
+        "workspace_id",
+        "user_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "tasks_creator_workspace_member_fk",
+      "nameExplicit": true,
+      "columns": [
+        "workspace_id",
+        "created_by"
+      ],
+      "schemaTo": "public",
+      "tableTo": "workspace_members",
+      "columnsTo": [
+        "workspace_id",
+        "user_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "tasks_parent_same_project_workspace_fk",
+      "nameExplicit": true,
+      "columns": [
+        "parent_task_id",
+        "project_id",
+        "workspace_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "tasks",
+      "columnsTo": [
+        "id",
+        "project_id",
+        "workspace_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "comments",
+      "name": "comments_task_workspace_fk",
+      "nameExplicit": true,
+      "columns": [
+        "task_id",
+        "workspace_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "tasks",
+      "columnsTo": [
+        "id",
+        "workspace_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "comments",
+      "name": "comments_author_workspace_member_fk",
+      "nameExplicit": true,
+      "columns": [
+        "workspace_id",
+        "author_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "workspace_members",
+      "columnsTo": [
+        "workspace_id",
+        "user_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "attachments",
+      "name": "attachments_task_workspace_fk",
+      "nameExplicit": true,
+      "columns": [
+        "task_id",
+        "workspace_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "tasks",
+      "columnsTo": [
+        "id",
+        "workspace_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "attachments",
+      "name": "attachments_uploader_workspace_member_fk",
+      "nameExplicit": true,
+      "columns": [
+        "workspace_id",
+        "uploaded_by"
+      ],
+      "schemaTo": "public",
+      "tableTo": "workspace_members",
+      "columnsTo": [
+        "workspace_id",
+        "user_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "labels",
+      "name": "labels_workspace_id_workspaces_id_fkey",
+      "nameExplicit": false,
+      "columns": [
+        "workspace_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "workspaces",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "task_labels",
+      "name": "task_labels_task_workspace_fk",
+      "nameExplicit": true,
+      "columns": [
+        "task_id",
+        "workspace_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "tasks",
+      "columnsTo": [
+        "id",
+        "workspace_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "task_labels",
+      "name": "task_labels_label_workspace_fk",
+      "nameExplicit": true,
+      "columns": [
+        "label_id",
+        "workspace_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "labels",
+      "columnsTo": [
+        "id",
+        "workspace_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "activity_logs",
+      "name": "activity_logs_workspace_id_workspaces_id_fkey",
+      "nameExplicit": false,
+      "columns": [
+        "workspace_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "workspaces",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "activity_logs",
+      "name": "activity_logs_actor_workspace_member_fk",
+      "nameExplicit": true,
+      "columns": [
+        "workspace_id",
+        "actor_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "workspace_members",
+      "columnsTo": [
+        "workspace_id",
+        "user_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "notifications",
+      "name": "notifications_workspace_id_workspaces_id_fkey",
+      "nameExplicit": false,
+      "columns": [
+        "workspace_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "workspaces",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "notifications",
+      "name": "notifications_recipient_workspace_member_fk",
+      "nameExplicit": true,
+      "columns": [
+        "workspace_id",
+        "user_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "workspace_members",
+      "columnsTo": [
+        "workspace_id",
+        "user_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "task_labels",
+      "name": "task_labels_pkey",
+      "columns": [
+        "task_id",
+        "label_id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "users",
+      "name": "users_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "sessions",
+      "name": "sessions_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "email_verification_tokens",
+      "name": "email_verification_tokens_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "password_reset_tokens",
+      "name": "password_reset_tokens_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "workspaces",
+      "name": "workspaces_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "workspace_members",
+      "name": "workspace_members_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "invitations",
+      "name": "invitations_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "projects_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "project_members",
+      "name": "project_members_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "project_statuses",
+      "name": "project_statuses_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "tasks_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "comments",
+      "name": "comments_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "attachments",
+      "name": "attachments_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "labels",
+      "name": "labels_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "activity_logs",
+      "name": "activity_logs_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "notifications",
+      "name": "notifications_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "users",
+      "name": "users_email_key",
+      "nameExplicit": false,
+      "columns": [
+        "email"
+      ],
+      "nullsNotDistinct": false,
+      "entityType": "uniques"
+    },
+    {
+      "schema": "public",
+      "table": "workspaces",
+      "name": "workspaces_slug_key",
+      "nameExplicit": false,
+      "columns": [
+        "slug"
+      ],
+      "nullsNotDistinct": false,
+      "entityType": "uniques"
+    },
+    {
+      "schema": "public",
+      "table": "invitations",
+      "name": "invitations_token_hash_key",
+      "nameExplicit": false,
+      "columns": [
+        "token_hash"
+      ],
+      "nullsNotDistinct": false,
+      "entityType": "uniques"
+    },
+    {
+      "schema": "public",
+      "table": "sessions",
+      "name": "sessions_token_hash_sha256_check",
+      "value": "\"token_hash\" ~ '^[0-9a-f]{64}$'",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "sessions",
+      "name": "sessions_expires_after_created_check",
+      "value": "\"expires_at\" > \"created_at\"",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "email_verification_tokens",
+      "name": "email_verification_tokens_code_hash_sha256_check",
+      "value": "\"code_hash\" ~ '^[0-9a-f]{64}$'",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "email_verification_tokens",
+      "name": "email_verification_tokens_attempts_check",
+      "value": "\"attempts\" >= 0 AND \"attempts\" <= 5",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "email_verification_tokens",
+      "name": "email_verification_tokens_expires_after_created_check",
+      "value": "\"expires_at\" > \"created_at\"",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "password_reset_tokens",
+      "name": "password_reset_tokens_token_hash_sha256_check",
+      "value": "\"token_hash\" ~ '^[0-9a-f]{64}$'",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "password_reset_tokens",
+      "name": "password_reset_tokens_expires_after_created_check",
+      "value": "\"expires_at\" > \"created_at\"",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "projects_date_order_check",
+      "value": "\"due_date\" IS NULL OR \"start_date\" IS NULL OR \"due_date\" >= \"start_date\"",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "tasks",
+      "name": "tasks_date_order_check",
+      "value": "\"due_date\" IS NULL OR \"start_date\" IS NULL OR \"due_date\" >= \"start_date\"",
+      "entityType": "checks"
+    }
+  ]
+}

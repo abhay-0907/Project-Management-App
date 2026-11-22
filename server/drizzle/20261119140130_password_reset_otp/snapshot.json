@@ -1,0 +1,183 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "b02e7c3b-d117-4547-bcb2-21186b0e6d37",
+  "prevIds": [
+    "bc065f9f-89a2-4022-a686-aa3e9123650c"
+  ],
+  "footprints": [
+    {
+      "statementType": "rename_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "password_reset_tokens",
+        "token_hash"
+      ],
+      "writes": [
+        "s|col|public.password_reset_tokens.token_hash",
+        "n|col|public.password_reset_tokens.token_hash",
+        "s|col|public.password_reset_tokens.code_hash",
+        "n|col|public.password_reset_tokens.code_hash"
+      ],
+      "reads": [
+        "n|tbl|public.password_reset_tokens",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "rename_constraint",
+      "statementTarget": [
+        "table",
+        "public",
+        "password_reset_tokens"
+      ],
+      "writes": [
+        "s|ck|public.password_reset_tokens.password_reset_tokens_token_hash_sha256_check",
+        "n|ck|public.password_reset_tokens.password_reset_tokens_token_hash_sha256_check",
+        "n|con|public.password_reset_tokens.password_reset_tokens_token_hash_sha256_check",
+        "s|ck|public.password_reset_tokens.password_reset_tokens_code_hash_sha256_check",
+        "n|ck|public.password_reset_tokens.password_reset_tokens_code_hash_sha256_check",
+        "n|con|public.password_reset_tokens.password_reset_tokens_code_hash_sha256_check"
+      ],
+      "reads": [
+        "n|tbl|public.password_reset_tokens",
+        "n|sch|public",
+        "e|col|public.password_reset_tokens.code_hash"
+      ]
+    },
+    {
+      "statementType": "rename_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "password_reset_tokens",
+        "password_reset_tokens_token_hash_uidx"
+      ],
+      "writes": [
+        "s|idx|public.password_reset_tokens_token_hash_uidx",
+        "n|idx|public.password_reset_tokens_token_hash_uidx",
+        "n|rel|public.password_reset_tokens_token_hash_uidx",
+        "s|idx|public.password_reset_tokens_code_hash_uidx",
+        "n|idx|public.password_reset_tokens_code_hash_uidx",
+        "n|rel|public.password_reset_tokens_code_hash_uidx"
+      ],
+      "reads": [
+        "e|tbl|public.password_reset_tokens",
+        "n|sch|public",
+        "e|col|public.password_reset_tokens.code_hash"
+      ]
+    },
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "password_reset_tokens",
+        "attempts"
+      ],
+      "writes": [
+        "s|col|public.password_reset_tokens.attempts",
+        "n|col|public.password_reset_tokens.attempts",
+        "e|col|public.password_reset_tokens.attempts"
+      ],
+      "reads": [
+        "n|tbl|public.password_reset_tokens",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "add_check",
+      "statementTarget": [
+        "table",
+        "public",
+        "password_reset_tokens"
+      ],
+      "writes": [
+        "s|ck|public.password_reset_tokens.password_reset_tokens_attempts_check",
+        "n|ck|public.password_reset_tokens.password_reset_tokens_attempts_check",
+        "e|ck|public.password_reset_tokens.password_reset_tokens_attempts_check",
+        "n|con|public.password_reset_tokens.password_reset_tokens_attempts_check"
+      ],
+      "reads": [
+        "n|tbl|public.password_reset_tokens",
+        "n|sch|public",
+        "n|col|public.password_reset_tokens.attempts"
+      ]
+    },
+    {
+      "statementType": "alter_check",
+      "statementTarget": [
+        "table",
+        "public",
+        "password_reset_tokens"
+      ],
+      "writes": [
+        "s|ck|public.password_reset_tokens.password_reset_tokens_code_hash_sha256_check"
+      ],
+      "reads": [
+        "n|tbl|public.password_reset_tokens",
+        "n|sch|public",
+        "n|col|public.password_reset_tokens.code_hash"
+      ],
+      "sqlHash": "9419190c300b29f7"
+    }
+  ],
+  "deltas": [
+    {
+      "op": "rename",
+      "key": "columns\u0000[\"public\",\"password_reset_tokens\",\"token_hash\"]",
+      "set": {
+        "name": "code_hash"
+      }
+    },
+    {
+      "op": "rename",
+      "key": "checks\u0000[\"public\",\"password_reset_tokens\",\"password_reset_tokens_token_hash_sha256_check\"]",
+      "set": {
+        "name": "password_reset_tokens_code_hash_sha256_check"
+      }
+    },
+    {
+      "op": "rename",
+      "key": "indexes\u0000[\"public\",\"password_reset_tokens_token_hash_uidx\"]",
+      "set": {
+        "name": "password_reset_tokens_code_hash_uidx"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "password_reset_tokens",
+        "name": "attempts",
+        "type": "integer",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "0",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "password_reset_tokens",
+        "name": "password_reset_tokens_attempts_check",
+        "value": "\"attempts\" >= 0 AND \"attempts\" <= 5",
+        "entityType": "checks"
+      }
+    },
+    {
+      "op": "alter",
+      "key": "checks\u0000[\"public\",\"password_reset_tokens\",\"password_reset_tokens_code_hash_sha256_check\"]",
+      "set": {
+        "value": "\"code_hash\" ~ '^[0-9a-f]{64}$'"
+      }
+    }
+  ]
+}
