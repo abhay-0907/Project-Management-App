@@ -14,13 +14,14 @@ import { WorkspaceSwitcher } from "@/features/workspaces/components/workspace-sw
 import { WorkspaceApiError } from "@/features/workspaces/api/workspace.api";
 import { useWorkspaceDetails } from "@/features/workspaces/hooks/use-workspace-details";
 import { useWorkspaces } from "@/features/workspaces/hooks/use-workspaces";
-import {
-  demoMembers,
-  demoProjects,
-  demoTasks,
-  demoWorkspace,
-  getProject,
-} from "@/features/dashboard/api/demo-data";
+import { ProjectApiError } from "@/features/projects/api/project.api";
+import { useProjects } from "@/features/projects/hooks/use-projects";
+import { TaskApiError } from "@/features/tasks/api/task.api";
+import { useCreateTask } from "@/features/tasks/hooks/use-create-task";
+import { useWorkspaceTaskOverview } from "@/features/tasks/hooks/use-workspace-task-overview";
+import type { TaskPriority } from "@/features/tasks/types/task.types";
+import { demoMembers, demoWorkspace } from "@/features/dashboard/api/demo-data";
+import { useWorkspaceMembers } from "@/features/workspaces/hooks/use-workspace-members";
 import { Icon } from "@/components/shared/icon";
 
 type ShellProps = { children: ReactNode };
@@ -31,10 +32,9 @@ const platformLinks = [
     label: "My tasks",
     icon: "check-circle" as const,
     href: "#my-tasks",
-    badge: "4",
   },
-  { label: "Projects", icon: "folder" as const, href: "/projects", badge: "6" },
-  { label: "Members", icon: "users" as const, href: "/members", badge: "7" },
+  { label: "Projects", icon: "folder" as const, href: "/projects" },
+  { label: "Members", icon: "users" as const, href: "/members" },
   {
     label: "Notifications",
     icon: "bell" as const,
@@ -73,33 +73,36 @@ export function DashboardShell({ children }: ShellProps) {
   const [search, setSearch] = useState("");
   const [createTaskOpen, setCreateTaskOpen] = useState(false);
   const query = search.trim().toLowerCase();
+  const projectsQuery = useProjects(currentWorkspaceId, { page: 1, pageSize: 100, sort: "updated" });
+  const taskOverviewQuery = useWorkspaceTaskOverview(currentWorkspaceId, Boolean(query));
+  const membersQuery = useWorkspaceMembers(currentWorkspaceId);
 
   const searchResults = useMemo(() => {
     if (!query) return [];
-    const projects = demoProjects
+    const projects = (projectsQuery.data?.projects ?? [])
       .filter((project) =>
-        `${project.name} ${project.code}`.toLowerCase().includes(query),
+        `${project.name} ${project.id}`.toLowerCase().includes(query),
       )
       .slice(0, 3)
       .map((project) => ({
         type: "Project",
         label: project.name,
-        meta: project.code,
+        meta: `PRJ-${project.id.slice(0, 6).toUpperCase()}`,
         href: `/${workspaceSlug}/projects/${project.id}`,
       }));
-    const tasks = demoTasks
-      .filter((task) =>
-        `${task.title} ${task.key}`.toLowerCase().includes(query),
+    const tasks = (taskOverviewQuery.data?.tasks ?? [])
+      .filter(({ task }) =>
+        `${task.title} ${task.id}`.toLowerCase().includes(query),
       )
       .slice(0, 4)
-      .map((task) => ({
+      .map(({ task, project }) => ({
         type: "Task",
         label: task.title,
-        meta: task.key,
-        href: `/${workspaceSlug}/tasks/${task.id}`,
+        meta: `#${task.id.slice(0, 8).toUpperCase()}`,
+        href: `/${workspaceSlug}/tasks/${task.id}?projectId=${project.id}`,
       }));
     return [...projects, ...tasks];
-  }, [query, workspaceSlug]);
+  }, [projectsQuery.data?.projects, query, taskOverviewQuery.data?.tasks, workspaceSlug]);
 
   function navHref(href: string) {
     if (!href) return `/${workspaceSlug}`;
@@ -109,7 +112,7 @@ export function DashboardShell({ children }: ShellProps) {
 
   const currentProjectId = pathname.match(/\/projects\/([^/]+)/)?.[1];
   const currentProject = currentProjectId
-    ? demoProjects.find((project) => project.id === currentProjectId)
+    ? projectsQuery.data?.projects.find((project) => project.id === currentProjectId)
     : undefined;
   const pageTitle = pathname.includes("/projects")
     ? pathname.includes("/board")
@@ -142,10 +145,25 @@ export function DashboardShell({ children }: ShellProps) {
           ? "/login"
           : "/workspaces";
       router.replace(destination);
+      return;
+    }
+    if (projectsQuery.error instanceof ProjectApiError && projectsQuery.error.status === 401) {
+      router.replace("/login");
+      return;
+    }
+    if (taskOverviewQuery.error instanceof TaskApiError && taskOverviewQuery.error.status === 401) {
+      router.replace("/login");
+      return;
+    }
+    if (membersQuery.error instanceof WorkspaceApiError && membersQuery.error.status === 401) {
+      router.replace("/login");
     }
   }, [
     currentWorkspaceId,
+    membersQuery.error,
+    projectsQuery.error,
     router,
+    taskOverviewQuery.error,
     workspaceDetailsQuery.error,
     workspaceDetailsQuery.isError,
     workspacesQuery.error,
@@ -224,9 +242,8 @@ export function DashboardShell({ children }: ShellProps) {
                 >
                   <Icon name={item.icon} size={17} />
                   <span>{item.label}</span>
-                  {item.badge && (
-                    <span className="nav-count">{item.badge}</span>
-                  )}
+                  {item.label === "Projects" && projectsQuery.data && <span className="nav-count">{projectsQuery.data.pagination.total}</span>}
+                  {item.label === "Members" && membersQuery.data && <span className="nav-count">{membersQuery.data.length}</span>}
                   {item.dot && <span className="nav-dot" />}
                 </Link>
               );
@@ -266,17 +283,18 @@ export function DashboardShell({ children }: ShellProps) {
             </button>
           </div>
           <nav className="recent-projects" aria-label="Recent projects">
-            {demoProjects.slice(0, 4).map((project) => (
+            {(projectsQuery.data?.projects ?? []).slice(0, 4).map((project) => (
               <Link
                 key={project.id}
                 onClick={() => setMobileNavOpen(false)}
                 className="recent-project"
                 href={`/${workspaceSlug}/projects/${project.id}/board`}
               >
-                <span className={`project-dot ${project.accent}`} />
-                <span>{project.name.replace("Nexora ", "")}</span>
+                <span className="project-dot blue" />
+                <span>{project.name}</span>
               </Link>
             ))}
+            {!projectsQuery.data?.projects.length && <span className="recent-project-empty">Projects will appear here.</span>}
           </nav>
         </div>
 
@@ -410,7 +428,7 @@ export function DashboardShell({ children }: ShellProps) {
       </div>
 
       {createTaskOpen && (
-        <CreateTaskModal onClose={() => setCreateTaskOpen(false)} />
+        <CreateTaskModal workspaceId={activeWorkspace.id} workspaceSlug={workspaceSlug} onClose={() => setCreateTaskOpen(false)} />
       )}
     </div>
   );
@@ -445,28 +463,48 @@ export function Avatar({
   );
 }
 
-function CreateTaskModal({ onClose }: { onClose: () => void }) {
+function CreateTaskModal({ workspaceId, workspaceSlug, onClose }: { workspaceId: string; workspaceSlug: string; onClose: () => void }) {
+  const router = useRouter();
   const [title, setTitle] = useState("");
-  const [projectId, setProjectId] = useState(demoProjects[0].id);
-  const [priority, setPriority] = useState("MEDIUM");
+  const [projectId, setProjectId] = useState("");
+  const [priority, setPriority] = useState<TaskPriority>("MEDIUM");
   const [dueDate, setDueDate] = useState("");
+  const [formError, setFormError] = useState("");
+  const projectsQuery = useProjects(workspaceId, { page: 1, pageSize: 100, sort: "updated" });
+  const createTask = useCreateTask();
+  const projects = projectsQuery.data?.projects ?? [];
+  const selectedProjectId = projects.some((project) => project.id === projectId) ? projectId : projects[0]?.id ?? "";
+
+  useEffect(() => {
+    if (
+      (createTask.error instanceof TaskApiError && createTask.error.status === 401) ||
+      (projectsQuery.error instanceof ProjectApiError && projectsQuery.error.status === 401)
+    ) router.replace("/login");
+  }, [createTask.error, projectsQuery.error, router]);
 
   useEffect(() => {
     function closeOnEscape(event: KeyboardEvent) {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape" && !createTask.isPending) onClose();
     }
     window.addEventListener("keydown", closeOnEscape);
     return () => window.removeEventListener("keydown", closeOnEscape);
-  }, [onClose]);
+  }, [createTask.isPending, onClose]);
 
-  function submit(event: FormEvent<HTMLFormElement>) {
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!title.trim()) return;
-    const project = getProject(projectId);
-    toast.success("Task draft created", {
-      description: `${title.trim()} · ${project.name}`,
-    });
-    onClose();
+    if (!title.trim() || !selectedProjectId) return;
+    setFormError("");
+    try {
+      await createTask.mutateAsync({
+        workspaceId,
+        projectId: selectedProjectId,
+        input: { title: title.trim(), priority, dueDate: dueDate || null },
+      });
+      toast.success("Task created");
+      onClose();
+    } catch (error) {
+      setFormError(error instanceof TaskApiError ? error.message : "The task could not be created. Try again.");
+    }
   }
 
   return (
@@ -474,11 +512,11 @@ function CreateTaskModal({ onClose }: { onClose: () => void }) {
       className="modal-backdrop"
       role="presentation"
       onMouseDown={(event) => {
-        if (event.target === event.currentTarget) onClose();
+        if (event.target === event.currentTarget && !createTask.isPending) onClose();
       }}
     >
       <section
-        className="modal-card"
+        className="modal-card task-create-card"
         role="dialog"
         aria-modal="true"
         aria-labelledby="new-task-title"
@@ -488,7 +526,7 @@ function CreateTaskModal({ onClose }: { onClose: () => void }) {
             <span className="eyebrow">QUICK CAPTURE</span>
             <h2 id="new-task-title">Create a task</h2>
           </div>
-          <button className="icon-button" onClick={onClose} aria-label="Close">
+          <button className="icon-button" type="button" onClick={onClose} disabled={createTask.isPending} aria-label="Close">
             <Icon name="close" />
           </button>
         </div>
@@ -507,12 +545,11 @@ function CreateTaskModal({ onClose }: { onClose: () => void }) {
             <label className="field-label">
               Project
               <select
-                value={projectId}
+                value={selectedProjectId}
                 onChange={(event) => setProjectId(event.target.value)}
+                disabled={projectsQuery.isPending || projectsQuery.isError || createTask.isPending}
               >
-                {demoProjects
-                  .filter((project) => project.status === "ACTIVE")
-                  .map((project) => (
+                {projects.map((project) => (
                     <option key={project.id} value={project.id}>
                       {project.name}
                     </option>
@@ -523,7 +560,8 @@ function CreateTaskModal({ onClose }: { onClose: () => void }) {
               Priority
               <select
                 value={priority}
-                onChange={(event) => setPriority(event.target.value)}
+                onChange={(event) => setPriority(event.target.value as TaskPriority)}
+                disabled={createTask.isPending}
               >
                 <option value="LOW">Low</option>
                 <option value="MEDIUM">Medium</option>
@@ -538,19 +576,25 @@ function CreateTaskModal({ onClose }: { onClose: () => void }) {
               type="date"
               value={dueDate}
               onChange={(event) => setDueDate(event.target.value)}
+              disabled={createTask.isPending}
             />
           </label>
+          {projectsQuery.isPending && <p className="form-hint">Loading workspace projects…</p>}
+          {projectsQuery.isError && <div className="workspace-form-alert" role="alert">{projectsQuery.error instanceof ProjectApiError ? projectsQuery.error.message : "Workspace projects could not be loaded."} <button type="button" className="inline-retry" onClick={() => void projectsQuery.refetch()}>Retry</button></div>}
+          {!projectsQuery.isPending && !projectsQuery.isError && projects.length === 0 && <div className="workspace-form-alert" role="alert">Create a project before adding a task. <Link href={`/${workspaceSlug}/projects`}>Open projects</Link></div>}
+          {formError && <p className="workspace-form-alert" role="alert">{formError}</p>}
           <div className="modal-footer">
-            <span className="muted-note">Saved to this demo session</span>
+            <span className="muted-note">Saved to your workspace</span>
             <button
               type="button"
               className="button button-quiet"
               onClick={onClose}
+              disabled={createTask.isPending}
             >
               Cancel
             </button>
-            <button type="submit" className="button button-primary">
-              <Icon name="plus" size={16} /> Create task
+            <button type="submit" className="button button-primary" disabled={!selectedProjectId || !title.trim() || createTask.isPending || projectsQuery.isError}>
+              {createTask.isPending ? "Creating…" : <><Icon name="plus" size={16} /> Create task</>}
             </button>
           </div>
         </form>

@@ -25,7 +25,7 @@ function CardTitle({ className, ...props }: HTMLAttributes<HTMLHeadingElement>) 
   return (
     <h3
       data-slot="card-title"
-      className={cn("text-lg leading-none font-semibold", className)}
+      className={cn("text-card-title font-semibold", className)}
       {...props}
     />
   );
@@ -35,7 +35,7 @@ function CardDescription({ className, ...props }: HTMLAttributes<HTMLParagraphEl
   return (
     <p
       data-slot="card-description"
-      className={cn("text-sm text-muted-foreground", className)}
+      className={cn("text-body text-muted-foreground", className)}
       {...props}
     />
   );

@@ -1,5 +1,14 @@
 export type WorkspaceRole = "OWNER" | "ADMIN" | "MEMBER";
 
+export interface WorkspaceMemberRecord {
+  id: string;
+  name: string;
+  email: string;
+  isActive: boolean;
+  role: WorkspaceRole;
+  joinedAt: string;
+}
+
 export interface Workspace {
   id: string;
   name: string;

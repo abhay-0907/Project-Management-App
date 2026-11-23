@@ -7,7 +7,7 @@ export type IconName =
   | "flag" | "close" | "spark" | "list" | "board" | "activity" | "palette" | "database"
   | "mobile" | "shield" | "brackets" | "key" | "download" | "sort" | "check" | "send"
   | "link" | "maximize" | "at-sign" | "user-plus" | "archive" | "bolt" | "menu" | "edit"
-  | "file" | "dots" | "eye" | "layers" | "logout";
+  | "file" | "dots" | "eye" | "layers" | "logout" | "trash";
 
 const paths: Record<IconName, React.ReactNode> = {
   grid: <><rect x="3" y="3" width="7" height="7" rx="1.4"/><rect x="14" y="3" width="7" height="7" rx="1.4"/><rect x="3" y="14" width="7" height="7" rx="1.4"/><rect x="14" y="14" width="7" height="7" rx="1.4"/></>,
@@ -61,6 +61,7 @@ const paths: Record<IconName, React.ReactNode> = {
   eye: <><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z"/><circle cx="12" cy="12" r="2.5"/></>,
   layers: <><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5M3 16l9 5 9-5"/></>,
   logout: <><path d="M10 17l5-5-5-5m5 5H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></>,
+  trash: <><path d="M4 7h16M10 11v6m4-6v6M5 7l1 14h12l1-14M9 7V4h6v3"/></>,
 };
 
 type Props = SVGProps<SVGSVGElement> & { name: IconName; size?: number };

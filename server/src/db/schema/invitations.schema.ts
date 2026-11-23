@@ -1,6 +1,5 @@
 import { sql } from "drizzle-orm";
 import {
-  foreignKey,
   index,
   pgEnum,
   pgTable,
@@ -10,7 +9,6 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 import { usersTable } from "./users.schema.js";
-import { workspaceMembersTable } from "./workspace-members.schema.js";
 import { workspacesTable } from "./workspaces.schema.js";
 
 export const invitationRoleEnum = pgEnum("invitation_role", ["ADMIN", "MEMBER"]);
@@ -40,11 +38,6 @@ export const invitationsTable = pgTable(
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
-    foreignKey({
-      name: "invitations_workspace_inviter_membership_fk",
-      columns: [table.workspaceId, table.invitedBy],
-      foreignColumns: [workspaceMembersTable.workspaceId, workspaceMembersTable.userId],
-    }).onDelete("restrict"),
     uniqueIndex("invitations_pending_email_uidx")
       .on(table.workspaceId, sql`lower(${table.email})`)
       .where(sql`${table.status} = 'PENDING'`),

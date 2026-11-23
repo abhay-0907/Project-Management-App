@@ -51,10 +51,10 @@ export function ResetPasswordForm() {
   return (
     <>
       <CardHeader className="gap-2 px-0 text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">
+        <p className="text-caption font-semibold uppercase tracking-[0.18em] text-indigo-600">
           {resetToken ? "Code accepted" : "Account recovery"}
         </p>
-        <CardTitle className="text-2xl tracking-tight text-slate-950">
+        <CardTitle className="text-page-title tracking-tight text-slate-950">
           {complete ? "Password updated" : "Reset your password"}
         </CardTitle>
         <CardDescription>
@@ -68,7 +68,7 @@ export function ResetPasswordForm() {
       <CardContent className="mt-6 px-0">
         {complete ? (
           <div className="space-y-4 text-center">
-            <LinkButton href="/login" className="h-11 w-full text-sm">Go to sign in</LinkButton>
+            <LinkButton href="/login" className="h-11 w-full text-body">Go to sign in</LinkButton>
           </div>
         ) : resetToken ? (
           <form className="space-y-4" onSubmit={handleResetPassword} noValidate>
@@ -85,7 +85,7 @@ export function ResetPasswordForm() {
         )}
       </CardContent>
       <CardFooter className="mt-6 justify-center px-0">
-        <div className="flex flex-col items-center gap-2 text-sm">
+        <div className="flex flex-col items-center gap-2 text-body">
           {!complete ? (
             <Link href="/forgot-password" className="font-semibold text-indigo-600 hover:text-indigo-700">Request a new code</Link>
           ) : null}

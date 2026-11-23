@@ -40,8 +40,8 @@ export function VerifyEmailForm({ initialEmail = "" }: { initialEmail?: string }
   return (
     <>
       <CardHeader className="gap-2 px-0 text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">One last step</p>
-        <CardTitle className="text-2xl tracking-tight text-slate-950">Verify your email</CardTitle>
+        <p className="text-caption font-semibold uppercase tracking-[0.18em] text-indigo-600">One last step</p>
+        <CardTitle className="text-page-title tracking-tight text-slate-950">Verify your email</CardTitle>
         <CardDescription>Enter the 6-digit code we sent you. It expires in 5 minutes.</CardDescription>
       </CardHeader>
       <CardContent className="mt-6 px-0">
@@ -55,7 +55,7 @@ export function VerifyEmailForm({ initialEmail = "" }: { initialEmail?: string }
         <Button type="button" variant="link" size="default" isDisabled={!email || resendVerification.isPending} onPress={handleResend}>
           {resendVerification.isPending ? "Sending code…" : "Resend verification code"}
         </Button>
-        <Link href="/login" className="text-sm text-slate-500 hover:text-slate-700">Back to sign in</Link>
+        <Link href="/login" className="text-body text-slate-500 hover:text-slate-700">Back to sign in</Link>
       </CardFooter>
     </>
   );

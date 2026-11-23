@@ -26,7 +26,7 @@ export function AuthField({ label, error, id, className = "", ...props }: AuthFi
         {...props}
       />
       {error ? (
-        <p id={errorId} className="text-sm text-rose-600">
+        <p id={errorId} className="text-body-sm text-rose-600">
           {error}
         </p>
       ) : null}

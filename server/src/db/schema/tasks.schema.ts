@@ -15,14 +15,17 @@ import {
 } from "drizzle-orm/pg-core";
 import { projectStatusesTable } from "./project-statuses.schema.js";
 import { projectsTable } from "./projects.schema.js";
+import { usersTable } from "./users.schema.js";
 import { workspaceMembersTable } from "./workspace-members.schema.js";
 
-export const taskPriorityEnum = pgEnum("task_priority", [
+export const taskPriorityValues = [
   "LOW",
   "MEDIUM",
   "HIGH",
   "URGENT",
-]);
+] as const;
+
+export const taskPriorityEnum = pgEnum("task_priority", taskPriorityValues);
 
 export const tasksTable = pgTable(
   "tasks",
@@ -65,9 +68,9 @@ export const tasksTable = pgTable(
       foreignColumns: [workspaceMembersTable.workspaceId, workspaceMembersTable.userId],
     }).onDelete("restrict"),
     foreignKey({
-      name: "tasks_creator_workspace_member_fk",
-      columns: [table.workspaceId, table.createdBy],
-      foreignColumns: [workspaceMembersTable.workspaceId, workspaceMembersTable.userId],
+      name: "tasks_creator_user_fk",
+      columns: [table.createdBy],
+      foreignColumns: [usersTable.id],
     }).onDelete("restrict"),
     foreignKey({
       name: "tasks_parent_same_project_workspace_fk",

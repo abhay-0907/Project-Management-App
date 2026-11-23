@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const alertVariants = cva(
-  "relative w-full rounded-lg border px-4 py-3 text-sm [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-3.5 [&>svg]:text-current [&>svg+div]:translate-y-[-3px] [&>svg~*]:pl-7",
+  "relative w-full rounded-lg border px-4 py-3 text-body [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-3.5 [&>svg]:text-current [&>svg+div]:translate-y-[-3px] [&>svg~*]:pl-7",
   {
     variants: {
       variant: {
@@ -37,7 +37,7 @@ function AlertTitle({ className, ...props }: HTMLAttributes<HTMLHeadingElement>)
 }
 
 function AlertDescription({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-  return <div data-slot="alert-description" className={cn("text-sm [&_p]:leading-relaxed", className)} {...props} />;
+  return <div data-slot="alert-description" className={cn("text-body-sm [&_p]:leading-relaxed", className)} {...props} />;
 }
 
 export { Alert, AlertDescription, AlertTitle, alertVariants };

@@ -3,10 +3,11 @@ import type {
   WorkspaceMessageResponse,
   WorkspaceResponse,
   WorkspacesResponse,
+  WorkspaceMemberRecord,
 } from "../types/workspace.types";
 import type { CreateWorkspaceInput, UpdateWorkspaceInput } from "../schemas/workspace.schema";
 
-const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080").replace(/\/+$/, "");
+const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000").replace(/\/+$/, "");
 
 export class WorkspaceApiError extends Error {
   constructor(
@@ -67,6 +68,12 @@ export const workspaceApi = {
   get(workspaceId: string) {
     return request<WorkspaceResponse>(`/workspaces/${encodeURIComponent(workspaceId)}`)
       .then(({ workspace }) => workspace);
+  },
+
+  members(workspaceId: string) {
+    return request<{ members: WorkspaceMemberRecord[] }>(
+      `/workspaces/${encodeURIComponent(workspaceId)}/members`,
+    ).then(({ members }) => members);
   },
 
   create(input: CreateWorkspaceInput) {

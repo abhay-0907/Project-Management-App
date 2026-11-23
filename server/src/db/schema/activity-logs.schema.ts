@@ -7,7 +7,7 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
-import { workspaceMembersTable } from "./workspace-members.schema.js";
+import { usersTable } from "./users.schema.js";
 import { workspacesTable } from "./workspaces.schema.js";
 
 export const activityLogsTable = pgTable(
@@ -28,12 +28,9 @@ export const activityLogsTable = pgTable(
   },
   (table) => [
     foreignKey({
-      name: "activity_logs_actor_workspace_member_fk",
-      columns: [table.workspaceId, table.actorId],
-      foreignColumns: [
-        workspaceMembersTable.workspaceId,
-        workspaceMembersTable.userId,
-      ],
+      name: "activity_logs_actor_user_fk",
+      columns: [table.actorId],
+      foreignColumns: [usersTable.id],
     }).onDelete("restrict"),
     index("activity_logs_workspace_created_idx").on(
       table.workspaceId,

@@ -14,7 +14,7 @@ export function AuthSubmitButton({ pending, children, isDisabled, className, ...
       type="submit"
       size="lg"
       isDisabled={pending || isDisabled}
-      className={cn("h-11 w-full text-sm", className)}
+      className={cn("h-11 w-full text-body", className)}
     >
       {pending ? "Please wait…" : children}
     </Button>

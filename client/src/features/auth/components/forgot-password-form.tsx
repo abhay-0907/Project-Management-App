@@ -32,8 +32,8 @@ export function ForgotPasswordForm() {
   return (
     <>
       <CardHeader className="gap-2 px-0 text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">Account recovery</p>
-        <CardTitle className="text-2xl tracking-tight text-slate-950">Forgot your password?</CardTitle>
+        <p className="text-caption font-semibold uppercase tracking-[0.18em] text-indigo-600">Account recovery</p>
+        <CardTitle className="text-page-title tracking-tight text-slate-950">Forgot your password?</CardTitle>
         <CardDescription>Enter the email address on your account and we’ll send a one-time reset code.</CardDescription>
       </CardHeader>
       <CardContent className="mt-6 px-0">
@@ -44,7 +44,7 @@ export function ForgotPasswordForm() {
                 If an active account matches that email, you&apos;ll receive a 6-digit code. Check your inbox.
               </AlertDescription>
             </Alert>
-            <LinkButton href="/reset-password" className="h-11 w-full text-sm">Enter reset code</LinkButton>
+            <LinkButton href="/reset-password" className="h-11 w-full text-body">Enter reset code</LinkButton>
           </div>
         ) : (
           <form className="space-y-5" onSubmit={handleSubmit} noValidate>
@@ -54,7 +54,7 @@ export function ForgotPasswordForm() {
         )}
       </CardContent>
       <CardFooter className="mt-6 justify-center px-0">
-        <Link href="/login" className="text-sm font-semibold text-indigo-600 hover:text-indigo-700">Back to sign in</Link>
+        <Link href="/login" className="text-body font-semibold text-indigo-600 hover:text-indigo-700">Back to sign in</Link>
       </CardFooter>
     </>
   );

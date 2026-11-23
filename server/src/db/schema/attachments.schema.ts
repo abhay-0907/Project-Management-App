@@ -1,6 +1,6 @@
 import { bigint, foreignKey, index, pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 import { tasksTable } from "./tasks.schema.js";
-import { workspaceMembersTable } from "./workspace-members.schema.js";
+import { usersTable } from "./users.schema.js";
 
 export const attachmentsTable = pgTable(
   "attachments",
@@ -22,9 +22,9 @@ export const attachmentsTable = pgTable(
       foreignColumns: [tasksTable.id, tasksTable.workspaceId],
     }).onDelete("cascade"),
     foreignKey({
-      name: "attachments_uploader_workspace_member_fk",
-      columns: [table.workspaceId, table.uploadedBy],
-      foreignColumns: [workspaceMembersTable.workspaceId, workspaceMembersTable.userId],
+      name: "attachments_uploader_user_fk",
+      columns: [table.uploadedBy],
+      foreignColumns: [usersTable.id],
     }).onDelete("restrict"),
     index("attachments_task_created_idx").on(table.taskId, table.createdAt),
   ],

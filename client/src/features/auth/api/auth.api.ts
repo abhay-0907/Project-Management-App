@@ -13,7 +13,7 @@ import type {
   VerifyPasswordResetOtpInput,
 } from "../types/auth.types";
 
-const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080").replace(/\/+$/, "");
+const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000").replace(/\/+$/, "");
 
 export class AuthApiError extends Error {
   constructor(

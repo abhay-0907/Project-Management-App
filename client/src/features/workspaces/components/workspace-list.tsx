@@ -1,15 +1,22 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { Icon } from "@/components/shared/icon";
 import { WorkspaceApiError } from "../api/workspace.api";
 import { useWorkspaces } from "../hooks/use-workspaces";
 import { WorkspaceCard } from "./workspace-card";
 
 export function WorkspaceList() {
+  const router = useRouter();
   const workspaces = useWorkspaces();
   const needsSignIn =
     workspaces.error instanceof WorkspaceApiError && workspaces.error.status === 401;
+
+  useEffect(() => {
+    if (needsSignIn) router.replace("/login");
+  }, [needsSignIn, router]);
 
   return (
     <main className="workspace-selection-page">

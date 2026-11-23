@@ -10,12 +10,12 @@ export function AuthLayout({ children }: { children: ReactNode }) {
       <div className="relative z-10 w-full max-w-md">
         <Link href="/" className="mb-8 flex items-center justify-center gap-2.5 text-slate-950">
           <span className="grid size-9 place-items-center rounded-xl bg-indigo-600 text-lg font-bold text-white shadow-sm">N</span>
-          <span className="text-xl font-semibold tracking-tight">Nexora</span>
+          <span className="text-brand font-semibold tracking-tight">Nexora</span>
         </Link>
         <Card className="gap-0 border-slate-200/80 bg-white/95 p-6 shadow-xl shadow-slate-200/60 backdrop-blur sm:p-8">
           {children}
         </Card>
-        <p className="mt-6 text-center text-xs text-slate-500">A calmer way to move work forward.</p>
+        <p className="mt-6 text-center text-caption text-slate-500">A calmer way to move work forward.</p>
       </div>
     </main>
   );

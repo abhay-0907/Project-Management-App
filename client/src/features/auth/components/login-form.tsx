@@ -30,7 +30,7 @@ export function LoginForm() {
     setFieldErrors({});
     login.mutate(parsed.data, {
       onSuccess: () => {
-        router.replace("/");
+        router.replace("/workspaces");
         router.refresh();
       },
     });
@@ -39,8 +39,8 @@ export function LoginForm() {
   return (
     <>
       <CardHeader className="gap-2 px-0 text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">Welcome back</p>
-        <CardTitle className="text-2xl tracking-tight text-slate-950">Sign in to Nexora</CardTitle>
+        <p className="text-caption font-semibold uppercase tracking-[0.18em] text-indigo-600">Welcome back</p>
+        <CardTitle className="text-page-title tracking-tight text-slate-950">Sign in to Nexora</CardTitle>
         <CardDescription>Pick up where your team left off.</CardDescription>
       </CardHeader>
       <CardContent className="mt-6 px-0">
@@ -49,7 +49,7 @@ export function LoginForm() {
         <div className="space-y-2">
           <div className="flex items-center justify-between gap-3">
             <Label htmlFor="password">Password</Label>
-            <Link href="/forgot-password" className="text-sm font-medium text-indigo-600 hover:text-indigo-700">Forgot password?</Link>
+            <Link href="/forgot-password" className="text-body font-medium text-indigo-600 hover:text-indigo-700">Forgot password?</Link>
           </div>
           <AuthField id="password" name="password" type="password" label="" autoComplete="current-password" placeholder="Your password" required error={fieldErrors.password} className="-mt-2" />
         </div>
@@ -57,7 +57,7 @@ export function LoginForm() {
       </form>
       </CardContent>
       <CardFooter className="mt-6 justify-center px-0">
-      <p className="text-center text-sm text-slate-600">
+      <p className="text-center text-body text-slate-600">
         New to Nexora? <Link href="/register" className="font-semibold text-indigo-600 hover:text-indigo-700">Create an account</Link>
       </p>
       </CardFooter>

@@ -1,6 +1,6 @@
 import { foreignKey, index, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { tasksTable } from "./tasks.schema.js";
-import { workspaceMembersTable } from "./workspace-members.schema.js";
+import { usersTable } from "./users.schema.js";
 
 export const commentsTable = pgTable(
   "comments",
@@ -20,9 +20,9 @@ export const commentsTable = pgTable(
       foreignColumns: [tasksTable.id, tasksTable.workspaceId],
     }).onDelete("cascade"),
     foreignKey({
-      name: "comments_author_workspace_member_fk",
-      columns: [table.workspaceId, table.authorId],
-      foreignColumns: [workspaceMembersTable.workspaceId, workspaceMembersTable.userId],
+      name: "comments_author_user_fk",
+      columns: [table.authorId],
+      foreignColumns: [usersTable.id],
     }).onDelete("restrict"),
     index("comments_task_created_idx").on(table.taskId, table.createdAt),
     index("comments_workspace_id_idx").on(table.workspaceId),
