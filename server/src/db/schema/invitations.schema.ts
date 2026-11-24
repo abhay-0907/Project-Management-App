@@ -35,6 +35,7 @@ export const invitationsTable = pgTable(
     tokenHash: varchar("token_hash", { length: 255 }).notNull().unique(),
     status: invitationStatusEnum().notNull().default("PENDING"),
     expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    acceptedAt: timestamp("accepted_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [

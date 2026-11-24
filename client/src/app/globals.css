@@ -768,11 +768,12 @@
 .member-table-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
 .member-table-toolbar .project-search { width: min(310px, 60%); }
 .member-table { overflow-x: auto; }
-.member-table-head, .member-row { display: grid; min-width: 670px; grid-template-columns: minmax(230px,1fr) 100px 130px 150px 28px; align-items: center; gap: 12px; }
+.member-table-head, .member-row { display: grid; min-width: 850px; grid-template-columns: minmax(230px,1fr) 90px 125px 115px 160px; align-items: center; gap: 12px; }
 .member-table-head { min-height: 34px; border-top: 1px solid #efedeb; border-bottom: 1px solid #efedeb; color: #98a1a7; font-size: var(--type-caption); font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
 .member-row { min-height: 59px; border-bottom: 1px solid #f1efed; color: #78848d; font-size: var(--type-body-sm); }
 .member-row:last-child { border-bottom: 0; }
 .member-name-cell { display: flex; align-items: center; gap: 9px; }
+.member-avatar { display: grid; width: 34px; height: 34px; flex: 0 0 auto; place-items: center; border-radius: 50%; color: white; font-size: 11px; font-weight: 700; letter-spacing: .02em; }
 .member-name-cell > span:last-child { display: grid; gap: 2px; }
 .member-name-cell strong { color: #485560; font-size: var(--type-body-sm); font-weight: 600; }
 .member-name-cell small { color: #99a1a7; font-size: var(--type-caption); }
@@ -780,6 +781,18 @@
 .role-owner { color: #8c6635; background: #fbf2e5; }.role-admin { color: #4b7c9b; background: #eaf3f9; }
 .access-state { display: inline-flex; align-items: center; gap: 6px; color: #648674; font-size: var(--type-caption); }
 .access-state i { width: 6px; height: 6px; border-radius: 50%; background: #67ad84; }
+.access-state.is-inactive { color: #a06a64; }
+.access-state.is-inactive i { background: #c27a72; }
+.member-actions { display: flex; align-items: center; gap: 8px; }
+.member-action-button { display: inline-flex; min-height: 27px; align-items: center; gap: 4px; padding: 0 6px; border: 0; border-radius: 6px; color: #51748a; background: transparent; font-size: var(--type-caption); font-weight: 600; cursor: pointer; }
+.member-action-button:hover { background: #eef5f8; }
+.member-action-button.is-danger { color: #a9534c; }
+.member-action-button.is-danger:hover { background: #fff0ee; }
+.member-action-locked { padding-left: 5px; color: #b1b7ba; }
+.member-page-state { display: flex; min-height: 160px; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 24px; text-align: center; }
+.member-page-state p { margin: 0; }
+.member-page-state .workspace-form-alert { max-width: 500px; }
+.member-confirm-card .modal-form > p { margin: 0 0 14px; color: #6f7b84; font-size: var(--type-body-sm); line-height: 1.6; }
 .centered-empty { padding: 30px; text-align: center; }
 .notifications-page { max-width: 1020px; }
 .notification-tabs { display: flex; gap: 16px; margin: 22px 0 0; border-bottom: 1px solid #e9e7e4; }
@@ -1037,6 +1050,11 @@
 .invite-workspace strong { color: #4b5862; font-size: var(--type-body-sm); font-weight: 600; }
 .invite-workspace small { color: #9ba3a9; font-size: var(--type-caption); }
 .invite-accept-button { width: 100%; }
+.invite-register-link { margin-top: 12px; color: #55788c; font-size: var(--type-body-sm); font-weight: 600; }
+.invite-account-note { margin: 12px 0 !important; padding: 10px; border: 1px solid #e6ecef; border-radius: 8px; background: #f8fbfc; }
+.invite-loading { margin: 10px 0; color: #78858d; font-size: var(--type-body-sm); }
+.invite-actions { display: flex; width: 100%; flex-wrap: wrap; gap: 8px; margin-top: 17px; }
+.invite-actions .button-primary { flex: 1; }
 .invite-footnote { margin-top: 12px; color: #a2a9ae; font-size: var(--type-caption); }
 .onboarding-page { position: relative; display: flex; min-height: 100vh; align-items: center; justify-content: center; overflow: hidden; padding: 70px 22px; background: #f8f7f4; }
 .onboarding-brand { position: absolute; top: 25px; left: clamp(20px, 5vw, 68px); }
@@ -1059,6 +1077,38 @@
 .invite-toolbar-copy strong { color: #505d67; font-size: var(--type-body-sm); }
 .invite-toolbar-copy small { color: #9ba3a9; font-size: var(--type-caption); }
 .invitation-table-head, .invitation-row { display: grid; min-width: 720px; grid-template-columns: minmax(210px,1fr) 80px 125px 110px 90px 28px; align-items: center; gap: 9px; }
+.invitation-row-expanded, .invitation-table-head-expanded { min-width: 1000px; grid-template-columns: minmax(200px,1fr) 70px 115px 95px 95px 90px 145px; }
+.invitation-row-expanded > time, .invitation-inviter { color: #7d8890; font-size: var(--type-caption); }
+.invitation-inviter { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.invitation-actions { display: inline-flex; align-items: center; justify-content: flex-end; gap: 8px; }
+.invitation-actions .member-action-button { padding: 4px 5px; }
+.invitation-page-alert { margin-bottom: 12px; }
+.members-heading-actions { display: flex; align-items: center; gap: 9px; }
+.pending-count-badge { display: inline-grid; min-width: 19px; height: 19px; place-items: center; padding: 0 5px; border-radius: 6px; color: #8a642d; background: #fbf2e5; font-size: var(--type-caption); }
+.pending-invitations-panel { margin-top: 15px; padding: 15px; }
+.pending-invitations-heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding-bottom: 13px; border-bottom: 1px solid #efedeb; }
+.pending-invitations-heading h2 { margin: 5px 0 0; color: #3b4751; font-size: var(--type-card-title); font-weight: 600; }
+.pending-invitations-heading p { margin: 4px 0 0; color: #929ba2; font-size: var(--type-body-sm); }
+.invitation-panel-state { display: flex; min-height: 90px; align-items: center; justify-content: center; gap: 10px; color: #849099; font-size: var(--type-body-sm); }
+.invitation-panel-state .workspace-form-alert { max-width: 500px; margin: 12px; }
+.invitation-pending-list { display: grid; }
+.invitation-pending-row { display: flex; min-height: 61px; align-items: center; gap: 11px; border-bottom: 1px solid #f1efed; color: #7d8890; font-size: var(--type-body-sm); }
+.invitation-pending-row:last-child { border-bottom: 0; }
+.invitation-pending-copy { display: grid; min-width: 0; flex: 1; gap: 3px; }
+.invitation-pending-copy strong { overflow: hidden; color: #4c5963; font-weight: 600; text-overflow: ellipsis; }
+.invitation-pending-copy span, .invitation-pending-row time { color: #929ba2; font-size: var(--type-caption); }
+.invite-member-dialog .modal-form { gap: 14px; }
+.invite-dialog-field { display: grid; gap: 6px; }
+.invite-dialog-field [data-slot="label"] { color: #586771; font-size: var(--type-body-sm); font-weight: 600; }
+.invite-dialog-field input, .invite-role-select { min-height: 40px; width: 100%; border-radius: 7px; color: #3d4b54; background: white; font-size: var(--type-body); }
+.invite-role-select { padding: 8px 10px; border: 1px solid #e3e7e8; }
+.invite-dialog-field input:focus-visible, .invite-role-select:focus-visible { outline: 2px solid rgba(52,126,174,.22); border-color: #72a8c2; }
+.invite-field-error { margin: 0; color: #a9534c; font-size: var(--type-caption); }
+.invite-dialog .modal-footer [data-slot="button"] { min-height: 36px; }
+.invite-dialog-note { margin: 0; color: #849099; font-size: var(--type-caption); line-height: 1.5; }
+.modal-field { display: grid; gap: 6px; color: #586771; font-size: var(--type-body-sm); font-weight: 600; }
+.modal-field input, .modal-field select { min-height: 40px; width: 100%; padding: 8px 10px; border: 1px solid #e3e7e8; border-radius: 7px; color: #3d4b54; background: white; font: inherit; font-weight: 400; }
+.modal-field input:focus, .modal-field select:focus { outline: 2px solid rgba(52,126,174,.22); border-color: #72a8c2; }
 .invitation-table-head { min-height: 34px; border-top: 1px solid #efedeb; border-bottom: 1px solid #efedeb; color: #98a1a7; font-size: var(--type-caption); font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
 .invitation-row { min-height: 57px; border-bottom: 1px solid #f1efed; color: #7d8890; font-size: var(--type-body-sm); }
 .invitation-row:last-child { border-bottom: 0; }
@@ -1067,8 +1117,15 @@
 .invite-avatar { display: grid; width: 27px; height: 27px; place-items: center; border-radius: 8px; color: #4e85a2; background: #edf4f7; }
 .invitation-state { display: inline-flex; align-items: center; gap: 5px; color: #8a949b; font-size: var(--type-caption); }
 .invitation-state i { width: 6px; height: 6px; border-radius: 50%; background: #9da6ab; }
-.invitation-pending { color: #a57836; }.invitation-pending i { background: #d6a653; }.invitation-accepted { color: #4d8b6e; }.invitation-accepted i { background: #67aa83; }.invitation-expired, .invitation-revoked { color: #8b8c8c; }
+.invitation-pending { color: #a57836; }.invitation-pending i { background: #d6a653; }.invitation-accepted { color: #4d8b6e; }.invitation-accepted i { background: #67aa83; }.invitation-expired, .invitation-revoked, .invitation-rejected { color: #8b8c8c; }
 @media (max-width: 560px) {
+  .members-heading-actions { width: 100%; }
+  .members-heading-actions > * { flex: 1; }
+  .pending-invitations-heading { align-items: flex-start; flex-direction: column; }
+  .pending-invitations-heading > .button { width: 100%; }
+  .invitation-pending-row { flex-wrap: wrap; padding: 10px 0; }
+  .invitation-pending-row time { margin-left: 38px; }
+  .invitation-pending-row .invitation-actions { width: 100%; margin-left: 38px; justify-content: flex-start; }
   .onboarding-card { padding: 24px 19px; }
   .invite-card { padding: 22px 18px; }
 }

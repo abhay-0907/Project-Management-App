@@ -2,9 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import { findWorkspaceMembership } from "./workspace.repository.js";
 import {
   createWorkspaceSchema,
-  updateWorkspaceMemberRoleSchema,
   updateWorkspaceSchema,
-  workspaceMemberIdSchema,
   workspaceIdSchema,
 } from "./workspace.validation.js";
 import type { WorkspaceRole } from "./workspace.types.js";
@@ -74,36 +72,5 @@ export function validateUpdateWorkspace(
     return;
   }
   req.updateWorkspaceInput = parsed.data;
-  next();
-}
-
-export function validateWorkspaceMemberId(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
-  const parsed = workspaceMemberIdSchema.safeParse(req.params.memberId);
-  if (!parsed.success) {
-    res.status(400).json({ error: "Invalid workspace member id" });
-    return;
-  }
-  req.workspaceMemberId = parsed.data;
-  next();
-}
-
-export function validateUpdateWorkspaceMemberRole(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
-  const parsed = updateWorkspaceMemberRoleSchema.safeParse(req.body);
-  if (!parsed.success) {
-    res.status(400).json({
-      error: "Invalid workspace member role",
-      details: parsed.error.flatten().fieldErrors,
-    });
-    return;
-  }
-  req.updateWorkspaceMemberRoleInput = parsed.data;
   next();
 }

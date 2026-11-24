@@ -16,7 +16,7 @@ export default function VerifyEmailPage() {
 function VerifyEmailContent() {
   const searchParams = useSearchParams();
 
-  return <VerifyEmailForm initialEmail={searchParams.get("email") ?? ""} />;
+  return <VerifyEmailForm initialEmail={searchParams.get("email") ?? ""} nextPath={searchParams.get("next")} />;
 }
 
 function VerifyEmailLoading() {

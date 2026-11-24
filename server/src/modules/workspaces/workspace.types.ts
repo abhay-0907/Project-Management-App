@@ -7,11 +7,7 @@ import type {
   DeleteBoardColumnInput,
   UpdateBoardColumnInput,
 } from "../tasks/board.validation.js";
-import type {
-  CreateWorkspaceInput,
-  UpdateWorkspaceInput,
-  UpdateWorkspaceMemberRoleInput,
-} from "./workspace.validation.js";
+import type { CreateWorkspaceInput, UpdateWorkspaceInput } from "./workspace.validation.js";
 
 export type WorkspaceRole = WorkspaceMember["role"];
 export type WorkspaceMembership = Pick<
@@ -25,8 +21,6 @@ declare global {
       workspaceMembership?: WorkspaceMembership;
       createWorkspaceInput?: CreateWorkspaceInput;
       updateWorkspaceInput?: UpdateWorkspaceInput;
-      workspaceMemberId?: string;
-      updateWorkspaceMemberRoleInput?: UpdateWorkspaceMemberRoleInput;
       createProjectInput?: CreateProjectInput;
       updateProjectInput?: UpdateProjectInput;
       projectListQuery?: ListProjectsQuery;

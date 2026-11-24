@@ -1,6 +1,7 @@
 import type {
   CreateWorkspaceResponse,
   WorkspaceMessageResponse,
+  AssignableWorkspaceRole,
   WorkspaceResponse,
   WorkspacesResponse,
   WorkspaceMemberRecord,
@@ -74,6 +75,26 @@ export const workspaceApi = {
     return request<{ members: WorkspaceMemberRecord[] }>(
       `/workspaces/${encodeURIComponent(workspaceId)}/members`,
     ).then(({ members }) => members);
+  },
+
+  member(workspaceId: string, memberId: string) {
+    return request<{ member: WorkspaceMemberRecord }>(
+      `/workspaces/${encodeURIComponent(workspaceId)}/members/${encodeURIComponent(memberId)}`,
+    ).then(({ member }) => member);
+  },
+
+  updateMemberRole(workspaceId: string, memberId: string, role: AssignableWorkspaceRole) {
+    return request<{ member: WorkspaceMemberRecord; message: string }>(
+      `/workspaces/${encodeURIComponent(workspaceId)}/members/${encodeURIComponent(memberId)}/role`,
+      { method: "PATCH", body: JSON.stringify({ role }) },
+    );
+  },
+
+  removeMember(workspaceId: string, memberId: string) {
+    return request<WorkspaceMessageResponse>(
+      `/workspaces/${encodeURIComponent(workspaceId)}/members/${encodeURIComponent(memberId)}`,
+      { method: "DELETE" },
+    );
   },
 
   create(input: CreateWorkspaceInput) {

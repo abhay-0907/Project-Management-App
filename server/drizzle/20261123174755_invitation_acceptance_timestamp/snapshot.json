@@ -1,0 +1,47 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "89ccfc48-41ad-4153-861e-06213c3c2f2e",
+  "prevIds": [
+    "d939874b-c8c9-414f-a86e-3a445ae3764f"
+  ],
+  "footprints": [
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "invitations",
+        "accepted_at"
+      ],
+      "writes": [
+        "s|col|public.invitations.accepted_at",
+        "n|col|public.invitations.accepted_at",
+        "e|col|public.invitations.accepted_at"
+      ],
+      "reads": [
+        "n|tbl|public.invitations",
+        "n|sch|public"
+      ]
+    }
+  ],
+  "deltas": [
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "invitations",
+        "name": "accepted_at",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    }
+  ]
+}

@@ -1,0 +1,305 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "d939874b-c8c9-414f-a86e-3a445ae3764f",
+  "prevIds": [
+    "8d3a57d0-3baa-42ff-b158-b4ec21bcd471"
+  ],
+  "footprints": [
+    {
+      "statementType": "drop_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "tasks"
+      ],
+      "writes": [
+        "s|fk|public.tasks.tasks_creator_workspace_member_fk",
+        "n|fk|public.tasks.tasks_creator_workspace_member_fk",
+        "e|fk|public.tasks.tasks_creator_workspace_member_fk",
+        "n|con|public.tasks.tasks_creator_workspace_member_fk"
+      ],
+      "reads": [
+        "n|tbl|public.tasks",
+        "n|sch|public",
+        "e|col|public.tasks.workspace_id",
+        "e|col|public.tasks.created_by"
+      ]
+    },
+    {
+      "statementType": "drop_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "comments"
+      ],
+      "writes": [
+        "s|fk|public.comments.comments_author_workspace_member_fk",
+        "n|fk|public.comments.comments_author_workspace_member_fk",
+        "e|fk|public.comments.comments_author_workspace_member_fk",
+        "n|con|public.comments.comments_author_workspace_member_fk"
+      ],
+      "reads": [
+        "n|tbl|public.comments",
+        "n|sch|public",
+        "e|col|public.comments.workspace_id",
+        "e|col|public.comments.author_id"
+      ]
+    },
+    {
+      "statementType": "drop_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "attachments"
+      ],
+      "writes": [
+        "s|fk|public.attachments.attachments_uploader_workspace_member_fk",
+        "n|fk|public.attachments.attachments_uploader_workspace_member_fk",
+        "e|fk|public.attachments.attachments_uploader_workspace_member_fk",
+        "n|con|public.attachments.attachments_uploader_workspace_member_fk"
+      ],
+      "reads": [
+        "n|tbl|public.attachments",
+        "n|sch|public",
+        "e|col|public.attachments.workspace_id",
+        "e|col|public.attachments.uploaded_by"
+      ]
+    },
+    {
+      "statementType": "drop_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "activity_logs"
+      ],
+      "writes": [
+        "s|fk|public.activity_logs.activity_logs_actor_workspace_member_fk",
+        "n|fk|public.activity_logs.activity_logs_actor_workspace_member_fk",
+        "e|fk|public.activity_logs.activity_logs_actor_workspace_member_fk",
+        "n|con|public.activity_logs.activity_logs_actor_workspace_member_fk"
+      ],
+      "reads": [
+        "n|tbl|public.activity_logs",
+        "n|sch|public",
+        "e|col|public.activity_logs.workspace_id",
+        "e|col|public.activity_logs.actor_id"
+      ]
+    },
+    {
+      "statementType": "drop_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "invitations"
+      ],
+      "writes": [
+        "s|fk|public.invitations.invitations_workspace_inviter_membership_fk",
+        "n|fk|public.invitations.invitations_workspace_inviter_membership_fk",
+        "e|fk|public.invitations.invitations_workspace_inviter_membership_fk",
+        "n|con|public.invitations.invitations_workspace_inviter_membership_fk"
+      ],
+      "reads": [
+        "n|tbl|public.invitations",
+        "n|sch|public",
+        "e|col|public.invitations.workspace_id",
+        "e|col|public.invitations.invited_by"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "tasks"
+      ],
+      "writes": [
+        "s|fk|public.tasks.tasks_creator_user_fk",
+        "n|fk|public.tasks.tasks_creator_user_fk",
+        "e|fk|public.tasks.tasks_creator_user_fk",
+        "n|con|public.tasks.tasks_creator_user_fk"
+      ],
+      "reads": [
+        "n|tbl|public.tasks",
+        "n|sch|public",
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.tasks.created_by",
+        "n|col|public.users.id",
+        "e|uniqueness|public.users.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "comments"
+      ],
+      "writes": [
+        "s|fk|public.comments.comments_author_user_fk",
+        "n|fk|public.comments.comments_author_user_fk",
+        "e|fk|public.comments.comments_author_user_fk",
+        "n|con|public.comments.comments_author_user_fk"
+      ],
+      "reads": [
+        "n|tbl|public.comments",
+        "n|sch|public",
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.comments.author_id",
+        "n|col|public.users.id",
+        "e|uniqueness|public.users.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "attachments"
+      ],
+      "writes": [
+        "s|fk|public.attachments.attachments_uploader_user_fk",
+        "n|fk|public.attachments.attachments_uploader_user_fk",
+        "e|fk|public.attachments.attachments_uploader_user_fk",
+        "n|con|public.attachments.attachments_uploader_user_fk"
+      ],
+      "reads": [
+        "n|tbl|public.attachments",
+        "n|sch|public",
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.attachments.uploaded_by",
+        "n|col|public.users.id",
+        "e|uniqueness|public.users.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "activity_logs"
+      ],
+      "writes": [
+        "s|fk|public.activity_logs.activity_logs_actor_user_fk",
+        "n|fk|public.activity_logs.activity_logs_actor_user_fk",
+        "e|fk|public.activity_logs.activity_logs_actor_user_fk",
+        "n|con|public.activity_logs.activity_logs_actor_user_fk"
+      ],
+      "reads": [
+        "n|tbl|public.activity_logs",
+        "n|sch|public",
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.activity_logs.actor_id",
+        "n|col|public.users.id",
+        "e|uniqueness|public.users.id"
+      ]
+    }
+  ],
+  "deltas": [
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tasks",
+        "name": "tasks_creator_user_fk",
+        "nameExplicit": true,
+        "columns": [
+          "created_by"
+        ],
+        "schemaTo": "public",
+        "tableTo": "users",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "RESTRICT",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "comments",
+        "name": "comments_author_user_fk",
+        "nameExplicit": true,
+        "columns": [
+          "author_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "users",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "RESTRICT",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "attachments",
+        "name": "attachments_uploader_user_fk",
+        "nameExplicit": true,
+        "columns": [
+          "uploaded_by"
+        ],
+        "schemaTo": "public",
+        "tableTo": "users",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "RESTRICT",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "activity_logs",
+        "name": "activity_logs_actor_user_fk",
+        "nameExplicit": true,
+        "columns": [
+          "actor_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "users",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "RESTRICT",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "drop",
+      "key": "fks\u0000[\"public\",\"invitations\",\"invitations_workspace_inviter_membership_fk\"]"
+    },
+    {
+      "op": "drop",
+      "key": "fks\u0000[\"public\",\"tasks\",\"tasks_creator_workspace_member_fk\"]"
+    },
+    {
+      "op": "drop",
+      "key": "fks\u0000[\"public\",\"comments\",\"comments_author_workspace_member_fk\"]"
+    },
+    {
+      "op": "drop",
+      "key": "fks\u0000[\"public\",\"attachments\",\"attachments_uploader_workspace_member_fk\"]"
+    },
+    {
+      "op": "drop",
+      "key": "fks\u0000[\"public\",\"activity_logs\",\"activity_logs_actor_workspace_member_fk\"]"
+    }
+  ]
+}

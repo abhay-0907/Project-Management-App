@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { registerSchema } from "../schemas/auth.schema";
 import { useRegister } from "../hooks/use-register";
-import { getFirstFieldErrors } from "../utils/auth.utils";
+import { getFirstFieldErrors, getSafeNextPath } from "../utils/auth.utils";
 import { AuthField } from "./auth-field";
 import { AuthSubmitButton } from "./auth-submit-button";
 
@@ -14,6 +14,11 @@ export function RegisterForm() {
   const router = useRouter();
   const register = useRegister();
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [nextPath, setNextPath] = useState<string | null>(null);
+
+  useEffect(() => {
+    setNextPath(getSafeNextPath(new URLSearchParams(window.location.search).get("next")));
+  }, []);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -28,8 +33,9 @@ export function RegisterForm() {
       return;
     }
     setFieldErrors({});
+    const next = getSafeNextPath(new URLSearchParams(window.location.search).get("next"));
     register.mutate(parsed.data, {
-      onSuccess: () => router.push(`/verify-email?email=${encodeURIComponent(parsed.data.email)}`),
+      onSuccess: () => router.push(`/verify-email?email=${encodeURIComponent(parsed.data.email)}${next ? `&next=${encodeURIComponent(next)}` : ""}`),
     });
   }
 
@@ -51,7 +57,7 @@ export function RegisterForm() {
       </CardContent>
       <CardFooter className="mt-6 justify-center px-0">
       <p className="text-center text-body text-slate-600">
-        Already have an account? <Link href="/login" className="font-semibold text-indigo-600 hover:text-indigo-700">Sign in</Link>
+        Already have an account? <Link href={nextPath ? `/login?next=${encodeURIComponent(nextPath)}` : "/login"} className="font-semibold text-indigo-600 hover:text-indigo-700">Sign in</Link>
       </p>
       </CardFooter>
     </>

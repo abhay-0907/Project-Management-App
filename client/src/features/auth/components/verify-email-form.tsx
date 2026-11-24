@@ -7,11 +7,11 @@ import { Button } from "@/components/ui/button";
 import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { verifyEmailSchema } from "../schemas/auth.schema";
 import { useResendVerification, useVerifyEmail } from "../hooks/use-email-verification";
-import { getFirstFieldErrors } from "../utils/auth.utils";
+import { getFirstFieldErrors, getSafeNextPath } from "../utils/auth.utils";
 import { AuthField } from "./auth-field";
 import { AuthSubmitButton } from "./auth-submit-button";
 
-export function VerifyEmailForm({ initialEmail = "" }: { initialEmail?: string }) {
+export function VerifyEmailForm({ initialEmail = "", nextPath }: { initialEmail?: string; nextPath?: string | null }) {
   const router = useRouter();
   const verifyEmail = useVerifyEmail();
   const resendVerification = useResendVerification();
@@ -30,7 +30,8 @@ export function VerifyEmailForm({ initialEmail = "" }: { initialEmail?: string }
       return;
     }
     setFieldErrors({});
-    verifyEmail.mutate(parsed.data, { onSuccess: () => router.replace("/login") });
+    const safeNext = getSafeNextPath(nextPath);
+    verifyEmail.mutate(parsed.data, { onSuccess: () => router.replace(safeNext ? `/login?next=${encodeURIComponent(safeNext)}` : "/login") });
   }
 
   function handleResend() {
@@ -55,7 +56,7 @@ export function VerifyEmailForm({ initialEmail = "" }: { initialEmail?: string }
         <Button type="button" variant="link" size="default" isDisabled={!email || resendVerification.isPending} onPress={handleResend}>
           {resendVerification.isPending ? "Sending code…" : "Resend verification code"}
         </Button>
-        <Link href="/login" className="text-body text-slate-500 hover:text-slate-700">Back to sign in</Link>
+        <Link href={getSafeNextPath(nextPath) ? `/login?next=${encodeURIComponent(getSafeNextPath(nextPath)!)}` : "/login"} className="text-body text-slate-500 hover:text-slate-700">Back to sign in</Link>
       </CardFooter>
     </>
   );

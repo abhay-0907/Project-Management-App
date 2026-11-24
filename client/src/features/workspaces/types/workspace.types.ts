@@ -1,4 +1,5 @@
 export type WorkspaceRole = "OWNER" | "ADMIN" | "MEMBER";
+export type AssignableWorkspaceRole = Exclude<WorkspaceRole, "OWNER">;
 
 export interface WorkspaceMemberRecord {
   id: string;

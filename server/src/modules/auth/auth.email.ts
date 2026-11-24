@@ -1,28 +1,7 @@
-import nodemailer from "nodemailer";
-
-const SMTP_HOST = "smtp-relay.brevo.com";
-const SMTP_PORT = 587;
-let transporter: ReturnType<typeof nodemailer.createTransport> | undefined;
+import { sendConfiguredEmail } from "../../config/mailer.js";
 
 export async function sendVerificationCode(email: string, name: string, otp: string) {
-  const { SMTP_USER, SMTP_PASS, SENDER_EMAIL } = process.env;
-  if (!SMTP_USER || !SMTP_PASS || !SENDER_EMAIL) {
-    throw new Error("SMTP_USER, SMTP_PASS, and SENDER_EMAIL must be configured to send email");
-  }
-
-  transporter ??= nodemailer.createTransport({
-    host: SMTP_HOST,
-    port: SMTP_PORT,
-    secure: false,
-    requireTLS: true,
-    auth: {
-      user: SMTP_USER,
-      pass: SMTP_PASS,
-    },
-  });
-
-  await transporter.sendMail({
-    from: SENDER_EMAIL,
+  await sendConfiguredEmail({
     to: email,
     subject: "Your Nexora verification code",
     text: `Hi ${name},\n\nYour Nexora email verification code is ${otp}. It expires in 5 minutes.\n\nIf you did not create a Nexora account, you can ignore this email.`,
@@ -31,24 +10,7 @@ export async function sendVerificationCode(email: string, name: string, otp: str
 }
 
 export async function sendPasswordResetCode(email: string, name: string, otp: string) {
-  const { SMTP_USER, SMTP_PASS, SENDER_EMAIL } = process.env;
-  if (!SMTP_USER || !SMTP_PASS || !SENDER_EMAIL) {
-    throw new Error("SMTP_USER, SMTP_PASS, and SENDER_EMAIL must be configured to send email");
-  }
-
-  transporter ??= nodemailer.createTransport({
-    host: SMTP_HOST,
-    port: SMTP_PORT,
-    secure: false,
-    requireTLS: true,
-    auth: {
-      user: SMTP_USER,
-      pass: SMTP_PASS,
-    },
-  });
-
-  await transporter.sendMail({
-    from: SENDER_EMAIL,
+  await sendConfiguredEmail({
     to: email,
     subject: "Your Nexora password reset code",
     text: `Hi ${name},\n\nYour Nexora password reset code is ${otp}. It expires in 5 minutes.\n\nIf you did not request a password reset, you can ignore this email.`,
@@ -57,5 +19,7 @@ export async function sendPasswordResetCode(email: string, name: string, otp: st
 }
 
 function escapeHtml(value: string) {
-  return value.replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]!);
+  return value.replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+  })[char]!);
 }

@@ -19,6 +19,11 @@ export function getFirstFieldErrors(error: { fieldErrors: object }) {
   ) as Record<string, string>;
 }
 
+export function getSafeNextPath(value: string | null | undefined) {
+  if (!value || !value.startsWith("/") || value.startsWith("//") || value.includes("\\")) return null;
+  return value;
+}
+
 export function getSessionDeviceName(userAgent: string | null) {
   if (!userAgent) return "Unknown device";
   if (/iPhone|iPad/i.test(userAgent)) return "Apple mobile device";

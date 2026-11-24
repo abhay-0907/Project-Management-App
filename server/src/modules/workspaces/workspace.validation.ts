@@ -24,12 +24,6 @@ export const updateWorkspaceSchema = z
   });
 
 export const workspaceIdSchema = z.string().uuid();
-export const workspaceMemberIdSchema = z.string().uuid();
-
-export const updateWorkspaceMemberRoleSchema = z.strictObject({
-  role: z.enum(["ADMIN", "MEMBER"]),
-});
 
 export type CreateWorkspaceInput = z.infer<typeof createWorkspaceSchema>;
 export type UpdateWorkspaceInput = z.infer<typeof updateWorkspaceSchema>;
-export type UpdateWorkspaceMemberRoleInput = z.infer<typeof updateWorkspaceMemberRoleSchema>;

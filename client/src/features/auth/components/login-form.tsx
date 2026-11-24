@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { loginSchema } from "../schemas/auth.schema";
 import { useLogin } from "../hooks/use-login";
-import { getFirstFieldErrors } from "../utils/auth.utils";
+import { getFirstFieldErrors, getSafeNextPath } from "../utils/auth.utils";
 import { AuthField } from "./auth-field";
 import { AuthSubmitButton } from "./auth-submit-button";
 
@@ -15,6 +15,11 @@ export function LoginForm() {
   const router = useRouter();
   const login = useLogin();
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [nextPath, setNextPath] = useState<string | null>(null);
+
+  useEffect(() => {
+    setNextPath(getSafeNextPath(new URLSearchParams(window.location.search).get("next")));
+  }, []);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -28,9 +33,10 @@ export function LoginForm() {
       return;
     }
     setFieldErrors({});
+    const next = getSafeNextPath(new URLSearchParams(window.location.search).get("next"));
     login.mutate(parsed.data, {
       onSuccess: () => {
-        router.replace("/workspaces");
+        router.replace(next ?? "/workspaces");
         router.refresh();
       },
     });
@@ -58,7 +64,7 @@ export function LoginForm() {
       </CardContent>
       <CardFooter className="mt-6 justify-center px-0">
       <p className="text-center text-body text-slate-600">
-        New to Nexora? <Link href="/register" className="font-semibold text-indigo-600 hover:text-indigo-700">Create an account</Link>
+        New to Nexora? <Link href={nextPath ? `/register?next=${encodeURIComponent(nextPath)}` : "/register"} className="font-semibold text-indigo-600 hover:text-indigo-700">Create an account</Link>
       </p>
       </CardFooter>
     </>
