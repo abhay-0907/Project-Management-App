@@ -2,13 +2,17 @@ import type { NextFunction, Request, Response } from "express";
 import { getActivities } from "./activity.service.js";
 import { activityQuerySchema } from "./activity.validation.js";
 
+function getSingleRouteParam(value: string | string[] | undefined): string | undefined {
+  return typeof value === "string" ? value : undefined;
+}
+
 export async function listActivitiesController(req: Request, res: Response) {
   try {
     const result = await getActivities({
       ...req.activityListQuery!,
       workspaceId: req.workspaceMembership!.workspaceId,
-      projectId: req.params.projectId,
-      taskId: req.params.taskId,
+      projectId: getSingleRouteParam(req.params.projectId),
+      taskId: getSingleRouteParam(req.params.taskId),
     });
     return res.status(200).json(result);
   } catch (error) {
