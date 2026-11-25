@@ -10,6 +10,7 @@ import type {
   UpdateBoardColumnInput,
 } from "../types/project-board.types";
 import { projectBoardQueryKey } from "./use-project-board";
+import { activityQueryKeys } from "@/features/activity-logs/hooks/use-activity-feed";
 
 type BoardContext = { workspaceId: string; projectId: string };
 
@@ -20,6 +21,7 @@ function useInvalidateBoard() {
       queryClient.invalidateQueries({ queryKey: projectBoardQueryKey(workspaceId, projectId) }),
       queryClient.invalidateQueries({ queryKey: taskQueryKeys.all(workspaceId, projectId) }),
       queryClient.invalidateQueries({ queryKey: workspaceTaskOverviewKey(workspaceId) }),
+      queryClient.invalidateQueries({ queryKey: activityQueryKeys.workspace(workspaceId) }),
     ]);
   };
 }

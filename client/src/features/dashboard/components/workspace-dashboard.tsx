@@ -12,6 +12,7 @@ import { useWorkspaceTaskOverview, type WorkspaceTaskOverview } from "@/features
 import { WorkspaceApiError } from "@/features/workspaces/api/workspace.api";
 import { useWorkspaceMembers } from "@/features/workspaces/hooks/use-workspace-members";
 import { useWorkspaces } from "@/features/workspaces/hooks/use-workspaces";
+import { ActivityTimeline } from "@/features/activity-logs/components/activity-timeline";
 
 export function WorkspaceDashboard() {
   const params = useParams<{ workspaceSlug: string }>();
@@ -143,8 +144,8 @@ export function WorkspaceDashboard() {
 
           <article className="panel activity-panel">
             <div className="panel-heading compact-panel-heading"><div><span className="eyebrow">LATEST UPDATES</span><h2>Team activity</h2></div><span className="activity-live"><i /> Live</span></div>
-            <div className="activity-list"><p className="empty-inline">Task activity will appear here when activity events are connected.</p></div>
-            <Link className="panel-bottom-link" href={`/${slug}/notifications`}>Open activity inbox <Icon name="arrow-right" size={15} /></Link>
+            <div className="activity-list"><ActivityTimeline workspaceId={workspace.id} workspaceSlug={slug} limit={5} emptyMessage="Workspace activity will appear here as your team works." /></div>
+            <Link className="panel-bottom-link" href={`/${slug}/activity`}>Open activity inbox <Icon name="arrow-right" size={15} /></Link>
           </article>
 
           <article className="panel team-panel">

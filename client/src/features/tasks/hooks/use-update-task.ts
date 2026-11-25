@@ -5,6 +5,7 @@ import { taskApi } from "../api/task.api";
 import type { UpdateTaskInput } from "../types/task.types";
 import { taskQueryKeys } from "./use-tasks";
 import { projectBoardQueryKey } from "@/features/projects/hooks/use-project-board";
+import { activityQueryKeys } from "@/features/activity-logs/hooks/use-activity-feed";
 
 export function useUpdateTask() {
   const queryClient = useQueryClient();
@@ -21,6 +22,7 @@ export function useUpdateTask() {
         queryClient.invalidateQueries({ queryKey: taskQueryKeys.detail(variables.workspaceId, variables.projectId, variables.taskId) }),
         queryClient.invalidateQueries({ queryKey: taskQueryKeys.overview(variables.workspaceId) }),
         queryClient.invalidateQueries({ queryKey: projectBoardQueryKey(variables.workspaceId, variables.projectId) }),
+        queryClient.invalidateQueries({ queryKey: activityQueryKeys.workspace(variables.workspaceId) }),
       ]);
     },
   });

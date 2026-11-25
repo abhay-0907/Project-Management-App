@@ -120,6 +120,8 @@ export function DashboardShell({ children }: ShellProps) {
       : (currentProject?.name ?? "Projects")
     : pathname.includes("/members")
       ? "Members"
+      : pathname.includes("/activity")
+        ? "Activity"
       : pathname.includes("/notifications")
         ? "Notifications"
         : "Workspace overview";
@@ -178,12 +180,9 @@ export function DashboardShell({ children }: ShellProps) {
     workspaceDetailsQuery.isPending ||
     !activeWorkspace
   ) {
-    return (
-      <main className="workspace-route-state" role="status" aria-live="polite">
-        <span className="workspace-spinner" aria-hidden="true" />
-        <p>Opening your workspace…</p>
-      </main>
-    );
+    // Keep the active route in the render tree while workspace chrome loads.
+    // Route pages provide their own loading and error states.
+    return <div className="workspace-content">{children}</div>;
   }
 
   return (

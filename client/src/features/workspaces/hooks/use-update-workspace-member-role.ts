@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { workspaceApi } from "../api/workspace.api";
 import type { AssignableWorkspaceRole } from "../types/workspace.types";
 import { workspaceQueryKeys } from "./use-workspaces";
+import { activityQueryKeys } from "@/features/activity-logs/hooks/use-activity-feed";
 
 export function useUpdateWorkspaceMemberRole(workspaceId: string) {
   const queryClient = useQueryClient();
@@ -11,7 +12,10 @@ export function useUpdateWorkspaceMemberRole(workspaceId: string) {
     mutationFn: ({ memberId, role }: { memberId: string; role: AssignableWorkspaceRole }) =>
       workspaceApi.updateMemberRole(workspaceId, memberId, role),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: workspaceQueryKeys.members(workspaceId) });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: workspaceQueryKeys.members(workspaceId) }),
+        queryClient.invalidateQueries({ queryKey: activityQueryKeys.workspace(workspaceId) }),
+      ]);
     },
   });
 }

@@ -2,6 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { projectApi, type ProjectInput, type ProjectListQuery } from "../api/project.api";
+import { activityQueryKeys } from "@/features/activity-logs/hooks/use-activity-feed";
 
 export const projectQueryKeys = {
   all: (workspaceId: string) => ["workspaces", workspaceId, "projects"] as const,
@@ -36,8 +37,10 @@ export function useCreateProject() {
   return useMutation({
     mutationFn: ({ workspaceId, input }: { workspaceId: string; input: ProjectInput }) =>
       projectApi.create(workspaceId, input),
-    onSuccess: (_result, variables) =>
+    onSuccess: (_result, variables) => Promise.all([
       queryClient.invalidateQueries({ queryKey: projectQueryKeys.all(variables.workspaceId) }),
+      queryClient.invalidateQueries({ queryKey: activityQueryKeys.workspace(variables.workspaceId) }),
+    ]),
   });
 }
 
@@ -55,6 +58,7 @@ export function useUpdateProject() {
     }) => projectApi.update(workspaceId, projectId, input),
     onSuccess: (_result, variables) => {
       void queryClient.invalidateQueries({ queryKey: projectQueryKeys.all(variables.workspaceId) });
+      void queryClient.invalidateQueries({ queryKey: activityQueryKeys.workspace(variables.workspaceId) });
       void queryClient.invalidateQueries({
         queryKey: projectQueryKeys.detail(variables.workspaceId, variables.projectId),
       });
@@ -69,6 +73,7 @@ export function useDeleteProject() {
       projectApi.delete(workspaceId, projectId),
     onSuccess: async (_result, variables) => {
       await queryClient.invalidateQueries({ queryKey: projectQueryKeys.all(variables.workspaceId) });
+      await queryClient.invalidateQueries({ queryKey: activityQueryKeys.workspace(variables.workspaceId) });
       queryClient.removeQueries({
         queryKey: projectQueryKeys.detail(variables.workspaceId, variables.projectId),
         exact: true,

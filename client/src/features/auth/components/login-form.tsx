@@ -2,25 +2,23 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, type FormEvent } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useState, type FormEvent } from "react";
 import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { workspaceApi } from "@/features/workspaces/api/workspace.api";
+import { workspaceQueryKeys } from "@/features/workspaces/hooks/use-workspaces";
 import { loginSchema } from "../schemas/auth.schema";
 import { useLogin } from "../hooks/use-login";
-import { getFirstFieldErrors, getSafeNextPath } from "../utils/auth.utils";
+import { getFirstFieldErrors } from "../utils/auth.utils";
 import { AuthField } from "./auth-field";
 import { AuthSubmitButton } from "./auth-submit-button";
 
-export function LoginForm() {
+export function LoginForm({ nextPath }: { nextPath: string | null }) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const login = useLogin();
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
-  const [nextPath, setNextPath] = useState<string | null>(null);
-
-  useEffect(() => {
-    setNextPath(getSafeNextPath(new URLSearchParams(window.location.search).get("next")));
-  }, []);
-
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
@@ -33,10 +31,27 @@ export function LoginForm() {
       return;
     }
     setFieldErrors({});
-    const next = getSafeNextPath(new URLSearchParams(window.location.search).get("next"));
     login.mutate(parsed.data, {
-      onSuccess: () => {
-        router.replace(next ?? "/workspaces");
+      onSuccess: async () => {
+        if (nextPath) {
+          router.replace(nextPath);
+          router.refresh();
+          return;
+        }
+
+        try {
+          const workspaces = await queryClient.fetchQuery({
+            queryKey: workspaceQueryKeys.list,
+            queryFn: workspaceApi.list,
+            retry: false,
+            staleTime: 30_000,
+          });
+          router.replace(
+            workspaces[0] ? `/${workspaces[0].slug}` : "/onboarding/create-workspace",
+          );
+        } catch {
+          router.replace("/workspaces");
+        }
         router.refresh();
       },
     });

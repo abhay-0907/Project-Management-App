@@ -2,24 +2,18 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { registerSchema } from "../schemas/auth.schema";
 import { useRegister } from "../hooks/use-register";
-import { getFirstFieldErrors, getSafeNextPath } from "../utils/auth.utils";
+import { getFirstFieldErrors } from "../utils/auth.utils";
 import { AuthField } from "./auth-field";
 import { AuthSubmitButton } from "./auth-submit-button";
 
-export function RegisterForm() {
+export function RegisterForm({ nextPath }: { nextPath: string | null }) {
   const router = useRouter();
   const register = useRegister();
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
-  const [nextPath, setNextPath] = useState<string | null>(null);
-
-  useEffect(() => {
-    setNextPath(getSafeNextPath(new URLSearchParams(window.location.search).get("next")));
-  }, []);
-
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
@@ -33,9 +27,8 @@ export function RegisterForm() {
       return;
     }
     setFieldErrors({});
-    const next = getSafeNextPath(new URLSearchParams(window.location.search).get("next"));
     register.mutate(parsed.data, {
-      onSuccess: () => router.push(`/verify-email?email=${encodeURIComponent(parsed.data.email)}${next ? `&next=${encodeURIComponent(next)}` : ""}`),
+      onSuccess: () => router.push(`/verify-email?email=${encodeURIComponent(parsed.data.email)}${nextPath ? `&next=${encodeURIComponent(nextPath)}` : ""}`),
     });
   }
 

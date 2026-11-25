@@ -2,6 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { invitationApi } from "../api/invitation.api";
+import { activityQueryKeys } from "@/features/activity-logs/hooks/use-activity-feed";
 
 export const invitationQueryKeys = {
   all: ["invitations"] as const,
@@ -25,19 +26,28 @@ export function useInvitationPreview(token: string) {
 export function useCreateInvitation(workspaceId: string) {
   const client = useQueryClient();
   return useMutation({ mutationFn: (input: { email: string; role: "ADMIN" | "MEMBER" }) => invitationApi.create(workspaceId, input),
-    onSuccess: () => client.invalidateQueries({ queryKey: invitationQueryKeys.workspace(workspaceId) }) });
+    onSuccess: () => Promise.all([
+      client.invalidateQueries({ queryKey: invitationQueryKeys.workspace(workspaceId) }),
+      client.invalidateQueries({ queryKey: activityQueryKeys.workspace(workspaceId) }),
+    ]) });
 }
 
 export function useCancelInvitation(workspaceId: string) {
   const client = useQueryClient();
   return useMutation({ mutationFn: (id: string) => invitationApi.cancel(workspaceId, id),
-    onSuccess: () => client.invalidateQueries({ queryKey: invitationQueryKeys.workspace(workspaceId) }) });
+    onSuccess: () => Promise.all([
+      client.invalidateQueries({ queryKey: invitationQueryKeys.workspace(workspaceId) }),
+      client.invalidateQueries({ queryKey: activityQueryKeys.workspace(workspaceId) }),
+    ]) });
 }
 
 export function useResendInvitation(workspaceId: string) {
   const client = useQueryClient();
   return useMutation({ mutationFn: (id: string) => invitationApi.resend(workspaceId, id),
-    onSuccess: () => client.invalidateQueries({ queryKey: invitationQueryKeys.workspace(workspaceId) }) });
+    onSuccess: () => Promise.all([
+      client.invalidateQueries({ queryKey: invitationQueryKeys.workspace(workspaceId) }),
+      client.invalidateQueries({ queryKey: activityQueryKeys.workspace(workspaceId) }),
+    ]) });
 }
 
 export function useAcceptInvitation() {

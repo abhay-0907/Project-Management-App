@@ -10,6 +10,7 @@ import { formatShortDate } from "@/features/dashboard/api/demo-data";
 import { useWorkspaces } from "@/features/workspaces/hooks/use-workspaces";
 import { ProjectApiError, type ProjectStatus } from "../api/project.api";
 import { useProject } from "../hooks/use-projects";
+import { ActivityTimeline } from "@/features/activity-logs/components/activity-timeline";
 
 export function ProjectDetails({ projectId }: { projectId: string }) {
   const params = useParams<{ workspaceSlug: string }>();
@@ -103,7 +104,7 @@ export function ProjectDetails({ projectId }: { projectId: string }) {
           </article>
           <article className="panel project-activity-panel">
             <div className="panel-heading compact-panel-heading"><div><span className="eyebrow">RECENT CHANGES</span><h2>Project activity</h2></div></div>
-            <p className="empty-inline">Activity history is not connected yet.</p>
+            <ActivityTimeline workspaceId={workspace.id} workspaceSlug={slug} projectId={project.id} limit={8} emptyMessage="No project activity has been recorded yet." />
           </article>
         </aside>
       </section>
