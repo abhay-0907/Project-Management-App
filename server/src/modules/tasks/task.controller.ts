@@ -13,7 +13,7 @@ export async function createTaskController(req: Request, res: Response) {
     const task = await createTaskService(
       req.workspaceMembership!.workspaceId,
       req.projectId!,
-      req.auth!.user.id,
+      { id: req.auth!.user.id, name: req.auth!.user.name },
       req.createTaskInput!,
     );
     return res.status(201).json({ task, message: "Task created successfully" });
@@ -55,6 +55,7 @@ export async function updateTaskController(req: Request, res: Response) {
       req.projectId!,
       req.taskId!,
       req.updateTaskInput!,
+      { id: req.auth!.user.id, name: req.auth!.user.name },
     );
     return res.status(200).json({ task, message: "Task updated successfully" });
   } catch (error) {
@@ -68,6 +69,7 @@ export async function deleteTaskController(req: Request, res: Response) {
       req.workspaceMembership!.workspaceId,
       req.projectId!,
       req.taskId!,
+      { id: req.auth!.user.id, name: req.auth!.user.name },
     );
     return res.status(200).json({ message: "Task deleted successfully" });
   } catch (error) {

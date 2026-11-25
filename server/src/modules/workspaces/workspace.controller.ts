@@ -12,7 +12,7 @@ export async function createWorkspaceController(req: Request, res: Response) {
   try {
     const workspace = await createWorkspaceService(
       req.createWorkspaceInput!,
-      req.auth!.user.id,
+      { id: req.auth!.user.id, name: req.auth!.user.name },
     );
     return res.status(201).json({
       workspace: { ...workspace, role: "OWNER" },
@@ -48,6 +48,7 @@ export async function updateWorkspaceController(req: Request, res: Response) {
     const workspace = await updateWorkspaceService(
       req.workspaceMembership!.workspaceId,
       req.updateWorkspaceInput!,
+      { id: req.auth!.user.id, name: req.auth!.user.name },
     );
     return res.status(200).json({
       workspace: { ...workspace, role: req.workspaceMembership!.role },
@@ -60,7 +61,10 @@ export async function updateWorkspaceController(req: Request, res: Response) {
 
 export async function deleteWorkspaceController(req: Request, res: Response) {
   try {
-    await deleteWorkspaceService(req.workspaceMembership!.workspaceId);
+    await deleteWorkspaceService(req.workspaceMembership!.workspaceId, {
+      id: req.auth!.user.id,
+      name: req.auth!.user.name,
+    });
     return res.status(200).json({ message: "Workspace deleted successfully" });
   } catch (error) {
     return handleError(res, error);

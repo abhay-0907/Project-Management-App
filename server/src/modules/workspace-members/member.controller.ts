@@ -36,6 +36,7 @@ export async function updateWorkspaceMemberRoleController(req: Request, res: Res
       req.memberId!,
       req.workspaceMembership!.role,
       req.updateMemberRoleInput!.role,
+      { id: req.auth!.user.id, name: req.auth!.user.name },
     );
     return res.status(200).json({ member, message: "Workspace member role updated" });
   } catch (error) {
@@ -49,6 +50,7 @@ export async function removeWorkspaceMemberController(req: Request, res: Respons
       req.workspaceMembership!.workspaceId,
       req.memberId!,
       req.workspaceMembership!.role,
+      { id: req.auth!.user.id, name: req.auth!.user.name },
     );
     return res.status(200).json({ message: "Workspace member removed" });
   } catch (error) {

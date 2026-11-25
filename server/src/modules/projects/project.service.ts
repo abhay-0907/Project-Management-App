@@ -5,6 +5,7 @@ import type {
   ListProjectsQuery,
   UpdateProjectInput,
 } from "./project.validation.js";
+import type { ActivityActor } from "../activity-logs/activity.types.js";
 
 export class ProjectError extends Error {
   constructor(
@@ -18,19 +19,19 @@ export class ProjectError extends Error {
 
 export async function createProjectService(
   workspaceId: string,
-  userId: string,
+  actor: ActivityActor,
   input: CreateProjectInput,
 ) {
   try {
     const project = await projectRepository.createProject({
       workspaceId,
-      createdBy: userId,
+      createdBy: actor.id,
       name: input.name,
       description: input.description ?? null,
       status: input.status ?? "ACTIVE",
       startDate: input.startDate ?? null,
       dueDate: input.dueDate ?? null,
-    });
+    }, actor);
     if (!project) throw new Error("Project creation returned no record");
     return project;
   } catch (error) {
@@ -55,6 +56,7 @@ export async function updateProjectService(
   workspaceId: string,
   projectId: string,
   input: UpdateProjectInput,
+  actor: ActivityActor,
 ) {
   const current: Project | null = await projectRepository.findProjectInWorkspace(
     workspaceId,
@@ -69,7 +71,7 @@ export async function updateProjectService(
   }
 
   try {
-    const project = await projectRepository.updateProject(workspaceId, projectId, input);
+    const project = await projectRepository.updateProject(workspaceId, projectId, input, actor);
     if (!project) throw new ProjectError(404, "Project not found");
     return project;
   } catch (error) {
@@ -81,8 +83,8 @@ export async function updateProjectService(
   }
 }
 
-export async function deleteProjectService(workspaceId: string, projectId: string) {
-  const deleted = await projectRepository.deleteProjectPermanently(workspaceId, projectId);
+export async function deleteProjectService(workspaceId: string, projectId: string, actor: ActivityActor) {
+  const deleted = await projectRepository.deleteProjectPermanently(workspaceId, projectId, actor);
   if (!deleted) throw new ProjectError(404, "Project not found");
 }
 

@@ -10,7 +10,7 @@ type InvitationRepository = Pick<typeof repository,
   | "findMembership" | "findPendingByEmail" | "create" | "findById"
   | "cancel" | "rotateToken" | "revoke" | "findByTokenHash" | "expire"
   | "acceptAtomic" | "rejectAtomic"
->;
+> & Partial<Pick<typeof repository, "recordSent">>;
 
 export type InvitationDependencies = {
   repository: InvitationRepository;
@@ -75,7 +75,7 @@ async function createInvitation(
     invitation = await repo.create({
       workspaceId, invitedBy: actor.id, email, role: input.role,
       tokenHash: hashToken(token), expiresAt,
-    });
+    }, actor);
   } catch (error) {
     if (isUniqueViolation(error)) throw new InvitationError(409, "A pending invitation already exists for this email");
     throw error;
@@ -91,10 +91,17 @@ async function createInvitation(
     await repo.revoke(invitation.id);
     throw new InvitationError(503, "The invitation email could not be delivered, so the invitation was cancelled. Please try again.");
   }
+  await repo.recordSent?.({
+    workspaceId,
+    invitationId: invitation.id,
+    email: invitation.email,
+    role: invitation.role,
+    actor,
+  });
   return { id: invitation.id, email: invitation.email, role: invitation.role, status: invitation.status, expiresAt: invitation.expiresAt, createdAt: invitation.createdAt };
 }
 
-async function cancelInvitation(workspaceId: string, invitationId: string, actorRole: WorkspaceRole) {
+async function cancelInvitation(workspaceId: string, invitationId: string, actorRole: WorkspaceRole, actor?: { id: string; name: string }) {
   const invitation = await repo.findById(workspaceId, invitationId);
   if (!invitation) throw new InvitationError(404, "Invitation not found");
   if (invitation.status !== "PENDING") throw new InvitationError(409, "Only pending invitations can be cancelled");
@@ -105,10 +112,10 @@ async function cancelInvitation(workspaceId: string, invitationId: string, actor
     await repo.expire(invitation.id);
     throw new InvitationError(410, "This invitation has expired");
   }
-  if (!await repo.cancel(workspaceId, invitationId)) throw new InvitationError(409, "Invitation changed; refresh and try again");
+  if (!await repo.cancel(workspaceId, invitationId, actor)) throw new InvitationError(409, "Invitation changed; refresh and try again");
 }
 
-async function resendInvitation(workspaceId: string, invitationId: string, actor: { name: string }, actorRole: WorkspaceRole) {
+async function resendInvitation(workspaceId: string, invitationId: string, actor: { id?: string; name: string }, actorRole: WorkspaceRole) {
   const invitation = await repo.findById(workspaceId, invitationId);
   if (!invitation) throw new InvitationError(404, "Invitation not found");
   if (invitation.status !== "PENDING") throw new InvitationError(409, "Only pending invitations can be resent");
@@ -136,6 +143,16 @@ async function resendInvitation(workspaceId: string, invitationId: string, actor
     await repo.revoke(invitationId);
     throw new InvitationError(503, "The invitation email could not be delivered, so the invitation was cancelled");
   }
+  if (actor.id) {
+    await repo.recordSent?.({
+      workspaceId,
+      invitationId,
+      email: updated.email,
+      role: updated.role,
+      actor: { id: actor.id, name: actor.name },
+      action: "INVITATION_RESENT",
+    });
+  }
   return { message: "Invitation resent", expiresAt };
 }
 
@@ -153,7 +170,7 @@ async function previewInvitation(token: string) {
   };
 }
 
-async function acceptInvitation(token: string, user: { id: string; email: string; emailVerifiedAt: Date | null }) {
+async function acceptInvitation(token: string, user: { id: string; email: string; name?: string; emailVerifiedAt: Date | null }) {
   if (!user.emailVerifiedAt) throw new InvitationError(403, "A verified email address is required to accept invitations");
   const invitation = await repo.findByTokenHash(hashToken(token));
   if (!invitation) throw new InvitationError(404, "Invitation not found");
@@ -171,7 +188,7 @@ async function acceptInvitation(token: string, user: { id: string; email: string
   try {
     const accepted = await repo.acceptAtomic({
       invitationId: invitation.id, tokenHash: hashToken(token),
-      workspaceId: invitation.workspaceId, userId: user.id, role: invitation.role,
+      workspaceId: invitation.workspaceId, userId: user.id, role: invitation.role, actorName: user.name,
     });
     if (!accepted) throw new InvitationError(409, "This invitation was already used or expired");
   } catch (error) {
@@ -181,7 +198,7 @@ async function acceptInvitation(token: string, user: { id: string; email: string
   return { workspaceId: invitation.workspaceId, workspaceSlug: invitation.workspaceSlug, message: "Invitation accepted" };
 }
 
-async function rejectInvitation(token: string, user: { email: string; emailVerifiedAt: Date | null }) {
+async function rejectInvitation(token: string, user: { id?: string; name?: string; email: string; emailVerifiedAt: Date | null }) {
   if (!user.emailVerifiedAt) throw new InvitationError(403, "A verified email address is required to reject invitations");
   const invitation = await repo.findByTokenHash(hashToken(token));
   if (!invitation) throw new InvitationError(404, "Invitation not found");
@@ -193,7 +210,8 @@ async function rejectInvitation(token: string, user: { email: string; emailVerif
     await repo.expire(invitation.id);
     throw new InvitationError(410, "This invitation has expired");
   }
-  if (!await repo.rejectAtomic(invitation.id, hashToken(token))) throw new InvitationError(409, "This invitation was already used or expired");
+  const actor = user.id ? { id: user.id, name: user.name ?? "Workspace member" } : undefined;
+  if (!await repo.rejectAtomic(invitation.id, hashToken(token), actor)) throw new InvitationError(409, "This invitation was already used or expired");
   return { message: "Invitation declined" };
 }
 

@@ -25,6 +25,7 @@ export async function createBoardColumnController(req: Request, res: Response) {
       req.workspaceMembership!.workspaceId,
       req.projectId!,
       req.createBoardColumnInput!,
+      { id: req.auth!.user.id, name: req.auth!.user.name },
     );
     return res.status(201).json({ column, message: "Board column created" });
   } catch (error) {
@@ -39,6 +40,7 @@ export async function updateBoardColumnController(req: Request, res: Response) {
       req.projectId!,
       req.statusId!,
       req.updateBoardColumnInput!,
+      { id: req.auth!.user.id, name: req.auth!.user.name },
     );
     return res.status(200).json({ column, message: "Board column updated" });
   } catch (error) {
@@ -53,6 +55,7 @@ export async function deleteBoardColumnController(req: Request, res: Response) {
       req.projectId!,
       req.statusId!,
       req.deleteBoardColumnInput!,
+      { id: req.auth!.user.id, name: req.auth!.user.name },
     );
     return res.status(200).json({ ...result, message: "Board column deleted" });
   } catch (error) {

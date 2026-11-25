@@ -1,6 +1,7 @@
 import * as memberRepository from "./member.repository.js";
 import type { WorkspaceRole } from "../workspaces/workspace.types.js";
 import type { EditableWorkspaceMemberRole } from "./member.types.js";
+import type { ActivityActor } from "../activity-logs/activity.types.js";
 
 export class MemberError extends Error {
   constructor(
@@ -27,6 +28,7 @@ export async function changeWorkspaceMemberRole(
   targetUserId: string,
   actorRole: WorkspaceRole,
   role: EditableWorkspaceMemberRole,
+  actor: ActivityActor,
 ) {
   if (actorRole !== "OWNER") {
     throw new MemberError(403, "Only the workspace owner can change member roles");
@@ -44,6 +46,7 @@ export async function changeWorkspaceMemberRole(
     targetUserId,
     target.role,
     role,
+    actor,
   );
   if (!updated) {
     throw new MemberError(409, "The member changed while you were editing. Refresh and try again");
@@ -55,6 +58,7 @@ export async function removeWorkspaceMember(
   workspaceId: string,
   targetUserId: string,
   actorRole: WorkspaceRole,
+  actor: ActivityActor,
 ) {
   const target = await memberRepository.findWorkspaceMember(workspaceId, targetUserId);
   if (!target) throw new MemberError(404, "Workspace member not found");
@@ -69,6 +73,7 @@ export async function removeWorkspaceMember(
     workspaceId,
     targetUserId,
     target.role,
+    actor,
   );
   if (!removed) {
     throw new MemberError(409, "The member changed while you were removing them. Refresh and try again");

@@ -5,6 +5,7 @@ import type {
   DeleteBoardColumnInput,
   UpdateBoardColumnInput,
 } from "./board.validation.js";
+import type { ActivityActor } from "../activity-logs/activity.types.js";
 
 export async function getProjectBoardService(workspaceId: string, projectId: string) {
   const board = await boardRepository.getProjectBoard(workspaceId, projectId);
@@ -16,6 +17,7 @@ export async function createBoardColumnService(
   workspaceId: string,
   projectId: string,
   input: CreateBoardColumnInput,
+  actor: ActivityActor,
 ) {
   try {
     const column = await boardRepository.createBoardColumn(
@@ -23,6 +25,7 @@ export async function createBoardColumnService(
       projectId,
       boardRepository.makeStatusSlug(input.name),
       input,
+      actor,
     );
     if (!column) throw new BoardError(404, "Project not found");
     return column;
@@ -36,6 +39,7 @@ export async function updateBoardColumnService(
   projectId: string,
   statusId: string,
   input: UpdateBoardColumnInput,
+  actor: ActivityActor,
 ) {
   try {
     const column = await boardRepository.updateBoardColumn(
@@ -44,6 +48,7 @@ export async function updateBoardColumnService(
       statusId,
       input.name === undefined ? undefined : boardRepository.makeStatusSlug(input.name),
       input,
+      actor,
     );
     if (!column) throw new BoardError(404, "Board column not found");
     return column;
@@ -57,6 +62,7 @@ export async function deleteBoardColumnService(
   projectId: string,
   statusId: string,
   input: DeleteBoardColumnInput,
+  actor: ActivityActor,
 ) {
   try {
     const result = await boardRepository.deleteBoardColumn(
@@ -64,6 +70,7 @@ export async function deleteBoardColumnService(
       projectId,
       statusId,
       input,
+      actor,
     );
     if (!result) throw new BoardError(404, "Board column not found");
     return result;

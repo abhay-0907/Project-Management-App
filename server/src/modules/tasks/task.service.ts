@@ -2,15 +2,16 @@ import type { Task } from "../../db/schema/tasks.schema.js";
 import * as taskRepository from "./task.repository.js";
 import { isTaskError, TaskError } from "./task.errors.js";
 import type { CreateTaskInput, ListTasksQuery, UpdateTaskInput } from "./task.validation.js";
+import type { ActivityActor } from "../activity-logs/activity.types.js";
 
 export async function createTaskService(
   workspaceId: string,
   projectId: string,
-  userId: string,
+  actor: ActivityActor,
   input: CreateTaskInput,
 ) {
   try {
-    const task = await taskRepository.createTask(workspaceId, projectId, userId, input);
+    const task = await taskRepository.createTask(workspaceId, projectId, actor, input);
     if (!task) throw new TaskError(404, "Project not found");
     return task;
   } catch (error) {
@@ -47,6 +48,7 @@ export async function updateTaskService(
   projectId: string,
   taskId: string,
   input: UpdateTaskInput,
+  actor: ActivityActor,
 ) {
   try {
     const task: Task | null = await taskRepository.updateTask(
@@ -54,6 +56,7 @@ export async function updateTaskService(
       projectId,
       taskId,
       input,
+      actor,
     );
     if (!task) throw new TaskError(404, "Task not found");
     return task;
@@ -66,9 +69,10 @@ export async function deleteTaskService(
   workspaceId: string,
   projectId: string,
   taskId: string,
+  actor: ActivityActor,
 ) {
   try {
-    const deleted = await taskRepository.deleteTask(workspaceId, projectId, taskId);
+    const deleted = await taskRepository.deleteTask(workspaceId, projectId, taskId, actor);
     if (!deleted) throw new TaskError(404, "Task not found");
   } catch (error) {
     if (hasPostgresCode(error, "23503")) {

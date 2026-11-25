@@ -9,6 +9,7 @@ import {
 } from "./project.controller.js";
 import taskRouter from "../tasks/task.routes.js";
 import boardRouter from "../tasks/board.routes.js";
+import activityRouter from "../activity-logs/activity.routes.js";
 import {
   requireProjectInWorkspace,
   validateCreateProject,
@@ -30,6 +31,12 @@ router.use(
   validateProjectId,
   requireProjectInWorkspace,
   boardRouter,
+);
+router.use(
+  "/:projectId/activities",
+  validateProjectId,
+  requireProjectInWorkspace,
+  activityRouter,
 );
 router.get("/", validateProjectListQuery, listProjectsController);
 router.post("/", validateCreateProject, createProjectController);

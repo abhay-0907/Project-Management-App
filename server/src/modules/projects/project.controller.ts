@@ -12,7 +12,7 @@ export async function createProjectController(req: Request, res: Response) {
   try {
     const project = await createProjectService(
       req.workspaceMembership!.workspaceId,
-      req.auth!.user.id,
+      { id: req.auth!.user.id, name: req.auth!.user.name },
       req.createProjectInput!,
     );
     return res.status(201).json({ project, message: "Project created successfully" });
@@ -51,6 +51,7 @@ export async function updateProjectController(req: Request, res: Response) {
       req.workspaceMembership!.workspaceId,
       req.projectId!,
       req.updateProjectInput!,
+      { id: req.auth!.user.id, name: req.auth!.user.name },
     );
     return res.status(200).json({ project, message: "Project updated successfully" });
   } catch (error) {
@@ -60,7 +61,10 @@ export async function updateProjectController(req: Request, res: Response) {
 
 export async function deleteProjectController(req: Request, res: Response) {
   try {
-    await deleteProjectService(req.workspaceMembership!.workspaceId, req.projectId!);
+    await deleteProjectService(req.workspaceMembership!.workspaceId, req.projectId!, {
+      id: req.auth!.user.id,
+      name: req.auth!.user.name,
+    });
     return res.status(200).json({ message: "Project deleted successfully" });
   } catch (error) {
     return handleError(res, error, "Project deletion failed");

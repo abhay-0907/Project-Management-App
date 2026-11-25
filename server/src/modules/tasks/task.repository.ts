@@ -10,13 +10,15 @@ import {
 } from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";
 import { db } from "../../config/db.connection.js";
-import { activityLogsTable } from "../../db/schema/activity-logs.schema.js";
 import { notificationsTable } from "../../db/schema/notifications.schema.js";
 import { projectsTable } from "../../db/schema/projects.schema.js";
 import { projectStatusesTable } from "../../db/schema/project-statuses.schema.js";
 import { tasksTable, type NewTask } from "../../db/schema/tasks.schema.js";
 import { usersTable } from "../../db/schema/users.schema.js";
 import { workspaceMembersTable } from "../../db/schema/workspace-members.schema.js";
+import { workspacesTable } from "../../db/schema/workspaces.schema.js";
+import { logActivity } from "../activity-logs/activity.service.js";
+import type { ActivityActor } from "../activity-logs/activity.types.js";
 import { DEFAULT_PROJECT_STATUSES } from "../projects/project-status.defaults.js";
 import { TaskError } from "./task.errors.js";
 import type { CreateTaskInput, ListTasksQuery, UpdateTaskInput } from "./task.validation.js";
@@ -24,7 +26,7 @@ import type { CreateTaskInput, ListTasksQuery, UpdateTaskInput } from "./task.va
 export async function createTask(
   workspaceId: string,
   projectId: string,
-  userId: string,
+  actor: ActivityActor,
   input: CreateTaskInput,
 ) {
   return db.transaction(async (tx) => {
@@ -151,13 +153,33 @@ export async function createTask(
       description: input.description ?? null,
       priority: input.priority ?? "MEDIUM",
       assigneeId: input.assigneeId ?? null,
-      createdBy: userId,
+      createdBy: actor.id,
       startDate: input.startDate ?? null,
       dueDate: input.dueDate ?? null,
       position: (lastPosition?.value ?? -1) + 1,
     };
 
     const [created] = await tx.insert(tasksTable).values(task).returning();
+    if (created) {
+      const [workspace] = await tx.select({ name: workspacesTable.name }).from(workspacesTable)
+        .where(eq(workspacesTable.id, workspaceId)).limit(1);
+      await logActivity(tx, {
+        workspaceId,
+        workspaceName: workspace?.name,
+        actor,
+        action: "TASK_CREATED",
+        entityType: "TASK",
+        entityId: created.id,
+        entityName: created.title,
+        metadata: {
+          projectId,
+          priority: created.priority,
+          dueDate: created.dueDate,
+          assigneeId: created.assigneeId,
+          status: { id: taskStatus.id, name: taskStatus.name },
+        },
+      });
+    }
     return created ?? null;
   });
 }
@@ -269,6 +291,12 @@ export async function findTaskInProject(
   return task ?? null;
 }
 
+export async function findTaskInWorkspace(workspaceId: string, taskId: string) {
+  const [task] = await db.select({ id: tasksTable.id }).from(tasksTable)
+    .where(and(eq(tasksTable.workspaceId, workspaceId), eq(tasksTable.id, taskId))).limit(1);
+  return task ?? null;
+}
+
 export async function findTaskWithDetails(
   workspaceId: string,
   projectId: string,
@@ -371,6 +399,7 @@ export async function updateTask(
   projectId: string,
   taskId: string,
   input: UpdateTaskInput,
+  actor: ActivityActor,
 ) {
   return db.transaction(async (tx) => {
     const [current] = await tx
@@ -407,10 +436,10 @@ export async function updateTask(
       if (!assignee) throw new TaskError(400, "Assignee must be a member of this workspace");
     }
 
-    let updatedStatus: { id: string; isCompleted: boolean } | undefined;
+    let updatedStatus: { id: string; name: string; isCompleted: boolean } | undefined;
     if (input.statusId) {
       const [status] = await tx
-        .select({ id: projectStatusesTable.id, isCompleted: projectStatusesTable.isCompleted })
+        .select({ id: projectStatusesTable.id, name: projectStatusesTable.name, isCompleted: projectStatusesTable.isCompleted })
         .from(projectStatusesTable)
         .where(
           and(
@@ -455,6 +484,77 @@ export async function updateTask(
         ),
       )
       .returning();
+    if (!updated) return null;
+
+    const [workspace] = await tx.select({ name: workspacesTable.name }).from(workspacesTable)
+      .where(eq(workspacesTable.id, workspaceId)).limit(1);
+    const base = {
+      workspaceId,
+      workspaceName: workspace?.name,
+      actor,
+      entityType: "TASK" as const,
+      entityId: updated.id,
+      entityName: updated.title,
+    };
+
+    if (updated.statusId !== current.statusId) {
+      const [oldStatus] = await tx.select({ id: projectStatusesTable.id, name: projectStatusesTable.name })
+        .from(projectStatusesTable).where(eq(projectStatusesTable.id, current.statusId)).limit(1);
+      await logActivity(tx, {
+        ...base,
+        action: "TASK_STATUS_CHANGED",
+        metadata: {
+          projectId,
+          changes: { status: { old: oldStatus ?? { id: current.statusId, name: "Deleted status" }, new: { id: updated.statusId, name: updatedStatus?.name ?? "Status" } } },
+        },
+      });
+    }
+    if (input.priority !== undefined && updated.priority !== current.priority) {
+      await logActivity(tx, {
+        ...base,
+        action: "TASK_PRIORITY_CHANGED",
+        metadata: { projectId, changes: { priority: { old: current.priority, new: updated.priority } } },
+      });
+    }
+    if (input.assigneeId !== undefined && updated.assigneeId !== current.assigneeId) {
+      const ids = [current.assigneeId, updated.assigneeId].filter((id): id is string => Boolean(id));
+      const names = ids.length
+        ? await tx.select({ id: usersTable.id, name: usersTable.name }).from(usersTable).where(inArray(usersTable.id, ids))
+        : [];
+      const nameById = new Map(names.map((user) => [user.id, user.name]));
+      const oldAssignee = current.assigneeId
+        ? { id: current.assigneeId, name: nameById.get(current.assigneeId) ?? "Former member" }
+        : null;
+      const newAssignee = updated.assigneeId
+        ? { id: updated.assigneeId, name: nameById.get(updated.assigneeId) ?? "Workspace member" }
+        : null;
+      await logActivity(tx, {
+        ...base,
+        action: "TASK_ASSIGNEE_CHANGED",
+        metadata: { projectId, changes: { assignee: { old: oldAssignee, new: newAssignee } } },
+      });
+    }
+    if (input.dueDate !== undefined && updated.dueDate !== current.dueDate) {
+      await logActivity(tx, {
+        ...base,
+        action: "TASK_DUE_DATE_CHANGED",
+        metadata: { projectId, changes: { dueDate: { old: current.dueDate, new: updated.dueDate } } },
+      });
+    }
+
+    const generalChanges: Record<string, { old: unknown; new: unknown }> = {};
+    for (const [key, newValue] of Object.entries(input)) {
+      if (["statusId", "priority", "assigneeId", "dueDate"].includes(key)) continue;
+      const oldValue = current[key as keyof typeof current];
+      if (oldValue !== newValue) generalChanges[key] = { old: oldValue, new: newValue };
+    }
+    if (Object.keys(generalChanges).length) {
+      await logActivity(tx, {
+        ...base,
+        action: "TASK_UPDATED",
+        metadata: { projectId, changes: generalChanges },
+      });
+    }
     return updated ?? null;
   });
 }
@@ -463,10 +563,11 @@ export async function deleteTask(
   workspaceId: string,
   projectId: string,
   taskId: string,
+  actor: ActivityActor,
 ) {
   return db.transaction(async (tx) => {
     const [task] = await tx
-      .select({ id: tasksTable.id })
+      .select({ id: tasksTable.id, title: tasksTable.title })
       .from(tasksTable)
       .where(
         and(
@@ -492,15 +593,18 @@ export async function deleteTask(
       .limit(1);
     if (childTask) throw new TaskError(409, "Delete subtasks before deleting this task");
 
-    await tx
-      .delete(activityLogsTable)
-      .where(
-        and(
-          eq(activityLogsTable.workspaceId, workspaceId),
-          eq(activityLogsTable.entityId, taskId),
-          inArray(activityLogsTable.entityType, ["task", "TASK"]),
-        ),
-      );
+    const [workspace] = await tx.select({ name: workspacesTable.name }).from(workspacesTable)
+      .where(eq(workspacesTable.id, workspaceId)).limit(1);
+    await logActivity(tx, {
+      workspaceId,
+      workspaceName: workspace?.name,
+      actor,
+      action: "TASK_DELETED",
+      entityType: "TASK",
+      entityId: task.id,
+      entityName: task.title,
+      metadata: { projectId, title: task.title },
+    });
     await tx
       .delete(notificationsTable)
       .where(

@@ -28,7 +28,10 @@ export async function createInvitationController(req: Request, res: Response) {
 
 export async function cancelInvitationController(req: Request, res: Response) {
   try {
-    await cancelInvitation(req.workspaceMembership!.workspaceId, req.invitationId!, req.workspaceMembership!.role);
+    await cancelInvitation(req.workspaceMembership!.workspaceId, req.invitationId!, req.workspaceMembership!.role, {
+      id: req.auth!.user.id,
+      name: req.auth!.user.name,
+    });
     return res.status(200).json({ message: "Invitation cancelled" });
   } catch (error) {
     return handleError(res, error);
@@ -40,7 +43,7 @@ export async function resendInvitationController(req: Request, res: Response) {
     const result = await resendInvitation(
       req.workspaceMembership!.workspaceId,
       req.invitationId!,
-      { name: req.auth!.user.name },
+      { id: req.auth!.user.id, name: req.auth!.user.name },
       req.workspaceMembership!.role,
     );
     return res.status(200).json(result);
@@ -62,6 +65,7 @@ export async function acceptInvitationController(req: Request, res: Response) {
     const result = await acceptInvitation(req.invitationAcceptInput!.token, {
       id: req.auth!.user.id,
       email: req.auth!.user.email,
+      name: req.auth!.user.name,
       emailVerifiedAt: req.auth!.user.emailVerifiedAt,
     });
     return res.status(200).json(result);
@@ -73,6 +77,8 @@ export async function acceptInvitationController(req: Request, res: Response) {
 export async function rejectInvitationController(req: Request, res: Response) {
   try {
     const result = await rejectInvitation(req.invitationRejectInput!.token, {
+      id: req.auth!.user.id,
+      name: req.auth!.user.name,
       email: req.auth!.user.email,
       emailVerifiedAt: req.auth!.user.emailVerifiedAt,
     });

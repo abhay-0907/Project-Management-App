@@ -1,15 +1,17 @@
 import { and, asc, count, desc, eq, getTableColumns, ilike, inArray } from "drizzle-orm";
 import { db } from "../../config/db.connection.js";
-import { activityLogsTable } from "../../db/schema/activity-logs.schema.js";
 import { notificationsTable } from "../../db/schema/notifications.schema.js";
 import { projectsTable, type NewProject } from "../../db/schema/projects.schema.js";
 import { projectStatusesTable } from "../../db/schema/project-statuses.schema.js";
 import { tasksTable } from "../../db/schema/tasks.schema.js";
 import { usersTable } from "../../db/schema/users.schema.js";
+import { workspacesTable } from "../../db/schema/workspaces.schema.js";
+import { logActivity } from "../activity-logs/activity.service.js";
+import type { ActivityActor } from "../activity-logs/activity.types.js";
 import { DEFAULT_PROJECT_STATUSES } from "./project-status.defaults.js";
 import type { ListProjectsQuery, UpdateProjectInput } from "./project.validation.js";
 
-export async function createProject(project: NewProject) {
+export async function createProject(project: NewProject, actor: ActivityActor) {
   return db.transaction(async (tx) => {
     const [created] = await tx.insert(projectsTable).values(project).returning();
     if (!created) return null;
@@ -21,6 +23,19 @@ export async function createProject(project: NewProject) {
         workspaceId: created.workspaceId,
       })),
     );
+
+    const [workspace] = await tx.select({ name: workspacesTable.name }).from(workspacesTable)
+      .where(eq(workspacesTable.id, created.workspaceId)).limit(1);
+    await logActivity(tx, {
+      workspaceId: created.workspaceId,
+      workspaceName: workspace?.name,
+      actor,
+      action: "PROJECT_CREATED",
+      entityType: "PROJECT",
+      entityId: created.id,
+      entityName: created.name,
+      metadata: { name: created.name, status: created.status },
+    });
 
     return created;
   });
@@ -108,19 +123,45 @@ export async function updateProject(
   workspaceId: string,
   projectId: string,
   input: UpdateProjectInput,
+  actor: ActivityActor,
 ) {
-  const [project] = await db
-    .update(projectsTable)
-    .set({ ...input, updatedAt: new Date() })
-    .where(and(eq(projectsTable.workspaceId, workspaceId), eq(projectsTable.id, projectId)))
-    .returning();
-  return project ?? null;
+  return db.transaction(async (tx) => {
+    const [current] = await tx.select().from(projectsTable).where(and(
+      eq(projectsTable.workspaceId, workspaceId), eq(projectsTable.id, projectId),
+    )).for("update").limit(1);
+    if (!current) return null;
+    const [project] = await tx.update(projectsTable).set({ ...input, updatedAt: new Date() })
+      .where(and(eq(projectsTable.workspaceId, workspaceId), eq(projectsTable.id, projectId)))
+      .returning();
+    if (!project) return null;
+
+    const changes: Record<string, { old: unknown; new: unknown }> = {};
+    for (const [key, newValue] of Object.entries(input)) {
+      const oldValue = current[key as keyof typeof current];
+      if (oldValue !== newValue) changes[key] = { old: oldValue, new: newValue };
+    }
+    if (Object.keys(changes).length) {
+      const [workspace] = await tx.select({ name: workspacesTable.name }).from(workspacesTable)
+        .where(eq(workspacesTable.id, workspaceId)).limit(1);
+      await logActivity(tx, {
+        workspaceId,
+        workspaceName: workspace?.name,
+        actor,
+        action: "PROJECT_UPDATED",
+        entityType: "PROJECT",
+        entityId: project.id,
+        entityName: project.name,
+        metadata: { changes },
+      });
+    }
+    return project;
+  });
 }
 
-export async function deleteProjectPermanently(workspaceId: string, projectId: string) {
+export async function deleteProjectPermanently(workspaceId: string, projectId: string, actor: ActivityActor) {
   return db.transaction(async (tx) => {
     const [project] = await tx
-      .select({ id: projectsTable.id })
+      .select({ id: projectsTable.id, name: projectsTable.name })
       .from(projectsTable)
       .where(and(eq(projectsTable.workspaceId, workspaceId), eq(projectsTable.id, projectId)))
       .for("update")
@@ -139,15 +180,18 @@ export async function deleteProjectPermanently(workspaceId: string, projectId: s
       .update(tasksTable)
       .set({ parentTaskId: null })
       .where(and(eq(tasksTable.workspaceId, workspaceId), eq(tasksTable.projectId, projectId)));
-    await tx
-      .delete(activityLogsTable)
-      .where(
-        and(
-          eq(activityLogsTable.workspaceId, workspaceId),
-          inArray(activityLogsTable.entityId, relatedEntityIds),
-          inArray(activityLogsTable.entityType, ["project", "task", "PROJECT", "TASK"]),
-        ),
-      );
+    const [workspace] = await tx.select({ name: workspacesTable.name }).from(workspacesTable)
+      .where(eq(workspacesTable.id, workspaceId)).limit(1);
+    await logActivity(tx, {
+      workspaceId,
+      workspaceName: workspace?.name,
+      actor,
+      action: "PROJECT_DELETED",
+      entityType: "PROJECT",
+      entityId: project.id,
+      entityName: project.name,
+      metadata: { name: project.name, deletedTaskCount: taskRows.length },
+    });
     await tx
       .delete(notificationsTable)
       .where(

@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
+import { findTaskInWorkspace } from "./task.repository.js";
 import {
   createTaskSchema,
   listTasksQuerySchema,
@@ -53,4 +54,17 @@ export function validateTaskId(req: Request, res: Response, next: NextFunction) 
   }
   req.taskId = parsed.data;
   next();
+}
+
+export async function requireTaskInWorkspace(req: Request, res: Response, next: NextFunction) {
+  try {
+    const task = await findTaskInWorkspace(req.workspaceMembership!.workspaceId, req.taskId!);
+    if (!task) {
+      res.status(404).json({ error: "Task not found" });
+      return;
+    }
+    next();
+  } catch (error) {
+    next(error);
+  }
 }

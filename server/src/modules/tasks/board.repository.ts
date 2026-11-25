@@ -12,6 +12,9 @@ import { db } from "../../config/db.connection.js";
 import { projectStatusesTable } from "../../db/schema/project-statuses.schema.js";
 import { projectsTable } from "../../db/schema/projects.schema.js";
 import { tasksTable } from "../../db/schema/tasks.schema.js";
+import { workspacesTable } from "../../db/schema/workspaces.schema.js";
+import { logActivity } from "../activity-logs/activity.service.js";
+import type { ActivityActor } from "../activity-logs/activity.types.js";
 import { usersTable } from "../../db/schema/users.schema.js";
 import { BoardError } from "./board.errors.js";
 import type {
@@ -92,6 +95,7 @@ export async function createBoardColumn(
   projectId: string,
   slug: string,
   input: CreateBoardColumnInput,
+  actor: ActivityActor,
 ) {
   return db.transaction(async (tx) => {
     await lockProject(tx, workspaceId, projectId);
@@ -130,6 +134,20 @@ export async function createBoardColumn(
         isCompleted: input.isCompleted ?? false,
       })
       .returning();
+    if (created) {
+      const [workspace] = await tx.select({ name: workspacesTable.name }).from(workspacesTable)
+        .where(eq(workspacesTable.id, workspaceId)).limit(1);
+      await logActivity(tx, {
+        workspaceId,
+        workspaceName: workspace?.name,
+        actor,
+        action: "BOARD_COLUMN_CREATED",
+        entityType: "BOARD_COLUMN",
+        entityId: created.id,
+        entityName: created.name,
+        metadata: { projectId, name: created.name, position: created.position },
+      });
+    }
     return created ?? null;
   });
 }
@@ -140,6 +158,7 @@ export async function updateBoardColumn(
   statusId: string,
   slug: string | undefined,
   input: UpdateBoardColumnInput,
+  actor: ActivityActor,
 ) {
   return db.transaction(async (tx) => {
     await lockProject(tx, workspaceId, projectId);
@@ -221,6 +240,44 @@ export async function updateBoardColumn(
         ),
       )
       .returning();
+    if (!updated) return null;
+    const [workspace] = await tx.select({ name: workspacesTable.name }).from(workspacesTable)
+      .where(eq(workspacesTable.id, workspaceId)).limit(1);
+    const base = {
+      workspaceId,
+      workspaceName: workspace?.name,
+      actor,
+      entityType: "BOARD_COLUMN" as const,
+      entityId: updated.id,
+      entityName: updated.name,
+    };
+    if (input.name !== undefined && input.name !== current.name) {
+      await logActivity(tx, {
+        ...base,
+        action: "BOARD_COLUMN_RENAMED",
+        metadata: { projectId, changes: { name: { old: current.name, new: updated.name } } },
+      });
+    }
+    if (input.position !== undefined && input.position !== current.position) {
+      await logActivity(tx, {
+        ...base,
+        action: "BOARD_COLUMN_REORDERED",
+        metadata: { projectId, changes: { position: { old: current.position, new: updated.position } } },
+      });
+    }
+    const otherChanges: Record<string, { old: unknown; new: unknown }> = {};
+    for (const [key, newValue] of Object.entries(input)) {
+      if (key === "name" || key === "position") continue;
+      const oldValue = current[key as keyof typeof current];
+      if (oldValue !== newValue) otherChanges[key] = { old: oldValue, new: newValue };
+    }
+    if (Object.keys(otherChanges).length) {
+      await logActivity(tx, {
+        ...base,
+        action: "BOARD_COLUMN_UPDATED",
+        metadata: { projectId, changes: otherChanges },
+      });
+    }
     return updated ?? null;
   });
 }
@@ -230,6 +287,7 @@ export async function deleteBoardColumn(
   projectId: string,
   statusId: string,
   input: DeleteBoardColumnInput,
+  actor: ActivityActor,
 ) {
   return db.transaction(async (tx) => {
     await lockProject(tx, workspaceId, projectId);
@@ -271,6 +329,13 @@ export async function deleteBoardColumn(
       throw new BoardError(400, "The destination must be another column in this project");
     }
     const defaultReplacement = requestedTarget ?? remaining[0]!;
+    const affectedTasks = hasTasks
+      ? await tx.select({ id: tasksTable.id, title: tasksTable.title }).from(tasksTable).where(and(
+          eq(tasksTable.workspaceId, workspaceId),
+          eq(tasksTable.projectId, projectId),
+          eq(tasksTable.statusId, statusId),
+        )).for("update")
+      : [];
     if (hasTasks) {
       const [targetMax] = await tx
         .select({ value: max(tasksTable.position) })
@@ -299,6 +364,29 @@ export async function deleteBoardColumn(
             eq(tasksTable.statusId, statusId),
           ),
         );
+      const [workspace] = await tx.select({ name: workspacesTable.name }).from(workspacesTable)
+        .where(eq(workspacesTable.id, workspaceId)).limit(1);
+      for (const task of affectedTasks) {
+        await logActivity(tx, {
+          workspaceId,
+          workspaceName: workspace?.name,
+          actor,
+          action: "TASK_STATUS_CHANGED",
+          entityType: "TASK",
+          entityId: task.id,
+          entityName: task.title,
+          metadata: {
+            projectId,
+            changes: {
+              status: {
+                old: { id: current.id, name: current.name },
+                new: { id: defaultReplacement.id, name: defaultReplacement.name },
+              },
+            },
+            reason: "BOARD_COLUMN_DELETED",
+          },
+        });
+      }
     }
 
     if (current.isDefault) {
@@ -328,6 +416,24 @@ export async function deleteBoardColumn(
         .set({ position })
         .where(eq(projectStatusesTable.id, status.id));
     }
+
+    const [workspace] = await tx.select({ name: workspacesTable.name }).from(workspacesTable)
+      .where(eq(workspacesTable.id, workspaceId)).limit(1);
+    await logActivity(tx, {
+      workspaceId,
+      workspaceName: workspace?.name,
+      actor,
+      action: "BOARD_COLUMN_DELETED",
+      entityType: "BOARD_COLUMN",
+      entityId: current.id,
+      entityName: current.name,
+      metadata: {
+        projectId,
+        name: current.name,
+        reassignedTaskCount: taskTotal?.total ?? 0,
+        reassignedToStatusId: hasTasks ? defaultReplacement.id : null,
+      },
+    });
 
     return {
       deletedStatusId: statusId,

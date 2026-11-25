@@ -1,5 +1,6 @@
 import * as workspaceRepository from "./workspace.repository.js";
 import type { CreateWorkspaceInput, UpdateWorkspaceInput } from "./workspace.validation.js";
+import type { ActivityActor } from "../activity-logs/activity.types.js";
 
 export class WorkspaceError extends Error {
   constructor(
@@ -11,12 +12,12 @@ export class WorkspaceError extends Error {
   }
 }
 
-export async function createWorkspaceService(input: CreateWorkspaceInput, userId: string) {
+export async function createWorkspaceService(input: CreateWorkspaceInput, actor: ActivityActor) {
   if (await workspaceRepository.findWorkspaceBySlug(input.slug)) {
     throw new WorkspaceError(409, "A workspace with this slug already exists");
   }
   try {
-    return await workspaceRepository.createWorkspace(input, userId);
+    return await workspaceRepository.createWorkspace(input, actor);
   } catch (error) {
     if (isUniqueViolation(error)) {
       throw new WorkspaceError(409, "A workspace with this slug already exists");
@@ -38,6 +39,7 @@ export async function getWorkspaceService(workspaceId: string) {
 export async function updateWorkspaceService(
   workspaceId: string,
   input: UpdateWorkspaceInput,
+  actor: ActivityActor,
 ) {
   if (input.slug) {
     const existing = await workspaceRepository.findWorkspaceBySlug(input.slug);
@@ -46,7 +48,7 @@ export async function updateWorkspaceService(
     }
   }
   try {
-    const workspace = await workspaceRepository.updateWorkspace(workspaceId, input);
+    const workspace = await workspaceRepository.updateWorkspace(workspaceId, input, actor);
     if (!workspace) throw new WorkspaceError(404, "Workspace not found");
     return workspace;
   } catch (error) {
@@ -57,8 +59,8 @@ export async function updateWorkspaceService(
   }
 }
 
-export async function deleteWorkspaceService(workspaceId: string) {
-  const deleted = await workspaceRepository.deleteWorkspace(workspaceId);
+export async function deleteWorkspaceService(workspaceId: string, actor: ActivityActor) {
+  const deleted = await workspaceRepository.deleteWorkspace(workspaceId, actor);
   if (!deleted) throw new WorkspaceError(404, "Workspace not found");
 }
 

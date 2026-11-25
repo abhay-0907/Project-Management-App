@@ -16,6 +16,8 @@ import {
 import projectRouter from "../projects/project.routes.js";
 import workspaceMemberRouter from "../workspace-members/member.routes.js";
 import { workspaceInvitationRouter } from "../invitations/invitation.routes.js";
+import activityRouter from "../activity-logs/activity.routes.js";
+import { requireTaskInWorkspace, validateTaskId } from "../tasks/task.middleware.js";
 
 const router = Router();
 
@@ -24,6 +26,14 @@ router.use("/:workspaceId/projects", requireWorkspaceMembership, projectRouter);
 // Authentication is inherited from this router; member routes verify membership per operation.
 router.use("/:workspaceId/members", workspaceMemberRouter);
 router.use("/:workspaceId/invitations", workspaceInvitationRouter);
+router.use("/:workspaceId/activities", requireWorkspaceMembership, activityRouter);
+router.use(
+  "/:workspaceId/tasks/:taskId/activities",
+  requireWorkspaceMembership,
+  validateTaskId,
+  requireTaskInWorkspace,
+  activityRouter,
+);
 router.post("/", validateCreateWorkspace, createWorkspaceController);
 router.get("/", userWorkspacesController);
 router.get(
