@@ -4,14 +4,38 @@ import routes from "../routes/index.js";
 
 const app = express();
 
-const clientOrigin = process.env.CLIENT_ORIGIN ?? "http://localhost:3000";
+const configuredClientOrigins =
+  process.env.CLIENT_ORIGIN ??
+  (process.env.NODE_ENV === "production" ? "" : "http://localhost:3000");
+const clientOrigins = new Set(
+  configuredClientOrigins
+    .split(",")
+    .map((origin) => origin.trim().replace(/\/+$/, ""))
+    .filter(Boolean),
+);
+
+if (process.env.NODE_ENV === "production" && clientOrigins.size === 0) {
+  throw new Error("CLIENT_ORIGIN must be configured in production");
+}
+
 app.use((req, res, next) => {
-  if (req.headers.origin === clientOrigin) {
-    res.setHeader("Access-Control-Allow-Origin", clientOrigin);
+  const requestOrigin = req.headers.origin;
+  const isAllowedOrigin =
+    typeof requestOrigin === "string" &&
+    clientOrigins.has(requestOrigin.replace(/\/+$/, ""));
+
+  if (isAllowedOrigin) {
+    res.setHeader("Access-Control-Allow-Origin", requestOrigin);
     res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Vary", "Origin");
+    res.vary("Origin");
   }
+
   if (req.method === "OPTIONS") {
+    if (!isAllowedOrigin) {
+      res.status(403).end();
+      return;
+    }
+
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
     res.status(204).end();
