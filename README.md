@@ -155,7 +155,7 @@ Create `server/.env` and `client/.env.local`. Do not commit either file.
 | `POSTGRES_PASSWORD` | Compose | No | Local database password; defaults to `postgres` (local development only). |
 | `POSTGRES_PORT` | Compose | No | Host port for PostgreSQL; defaults to `5432`. |
 
-The server's mailer connects to `smtp-relay.brevo.com:587` using TLS. Compose defaults are for local development; use managed secrets and a dedicated database in deployment.
+The server sends email through Brevo's HTTP API over HTTPS and requires Node.js 18 or newer. To send a test email from the server directory, run `npm run email:test -- recipient@example.com` after configuring `BREVO_API_KEY` and `BREVO_SENDER_EMAIL`. Compose defaults are for local development; use managed secrets and a dedicated database in deployment.
 
 ## API Documentation
 
