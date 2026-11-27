@@ -1,7 +1,7 @@
-import { sendConfiguredEmail } from "../../config/mailer.js";
+import { sendEmail } from "../../utils/sendEmail.js";
 
 export async function sendVerificationCode(email: string, name: string, otp: string) {
-  await sendConfiguredEmail({
+  await sendEmail({
     to: email,
     subject: "Your Nexora verification code",
     text: `Hi ${name},\n\nYour Nexora email verification code is ${otp}. It expires in 5 minutes.\n\nIf you did not create a Nexora account, you can ignore this email.`,
@@ -10,7 +10,7 @@ export async function sendVerificationCode(email: string, name: string, otp: str
 }
 
 export async function sendPasswordResetCode(email: string, name: string, otp: string) {
-  await sendConfiguredEmail({
+  await sendEmail({
     to: email,
     subject: "Your Nexora password reset code",
     text: `Hi ${name},\n\nYour Nexora password reset code is ${otp}. It expires in 5 minutes.\n\nIf you did not request a password reset, you can ignore this email.`,

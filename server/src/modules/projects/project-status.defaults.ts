@@ -11,7 +11,7 @@ export const DEFAULT_PROJECT_STATUSES = [
     name: "In Progress",
     slug: "in-progress",
     position: 1,
-    color: "#3b82f6",
+    color: "#4f46e5",
     isDefault: false,
     isCompleted: false,
   },

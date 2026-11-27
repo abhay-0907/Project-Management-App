@@ -1,4 +1,4 @@
-import { sendConfiguredEmail } from "../../config/mailer.js";
+import { sendEmail } from "../../utils/sendEmail.js";
 
 export async function sendWorkspaceInvitationEmail(input: {
   to: string; workspaceName: string; inviterName: string; role: "ADMIN" | "MEMBER"; token: string; expiresAt: Date;
@@ -7,7 +7,7 @@ export async function sendWorkspaceInvitationEmail(input: {
   const link = `${origin}/invite/${encodeURIComponent(input.token)}`;
   const expiration = input.expiresAt.toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" }) + " UTC";
   const safe = (value: string) => value.replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]!);
-  await sendConfiguredEmail({
+  await sendEmail({
     to: input.to,
     subject: `You've been invited to ${input.workspaceName} on Nexora`,
     text: `Hi,\n\n${input.inviterName} invited you to join ${input.workspaceName} as a ${input.role}.\n\nAccept: ${link}\n\nThis invitation expires ${expiration}. If you weren't expecting this, you can ignore this email.`,
