@@ -149,7 +149,7 @@ Create `server/.env` and `client/.env.local`. Do not commit either file.
 | `SMTP_USER` | Server | For email | Brevo SMTP username. |
 | `SMTP_PASS` | Server | For email | Brevo SMTP password. |
 | `SENDER_EMAIL` | Server | For email | Verified sender address. |
-| `NEXT_PUBLIC_API_URL` | Client | No | API base URL; defaults to `http://localhost:4000`. |
+| `NEXT_PUBLIC_API_URL` | Client | No | API base URL; defaults to `http://localhost:8080`. |
 | `POSTGRES_DB` | Compose | No | Local database name; defaults to `project_management`. |
 | `POSTGRES_USER` | Compose | No | Local database user; defaults to `postgres`. |
 | `POSTGRES_PASSWORD` | Compose | No | Local database password; defaults to `postgres` (local development only). |
