@@ -1,82 +1,91 @@
 "use client";
 
-import Link from "next/link";
-import { useRef } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { Icon } from "@/components/shared/icon";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { workspaceQueryKeys } from "../hooks/use-workspaces";
 import type { Workspace } from "../types/workspace.types";
 
 export function WorkspaceSwitcher({
   activeWorkspace,
   workspaces,
+  onNavigate,
 }: {
   activeWorkspace: Workspace;
   workspaces: Workspace[];
+  onNavigate?: () => void;
 }) {
-  const detailsRef = useRef<HTMLDetailsElement>(null);
   const queryClient = useQueryClient();
+  const router = useRouter();
 
-  function closeMenu() {
-    if (detailsRef.current) detailsRef.current.open = false;
+  function openWorkspace(workspace: Workspace) {
+    void queryClient.invalidateQueries({
+      queryKey: workspaceQueryKeys.byId(workspace.id),
+    });
+    onNavigate?.();
+    router.push(`/${workspace.slug}`);
   }
 
   return (
-    <details className="workspace-switcher" ref={detailsRef}>
-      <summary className="workspace-picker" aria-label={`Current workspace: ${activeWorkspace.name}`}>
-        <span className="workspace-monogram">
-          {activeWorkspace.name.trim().charAt(0).toUpperCase() || "W"}
-        </span>
+    <DropdownMenuTrigger>
+      <Button
+        aria-label={`Switch workspace. Current workspace: ${activeWorkspace.name}`}
+        className="workspace-picker"
+        variant="outline"
+        size="lg"
+      >
         <span className="workspace-picker-copy">
           <strong>{activeWorkspace.name}</strong>
-          <small>{activeWorkspace.role.toLowerCase()} · {activeWorkspace.slug}</small>
+          <small>{activeWorkspace.role}</small>
         </span>
-        <Icon name="chevron-down" size={16} />
-      </summary>
+        <Icon aria-hidden="true" name="chevron-down" size={16} />
+      </Button>
 
-      <div className="workspace-switcher-menu" role="menu" aria-label="Switch workspace">
-        <p className="workspace-switcher-label">YOUR WORKSPACES</p>
-        {workspaces.map((workspace) => (
-          <Link
-            key={workspace.id}
-            href={`/${workspace.slug}`}
-            role="menuitem"
-            aria-current={workspace.id === activeWorkspace.id ? "page" : undefined}
-            className={`workspace-switcher-option ${workspace.id === activeWorkspace.id ? "is-current" : ""}`}
-            onClick={() => {
-              void queryClient.invalidateQueries({
-                queryKey: workspaceQueryKeys.byId(workspace.id),
-              });
-              closeMenu();
-            }}
-          >
-            <span className="workspace-switcher-monogram">
-              {workspace.name.trim().charAt(0).toUpperCase() || "W"}
-            </span>
-            <span className="workspace-switcher-option-copy">
-              <strong>{workspace.name}</strong>
-              <small>{workspace.role.toLowerCase()}</small>
-            </span>
-            {workspace.id === activeWorkspace.id && <Icon name="check" size={15} />}
-          </Link>
-        ))}
-        <Link
-          href="/workspaces"
+      <DropdownMenu className="workspace-switcher-menu" placement="bottom start">
+        <DropdownMenuGroup>
+          <DropdownMenuLabel className="workspace-switcher-label">YOUR WORKSPACES</DropdownMenuLabel>
+          {workspaces.map((workspace) => (
+            <DropdownMenuItem
+              aria-current={workspace.id === activeWorkspace.id ? "page" : undefined}
+              className={`workspace-switcher-option ${workspace.id === activeWorkspace.id ? "is-current" : ""}`}
+              key={workspace.id}
+              onAction={() => openWorkspace(workspace)}
+              textValue={workspace.name}
+            >
+              <span className="workspace-switcher-monogram">
+                {workspace.name.trim().charAt(0).toUpperCase() || "W"}
+              </span>
+              <span className="workspace-switcher-option-copy">
+                <strong>{workspace.name}</strong>
+                <small>{workspace.role.toLowerCase()}</small>
+              </span>
+              {workspace.id === activeWorkspace.id && <Icon aria-hidden="true" name="check" size={15} />}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
           className="workspace-switcher-manage"
-          role="menuitem"
-          onClick={closeMenu}
+          onAction={() => { onNavigate?.(); router.push("/workspaces"); }}
         >
-          <Icon name="layers" size={15} /> All workspaces
-        </Link>
-        <Link
-          href="/onboarding/create-workspace"
+          <Icon aria-hidden="true" name="layers" size={15} /> All workspaces
+        </DropdownMenuItem>
+        <DropdownMenuItem
           className="workspace-switcher-create"
-          role="menuitem"
-          onClick={closeMenu}
+          onAction={() => { onNavigate?.(); router.push("/onboarding/create-workspace"); }}
         >
-          <Icon name="plus" size={15} /> Create workspace
-        </Link>
-      </div>
-    </details>
+          <Icon aria-hidden="true" name="plus" size={15} /> Create workspace
+        </DropdownMenuItem>
+      </DropdownMenu>
+    </DropdownMenuTrigger>
   );
 }

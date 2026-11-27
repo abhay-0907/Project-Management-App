@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
 import { Icon } from "@/components/shared/icon";
+import { Select } from "@/components/ui/select";
 import { InvitationApiError } from "../api/invitation.api";
 import { useCancelInvitation, useCreateInvitation, useResendInvitation, useWorkspaceInvitations } from "../hooks/use-invitations";
 import type { InvitationRole, WorkspaceInvitation } from "../types/invitation.types";
@@ -91,7 +92,7 @@ export function InvitationsPage() {
       <section className="member-table-card panel">
         <div className="member-table-toolbar">
           <label className="project-search"><Icon name="search" size={17} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search email or inviter" /></label>
-          <label className="filter-select"><span>Status</span><select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)}><option value="ALL">All invitations</option><option value="PENDING">Pending</option><option value="ACCEPTED">Accepted</option><option value="REJECTED">Declined</option><option value="EXPIRED">Expired</option><option value="REVOKED">Cancelled</option></select><Icon name="chevron-down" size={14} /></label>
+          <label className="filter-select"><span>Status</span><Select ariaLabel="Filter invitations by status" className="filter-select-control" value={statusFilter} onValueChange={setStatusFilter} options={[{ value: "ALL", label: "All invitations" }, { value: "PENDING", label: "Pending" }, { value: "ACCEPTED", label: "Accepted" }, { value: "REJECTED", label: "Declined" }, { value: "EXPIRED", label: "Expired" }, { value: "REVOKED", label: "Cancelled" }]} /></label>
         </div>
         {filtered.length ? <div className="member-table">
           <div className="invitation-table-head invitation-table-head-expanded"><span>Email address</span><span>Role</span><span>Invited by</span><span>Invited</span><span>Expires</span><span>Status</span><span>Actions</span></div>

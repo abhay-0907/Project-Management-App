@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { toast } from "sonner";
 import { Icon } from "@/components/shared/icon";
 import { Button } from "@/components/ui/button";
+import { Select } from "@/components/ui/select";
 import { WorkspaceApiError } from "@/features/workspaces/api/workspace.api";
 import { useRemoveWorkspaceMember } from "@/features/workspaces/hooks/use-remove-workspace-member";
 import { useWorkspaceMembers } from "@/features/workspaces/hooks/use-workspace-members";
@@ -170,13 +171,18 @@ export function MembersPage() {
           </label>
           <label className="filter-select">
             <span>Role</span>
-            <select value={roleFilter} onChange={(event) => setRoleFilter(event.target.value)}>
-              <option value="ALL">All roles</option>
-              <option value="OWNER">Owner</option>
-              <option value="ADMIN">Admin</option>
-              <option value="MEMBER">Member</option>
-            </select>
-            <Icon name="chevron-down" size={14} />
+            <Select
+              ariaLabel="Filter members by role"
+              className="filter-select-control"
+              value={roleFilter}
+              onValueChange={setRoleFilter}
+              options={[
+                { value: "ALL", label: "All roles" },
+                { value: "OWNER", label: "Owner" },
+                { value: "ADMIN", label: "Admin" },
+                { value: "MEMBER", label: "Member" },
+              ]}
+            />
           </label>
         </div>
 

@@ -48,7 +48,6 @@ export function LandingNavbar() {
     <header className="landing-header">
       <div className="landing-container landing-nav-inner">
         <Link className="landing-brand" href="/" aria-label="Nexora home">
-          <span className="landing-brand-mark" aria-hidden="true">n</span>
           <span>Nexora</span>
         </Link>
 

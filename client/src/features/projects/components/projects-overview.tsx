@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import { toast } from "sonner";
 import { Icon } from "@/components/shared/icon";
+import { Select } from "@/components/ui/select";
 import { formatShortDate } from "@/features/dashboard/api/demo-data";
 import { useWorkspaces } from "@/features/workspaces/hooks/use-workspaces";
 import { ProjectApiError, type ProjectRecord, type ProjectStatus } from "../api/project.api";
@@ -147,23 +148,33 @@ export function ProjectsOverview({ initialStatus = "ALL" }: Props) {
         <div className="project-filter-controls">
           <label className="filter-select">
             <span>Status</span>
-            <select value={status} onChange={(event) => { setStatus(event.target.value as ProjectLifecycle | "ALL"); setPage(1); }}>
-              <option value="ALL">All projects</option>
-              <option value="ACTIVE">In progress</option>
-              <option value="ON_HOLD">On hold</option>
-              <option value="COMPLETED">Completed</option>
-              <option value="ARCHIVED">Archived</option>
-            </select>
-            <Icon name="chevron-down" size={14} />
+            <Select
+              ariaLabel="Filter projects by status"
+              className="filter-select-control"
+              value={status}
+              onValueChange={(value) => { setStatus(value as ProjectLifecycle | "ALL"); setPage(1); }}
+              options={[
+                { value: "ALL", label: "All projects" },
+                { value: "ACTIVE", label: "In progress" },
+                { value: "ON_HOLD", label: "On hold" },
+                { value: "COMPLETED", label: "Completed" },
+                { value: "ARCHIVED", label: "Archived" },
+              ]}
+            />
           </label>
           <label className="filter-select sort-filter">
             <span>Sort</span>
-            <select value={sortBy} onChange={(event) => { setSortBy(event.target.value as SortMode); setPage(1); }}>
-              <option value="updated">Recently updated</option>
-              <option value="newest">Newest</option>
-              <option value="name">Project name</option>
-            </select>
-            <Icon name="chevron-down" size={14} />
+            <Select
+              ariaLabel="Sort projects"
+              className="filter-select-control"
+              value={sortBy}
+              onValueChange={(value) => { setSortBy(value as SortMode); setPage(1); }}
+              options={[
+                { value: "updated", label: "Recently updated" },
+                { value: "newest", label: "Newest" },
+                { value: "name", label: "Project name" },
+              ]}
+            />
           </label>
         </div>
         <div className="view-toggle" role="group" aria-label="Project layout">

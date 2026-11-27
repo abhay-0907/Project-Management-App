@@ -5,6 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Icon } from "@/components/shared/icon";
+import { Combobox } from "@/components/ui/combobox";
+import { Select } from "@/components/ui/select";
 import { useProjectBoard } from "@/features/projects/hooks/use-project-board";
 import { ProjectApiError } from "@/features/projects/api/project.api";
 import { TaskApiError } from "../api/task.api";
@@ -295,81 +297,54 @@ export function TaskDetailDrawer({ taskId, projectId }: Props) {
                 className="property-dot"
                 style={{ background: currentStatus?.color }}
               />
-              <select
-                aria-label="Task status"
+              <Select
+                ariaLabel="Task status"
+                className="task-property-select"
                 value={task.statusId}
-                onChange={(event) =>
-                  void updateField({ statusId: event.target.value })
-                }
-                disabled={updatePending || statuses.length === 0}
-              >
-                <option value={task.statusId}>
-                  {currentStatus?.name ?? "Current status"}
-                </option>
-                {statuses
-                  .filter((status) => status.id !== task.statusId)
-                  .map((status) => (
-                    <option value={status.id} key={status.id}>
-                      {status.name}
-                    </option>
-                  ))}
-              </select>
-              <Icon name="chevron-down" size={13} />
+                onValueChange={(value) => void updateField({ statusId: value })}
+                isDisabled={updatePending || statuses.length === 0}
+                options={[
+                  { value: task.statusId, label: currentStatus?.name ?? "Current status" },
+                  ...statuses
+                    .filter((status) => status.id !== task.statusId)
+                    .map((status) => ({ value: status.id, label: status.name })),
+                ]}
+              />
             </label>
             <label
               className={`task-property priority-property priority-${task.priority.toLowerCase()}`}
             >
               <Icon name="flag" size={14} />
-              <select
-                aria-label="Task priority"
+              <Select
+                ariaLabel="Task priority"
+                className="task-property-select"
                 value={task.priority}
-                onChange={(event) =>
-                  void updateField({
-                    priority: event.target.value as TaskPriority,
-                  })
-                }
-                disabled={updatePending}
-              >
-                <option value="URGENT">Urgent</option>
-                <option value="HIGH">High</option>
-                <option value="MEDIUM">Medium</option>
-                <option value="LOW">Low</option>
-              </select>
-              <Icon name="chevron-down" size={13} />
+                onValueChange={(value) => void updateField({ priority: value as TaskPriority })}
+                isDisabled={updatePending}
+                options={[
+                  { value: "URGENT", label: "Urgent" },
+                  { value: "HIGH", label: "High" },
+                  { value: "MEDIUM", label: "Medium" },
+                  { value: "LOW", label: "Low" },
+                ]}
+              />
             </label>
             <label className="task-property assignee-property">
               <TaskAvatar name={task.assignee?.name} />
-              <select
-                aria-label="Task assignee"
+              <Combobox
+                ariaLabel="Task assignee"
+                className="task-assignee-combobox"
                 value={task.assigneeId ?? ""}
-                onChange={(event) =>
-                  void updateField({ assigneeId: event.target.value || null })
-                }
-                disabled={
-                  updatePending ||
-                  membersQuery.isPending ||
-                  membersQuery.isError
-                }
-              >
-                <option value="">Unassigned</option>
-                {task.assigneeId &&
-                  membersQuery.data?.some(
-                    (member) =>
-                      member.id === task.assigneeId && !member.isActive,
-                  ) && (
-                    <option value={task.assigneeId} disabled>
-                      {task.assignee?.name ?? "Inactive member"} (inactive)
-                    </option>
-                  )}
-                {membersQuery.data
-                  ?.filter((member) => member.isActive)
-                  .map((member) => (
-                    <option key={member.id} value={member.id}>
-                      {member.name}
-                    </option>
-                  ))}
-              </select>
-              <Icon name="chevron-down" size={13} />
+                onValueChange={(value) => void updateField({ assigneeId: value || null })}
+                isDisabled={updatePending || membersQuery.isPending || membersQuery.isError}
+                options={[
+                  { value: "", label: "Unassigned" },
+                  ...(task.assigneeId && membersQuery.data?.some((member) => member.id === task.assigneeId && !member.isActive)
+                    ? [{ value: task.assigneeId, label: `${task.assignee?.name ?? "Inactive member"} (inactive)`, isDisabled: true }]
+                    : []),
+                  ...(membersQuery.data?.filter((member) => member.isActive).map((member) => ({ value: member.id, label: member.name })) ?? []),
+                ]}
+              />
             </label>
             <label className="task-property due-property">
               <Icon name="calendar" size={15} />

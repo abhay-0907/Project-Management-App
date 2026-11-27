@@ -5,6 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
 import { toast } from "sonner";
 import { Icon } from "@/components/shared/icon";
+import { Combobox } from "@/components/ui/combobox";
+import { Select } from "@/components/ui/select";
 import { TaskApiError } from "@/features/tasks/api/task.api";
 import { TaskCreateDialog } from "@/features/tasks/components/task-create-dialog";
 import { taskPriorityValues } from "@/features/tasks/types/task.types";
@@ -134,8 +136,33 @@ export function ProjectBoard({ projectId }: Props) {
 
       <section className="board-toolbar">
         <div className="board-filter-row">
-          <label className="filter-chip filter-chip-select"><span>Assignee:</span><select aria-label="Filter by assignee" value={assigneeFilter} onChange={(event) => setAssigneeFilter(event.target.value)}><option value="ALL">Everyone</option>{membersQuery.data?.map((member) => <option value={member.id} key={member.id}>{member.name}</option>)}</select><Icon name="chevron-down" size={13} /></label>
-          <label className="filter-chip filter-chip-select"><Icon name="flag" size={15} /><select aria-label="Filter by priority" value={priorityFilter} onChange={(event) => setPriorityFilter(event.target.value)}><option value="ALL">All priorities</option>{taskPriorityValues.map((priority) => <option key={priority} value={priority}>{priorityTitle(priority)}</option>)}</select><Icon name="chevron-down" size={13} /></label>
+          <div className="filter-chip filter-chip-select">
+            <span>Assignee:</span>
+            <Combobox
+              ariaLabel="Filter tasks by assignee"
+              className="board-filter-combobox"
+              value={assigneeFilter}
+              onValueChange={setAssigneeFilter}
+              isDisabled={membersQuery.isPending || membersQuery.isError}
+              options={[
+                { value: "ALL", label: "Everyone" },
+                ...(membersQuery.data?.map((member) => ({ value: member.id, label: member.name })) ?? []),
+              ]}
+            />
+          </div>
+          <div className="filter-chip filter-chip-select">
+            <Icon name="flag" size={15} />
+            <Select
+              ariaLabel="Filter tasks by priority"
+              className="board-filter-select"
+              value={priorityFilter}
+              onValueChange={setPriorityFilter}
+              options={[
+                { value: "ALL", label: "All priorities" },
+                ...taskPriorityValues.map((priority) => ({ value: priority, label: priorityTitle(priority) })),
+              ]}
+            />
+          </div>
           <button className={`toggle-chip ${includeSubtasks ? "is-on" : ""}`} type="button" onClick={() => setIncludeSubtasks((value) => !value)}><span className="toggle-check">{includeSubtasks && <Icon name="check" size={12} />}</span>Subtasks</button>
         </div>
         <div className="board-tools-right">
@@ -304,7 +331,7 @@ function DeleteBoardColumnDialog({ workspaceId, projectId, column, columns, onCl
       <section className="modal-card" role="alertdialog" aria-modal="true" aria-labelledby="delete-column-title">
         <div className="modal-heading"><div><span className="eyebrow">REMOVE COLUMN</span><h2 id="delete-column-title">Delete “{column.name}”?</h2></div><button className="icon-button" type="button" onClick={onClose} disabled={deleteColumn.isPending} aria-label="Close"><Icon name="close" /></button></div>
         <div className="modal-form">
-          {hasTasks ? <><p>This column contains {column.tasks.length} {column.tasks.length === 1 ? "task" : "tasks"}. Choose where to move them before deleting it.</p><label className="field-label">Move tasks to<select value={destinationId} onChange={(event) => setDestinationId(event.target.value)} required>{destinations.map((destination) => <option key={destination.id} value={destination.id}>{destination.name}</option>)}</select></label></> : <p>This column is empty and will be removed from this project.</p>}
+          {hasTasks ? <><p>This column contains {column.tasks.length} {column.tasks.length === 1 ? "task" : "tasks"}. Choose where to move them before deleting it.</p><label className="field-label">Move tasks to<Select ariaLabel="Move tasks to column" value={destinationId} onValueChange={setDestinationId} isRequired options={destinations.map((destination) => ({ value: destination.id, label: destination.name }))} /></label></> : <p>This column is empty and will be removed from this project.</p>}
           {column.isDefault && <p className="form-hint">Another column will become the default for new tasks.</p>}
           {destinations.length === 0 && <p className="workspace-form-alert" role="alert">A board must keep at least one column.</p>}
           {error && <p className="workspace-form-alert" role="alert">{error}</p>}

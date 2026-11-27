@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import { toast } from "sonner";
 import { Icon } from "@/components/shared/icon";
+import { Select } from "@/components/ui/select";
 import { useWorkspaces } from "@/features/workspaces/hooks/use-workspaces";
 import { ProjectApiError, type ProjectStatus } from "../api/project.api";
 import { useDeleteProject, useProject, useUpdateProject } from "../hooks/use-projects";
@@ -114,7 +115,7 @@ export function ProjectSettings({ projectId }: { projectId: string }) {
               <label className="field-label">Project name<input value={form.name} onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))} maxLength={150} required /></label>
               <label className="field-label">Description<textarea rows={4} value={form.description} onChange={(event) => setForm((current) => ({ ...current, description: event.target.value }))} maxLength={10000} /></label>
               <div className="form-grid-two">
-                <label className="field-label">Status<select value={form.status} onChange={(event) => setForm((current) => ({ ...current, status: event.target.value as ProjectStatus }))}><option value="ACTIVE">In progress</option><option value="ON_HOLD">On hold</option><option value="COMPLETED">Completed</option><option value="ARCHIVED">Archived</option></select></label>
+                <label className="field-label">Status<Select ariaLabel="Project status" value={form.status} onValueChange={(value) => setForm((current) => ({ ...current, status: value as ProjectStatus }))} options={[{ value: "ACTIVE", label: "In progress" }, { value: "ON_HOLD", label: "On hold" }, { value: "COMPLETED", label: "Completed" }, { value: "ARCHIVED", label: "Archived" }]} /></label>
                 <label className="field-label">Start date<input type="date" value={form.startDate} onChange={(event) => setForm((current) => ({ ...current, startDate: event.target.value }))} /></label>
               </div>
               <label className="field-label">Target date<input type="date" value={form.dueDate} onChange={(event) => setForm((current) => ({ ...current, dueDate: event.target.value }))} /></label>

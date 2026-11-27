@@ -50,7 +50,7 @@ export function InvitationAcceptPage({ token }: { token: string }) {
   }
 
   return <main className="invite-page"><section className="invite-card">
-    <Link href="/" className="brand-mark"><span className="brand-symbol">n</span><span>Nexora</span></Link>
+    <Link href="/" className="brand-mark">Nexora</Link>
     <span className="invite-illustration"><Icon name="users" size={25} /></span>
     <span className="eyebrow">WORKSPACE INVITATION</span>
     {previewQuery.isLoading || currentUser.isLoading ? <div className="invite-loading" role="status">Loading invitation…</div> : null}

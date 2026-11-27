@@ -153,7 +153,7 @@ export const demoProjects: DemoProject[] = [
 const statusRows: Array<[string, string, number, string, boolean, boolean]> = [
   ["backlog", "Backlog", 0, "#a9a8b5", false, false],
   ["todo", "To do", 1, "#797b8a", true, false],
-  ["in-progress", "In progress", 2, "#4a8ee8", false, false],
+  ["in-progress", "In progress", 2, "#4f46e5", false, false],
   ["in-review", "In review", 3, "#bc8a42", false, false],
   ["done", "Done", 4, "#35a27b", false, true],
 ];

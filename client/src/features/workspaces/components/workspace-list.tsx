@@ -22,7 +22,7 @@ export function WorkspaceList() {
     <main className="workspace-selection-page">
       <header className="workspace-selection-topbar">
         <Link className="brand-mark" href="/workspaces" aria-label="Nexora workspaces">
-          <span className="brand-symbol">n</span><span>Nexora</span>
+          <span>Nexora</span>
         </Link>
         <span className="workspace-selection-caption">YOUR TEAM SPACES</span>
       </header>

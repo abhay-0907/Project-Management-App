@@ -4,6 +4,7 @@ import { useEffect, useId, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select } from "@/components/ui/select";
 import { Icon } from "@/components/shared/icon";
 import { createInvitationSchema, type CreateInvitationInput } from "../schemas/invitation.schema";
 
@@ -99,16 +100,18 @@ export function InviteMemberDialog({ allowAdmin, pending, onClose, onSubmit }: I
 
           <div className="invite-dialog-field">
             <Label htmlFor="invite-role">Workspace role</Label>
-            <select
+            <Select
               id="invite-role"
+              ariaLabel="Workspace role"
               className="invite-role-select"
               value={role}
-              onChange={(event) => setRole(event.target.value as CreateInvitationInput["role"])}
-              disabled={pending}
-            >
-              <option value="MEMBER">Member</option>
-              {allowAdmin && <option value="ADMIN">Admin</option>}
-            </select>
+              onValueChange={(value) => setRole(value as CreateInvitationInput["role"])}
+              isDisabled={pending}
+              options={[
+                { value: "MEMBER", label: "Member" },
+                ...(allowAdmin ? [{ value: "ADMIN", label: "Admin" }] : []),
+              ]}
+            />
             {!allowAdmin && <p className="invite-dialog-note">Admins can invite members. Only workspace owners can invite admins.</p>}
           </div>
 

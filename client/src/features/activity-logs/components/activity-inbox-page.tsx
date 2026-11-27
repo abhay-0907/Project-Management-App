@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { Icon } from "@/components/shared/icon";
+import { Combobox } from "@/components/ui/combobox";
+import { Select } from "@/components/ui/select";
 import { useActivityFeed } from "../hooks/use-activity-feed";
 import type { ActivityAction, ActivityEntityType, ActivityFilter } from "../api/activity.api";
 import { ActivityEntries } from "./activity-timeline";
@@ -83,24 +85,43 @@ export function ActivityInboxPage() {
         <div className="activity-filters" role="search" aria-label="Filter activity">
           <div className="activity-filter-field">
             <label htmlFor="activity-action">Action</label>
-            <select id="activity-action" value={filters.action ?? ""} onChange={(event) => updateFilter("action", event.currentTarget.value ? event.currentTarget.value as ActivityAction : undefined)}>
-              <option value="">All actions</option>
-              {actions.map((action) => <option key={action} value={action}>{formatLabel(action)}</option>)}
-            </select>
+            <Combobox
+              id="activity-action"
+              ariaLabel="Filter activity by action"
+              value={filters.action ?? ""}
+              onValueChange={(value) => updateFilter("action", value ? value as ActivityAction : undefined)}
+              options={[
+                { value: "", label: "All actions" },
+                ...actions.map((action) => ({ value: action, label: formatLabel(action) })),
+              ]}
+            />
           </div>
           <div className="activity-filter-field">
             <label htmlFor="activity-actor">Changed by</label>
-            <select id="activity-actor" value={filters.actorId ?? ""} onChange={(event) => updateFilter("actorId", event.currentTarget.value || undefined)}>
-              <option value="">Anyone</option>
-              {membersQuery.data?.map((member) => <option key={member.id} value={member.id}>{member.name}</option>)}
-            </select>
+            <Combobox
+              id="activity-actor"
+              ariaLabel="Filter activity by member"
+              value={filters.actorId ?? ""}
+              onValueChange={(value) => updateFilter("actorId", value || undefined)}
+              isDisabled={membersQuery.isPending || membersQuery.isError}
+              options={[
+                { value: "", label: "Anyone" },
+                ...(membersQuery.data?.map((member) => ({ value: member.id, label: member.name })) ?? []),
+              ]}
+            />
           </div>
           <div className="activity-filter-field">
             <label htmlFor="activity-entity">Item type</label>
-            <select id="activity-entity" value={filters.entityType ?? ""} onChange={(event) => updateFilter("entityType", event.currentTarget.value ? event.currentTarget.value as ActivityEntityType : undefined)}>
-              <option value="">All item types</option>
-              {entityTypes.map((type) => <option key={type} value={type}>{formatLabel(type)}</option>)}
-            </select>
+            <Select
+              id="activity-entity"
+              ariaLabel="Filter activity by item type"
+              value={filters.entityType ?? ""}
+              onValueChange={(value) => updateFilter("entityType", value ? value as ActivityEntityType : undefined)}
+              options={[
+                { value: "", label: "All item types" },
+                ...entityTypes.map((type) => ({ value: type, label: formatLabel(type) })),
+              ]}
+            />
           </div>
           <div className="activity-filter-field">
             <label htmlFor="activity-from">From</label>

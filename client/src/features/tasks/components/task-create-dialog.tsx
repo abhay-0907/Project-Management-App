@@ -4,6 +4,8 @@ import { useEffect, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Icon } from "@/components/shared/icon";
+import { Combobox } from "@/components/ui/combobox";
+import { Select } from "@/components/ui/select";
 import { TaskApiError } from "../api/task.api";
 import { useCreateTask } from "../hooks/use-create-task";
 import { useWorkspaceMembers } from "@/features/workspaces/hooks/use-workspace-members";
@@ -90,15 +92,19 @@ export function TaskCreateDialog({ workspaceId, projectId, statusId, onClose }: 
           </label>
           <div className="form-grid-two">
             <label className="field-label">Priority
-              <select value={priority} onChange={(event) => setPriority(event.target.value as TaskPriority)}>
-                <option value="LOW">Low</option><option value="MEDIUM">Medium</option><option value="HIGH">High</option><option value="URGENT">Urgent</option>
-              </select>
+              <Select ariaLabel="Task priority" value={priority} onValueChange={(value) => setPriority(value as TaskPriority)} options={[{ value: "LOW", label: "Low" }, { value: "MEDIUM", label: "Medium" }, { value: "HIGH", label: "High" }, { value: "URGENT", label: "Urgent" }]} />
             </label>
             <label className="field-label">Assignee
-              <select value={assigneeId} onChange={(event) => setAssigneeId(event.target.value)} disabled={membersQuery.isPending || membersQuery.isError}>
-                <option value="">Unassigned</option>
-                {membersQuery.data?.filter((member) => member.isActive).map((member) => <option value={member.id} key={member.id}>{member.name}</option>)}
-              </select>
+              <Combobox
+                ariaLabel="Task assignee"
+                value={assigneeId}
+                onValueChange={setAssigneeId}
+                isDisabled={membersQuery.isPending || membersQuery.isError || createTask.isPending}
+                options={[
+                  { value: "", label: "Unassigned" },
+                  ...(membersQuery.data?.filter((member) => member.isActive).map((member) => ({ value: member.id, label: member.name })) ?? []),
+                ]}
+              />
             </label>
           </div>
           {membersQuery.isPending && <p className="form-hint">Loading workspace members…</p>}

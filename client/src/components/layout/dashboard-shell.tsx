@@ -10,6 +10,20 @@ import {
   type ReactNode,
 } from "react";
 import { toast } from "sonner";
+import { Avatar as AccountAvatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Combobox } from "@/components/ui/combobox";
+import {
+  DropdownMenu,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Select } from "@/components/ui/select";
+import { useCurrentUser } from "@/features/auth/hooks/use-current-user";
+import { useLogout } from "@/features/auth/hooks/use-logout";
 import { WorkspaceSwitcher } from "@/features/workspaces/components/workspace-switcher";
 import { WorkspaceApiError } from "@/features/workspaces/api/workspace.api";
 import { useWorkspaceDetails } from "@/features/workspaces/hooks/use-workspace-details";
@@ -62,6 +76,8 @@ export function DashboardShell({ children }: ShellProps) {
   const pathname = usePathname();
   const router = useRouter();
   const workspaceSlug = params.workspaceSlug || demoWorkspace.slug;
+  const currentUserQuery = useCurrentUser();
+  const logout = useLogout();
   const workspacesQuery = useWorkspaces();
   const currentWorkspace = workspacesQuery.data?.find(
     (workspace) => workspace.slug === workspaceSlug,
@@ -110,6 +126,17 @@ export function DashboardShell({ children }: ShellProps) {
     return `/${workspaceSlug}${href}`;
   }
 
+  async function signOut() {
+    if (logout.isPending) return;
+    try {
+      await logout.mutateAsync();
+      router.replace("/");
+      router.refresh();
+    } catch {
+      // useLogout reports failures and preserves the current session state.
+    }
+  }
+
   const currentProjectId = pathname.match(/\/projects\/([^/]+)/)?.[1];
   const currentProject = currentProjectId
     ? projectsQuery.data?.projects.find((project) => project.id === currentProjectId)
@@ -125,6 +152,12 @@ export function DashboardShell({ children }: ShellProps) {
       : pathname.includes("/notifications")
         ? "Notifications"
         : "Workspace overview";
+
+  useEffect(() => {
+    if (currentUserQuery.isSuccess && currentUserQuery.data === null) {
+      router.replace("/");
+    }
+  }, [currentUserQuery.data, currentUserQuery.isSuccess, router]);
 
   useEffect(() => {
     if (workspacesQuery.isError) {
@@ -173,6 +206,17 @@ export function DashboardShell({ children }: ShellProps) {
     workspacesQuery.isSuccess,
   ]);
 
+  if (currentUserQuery.isPending) {
+    return <main className="workspace-route-state" role="status"><span className="workspace-spinner" aria-hidden="true" /><p>Checking your session…</p></main>;
+  }
+  if (currentUserQuery.isError) {
+    return <main className="workspace-route-state" role="alert"><h1>Workspace unavailable</h1><p>We couldn’t verify your session. Try again.</p><button className="button button-secondary" type="button" onClick={() => void currentUserQuery.refetch()}>Try again</button></main>;
+  }
+  if (!currentUserQuery.data) {
+    return <main className="workspace-route-state" role="status"><span className="workspace-spinner" aria-hidden="true" /><p>Returning to Nexora…</p></main>;
+  }
+  const currentUser = currentUserQuery.data;
+
   if (
     workspacesQuery.isError ||
     workspaceDetailsQuery.isError ||
@@ -199,7 +243,6 @@ export function DashboardShell({ children }: ShellProps) {
             href={`/${workspaceSlug}`}
             aria-label="Nexora home"
           >
-            <span className="brand-symbol">n</span>
             <span>Nexora</span>
           </Link>
           <span className="plan-pill">TEAM</span>
@@ -215,6 +258,7 @@ export function DashboardShell({ children }: ShellProps) {
         <WorkspaceSwitcher
           activeWorkspace={activeWorkspace}
           workspaces={workspacesQuery.data ?? []}
+          onNavigate={() => setMobileNavOpen(false)}
         />
 
         <div className="sidebar-scroll">
@@ -317,24 +361,47 @@ export function DashboardShell({ children }: ShellProps) {
             <Icon name="help" size={17} />
             <span>Help & support</span>
           </button>
-          <div className="profile-card">
-            <Avatar member={demoMembers[0]} size="md" />
-            <div className="profile-copy">
-              <strong>{demoMembers[0].name}</strong>
-              <small>{demoMembers[0].email}</small>
-            </div>
-            <button
-              className="tiny-icon-button"
-              aria-label="Profile options"
-              onClick={() =>
-                toast.message("Profile menu", {
-                  description: "Account settings and sign out options.",
-                })
-              }
+          <DropdownMenuTrigger>
+            <Button
+              aria-label={`Open account menu for ${currentUser.name}`}
+              className="profile-card"
+              isDisabled={logout.isPending}
+              variant="ghost"
             >
-              <Icon name="more" size={17} />
-            </button>
-          </div>
+              <AccountAvatar className="dashboard-account-avatar">
+                <AvatarFallback>{getInitials(currentUser.name)}</AvatarFallback>
+              </AccountAvatar>
+              <span className="profile-copy">
+                <strong>{currentUser.name}</strong>
+                <small>{logout.isPending ? "Signing out…" : currentUser.email}</small>
+              </span>
+            </Button>
+            <DropdownMenu className="account-profile-menu" placement="top end">
+              <DropdownMenuGroup>
+                <DropdownMenuLabel className="account-profile-user-info">
+                  <span className="account-profile-user-name">{currentUser.name}</span>
+                  <span className="account-profile-user-email">{currentUser.email}</span>
+                </DropdownMenuLabel>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="account-profile-menu-item"
+                onAction={() => router.push(`/${workspaceSlug}/settings`)}
+              >
+                <Icon aria-hidden="true" name="settings" size={16} /> Account Settings
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="account-profile-menu-item"
+                isDisabled={logout.isPending}
+                onAction={() => void signOut()}
+                variant="destructive"
+              >
+                <Icon aria-hidden="true" name="logout" size={16} />
+                {logout.isPending ? "Signing out…" : "Log out"}
+              </DropdownMenuItem>
+            </DropdownMenu>
+          </DropdownMenuTrigger>
         </div>
       </aside>
 
@@ -431,6 +498,18 @@ export function DashboardShell({ children }: ShellProps) {
       )}
     </div>
   );
+}
+
+function getInitials(name: string) {
+  const initials = name
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => Array.from(part)[0])
+    .join("")
+    .toUpperCase();
+  return initials || "?";
 }
 
 export function Avatar({
@@ -543,30 +622,28 @@ function CreateTaskModal({ workspaceId, workspaceSlug, onClose }: { workspaceId:
           <div className="form-grid-two">
             <label className="field-label">
               Project
-              <select
+              <Combobox
+                ariaLabel="Task project"
                 value={selectedProjectId}
-                onChange={(event) => setProjectId(event.target.value)}
-                disabled={projectsQuery.isPending || projectsQuery.isError || createTask.isPending}
-              >
-                {projects.map((project) => (
-                    <option key={project.id} value={project.id}>
-                      {project.name}
-                    </option>
-                  ))}
-              </select>
+                onValueChange={setProjectId}
+                isDisabled={projectsQuery.isPending || projectsQuery.isError || projects.length === 0 || createTask.isPending}
+                options={projects.map((project) => ({ value: project.id, label: project.name }))}
+              />
             </label>
             <label className="field-label">
               Priority
-              <select
+              <Select
+                ariaLabel="Task priority"
                 value={priority}
-                onChange={(event) => setPriority(event.target.value as TaskPriority)}
-                disabled={createTask.isPending}
-              >
-                <option value="LOW">Low</option>
-                <option value="MEDIUM">Medium</option>
-                <option value="HIGH">High</option>
-                <option value="URGENT">Urgent</option>
-              </select>
+                onValueChange={(value) => setPriority(value as TaskPriority)}
+                isDisabled={createTask.isPending}
+                options={[
+                  { value: "LOW", label: "Low" },
+                  { value: "MEDIUM", label: "Medium" },
+                  { value: "HIGH", label: "High" },
+                  { value: "URGENT", label: "Urgent" },
+                ]}
+              />
             </label>
           </div>
           <label className="field-label">
